@@ -4,7 +4,9 @@
 #include "minigin.h"
 #include <SDL3/SDL.h>
 
-Minigin::Minigin()
+#include "GameObject.h"
+
+Minigin::Minigin(std::function<void(Minigin&)> function)
 {
 	if (!SDL_Init(SDL_INIT_VIDEO)) {
 		SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
@@ -15,6 +17,7 @@ Minigin::Minigin()
 		SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
 		throw std::exception();
 	}
+	function(*this);
 }
 
 Minigin::~Minigin()
@@ -23,19 +26,33 @@ Minigin::~Minigin()
 	SDL_DestroyRenderer(m_renderer);
 }
 
+GameObject* Minigin::add_game_object()
+{
+	m_game_objects.push_back(std::make_unique<GameObject>());
+
+	return m_game_objects[m_game_objects.size() - 1].get();
+}
+
 SDL_AppResult Minigin::iterate()
 {
-	const double now = static_cast<double>(SDL_GetTicks()) / 1000.0;  /* convert from milliseconds to seconds. */
-	/* choose the color for the frame we will draw. The sine wave trick makes it fade between colors smoothly. */
+	for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
+	{
+		game_object->update();
+	}
+
+	const double now = static_cast<double>(SDL_GetTicks()) / 1000.0; 
 	const float red = static_cast<float>(0.5 + 0.5 * SDL_sin(now));
 	const float green = static_cast<float>(0.5 + 0.5 * SDL_sin(now + std::numbers::pi * 2 / 3));
 	const float blue = static_cast<float>(0.5 + 0.5 * SDL_sin(now + std::numbers::pi * 4 / 3));
-	SDL_SetRenderDrawColorFloat(m_renderer, red, green, blue, SDL_ALPHA_OPAQUE_FLOAT);  /* new color, full alpha. */
+	SDL_SetRenderDrawColorFloat(m_renderer, red, green, blue, SDL_ALPHA_OPAQUE_FLOAT);
 
-	/* clear the window to the draw color. */
 	SDL_RenderClear(m_renderer);
 
-	/* put the newly-cleared rendering on the screen. */
+	for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
+	{
+		game_object->render();
+	}
+
 	SDL_RenderPresent(m_renderer);
 
 	if (m_is_quitting) return SDL_APP_SUCCESS;

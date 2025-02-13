@@ -24,7 +24,7 @@ endif()
 
 add_executable(${PROJECT_NAME} ${TARGET_PARAM}
   src/main.cpp
- "src/GameObject.cpp" "src/GameObject.h" "src/Minigin.h" "src/Minigin.cpp")
+  "src/GameObject.cpp" "src/GameObject.h" "src/Minigin.h" "src/Minigin.cpp" "src/component.h" "src/component.cpp")
 
 if(MSVC)
     # VLD reports memory leaks

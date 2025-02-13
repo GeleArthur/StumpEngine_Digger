@@ -8,14 +8,28 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
+#include "GameObject.h"
 #include "Minigin.h"
 
+static void init_game(Minigin& engine)
+{
+	GameObject* coolObject = engine.add_game_object();
+    coolObject->add_component<Component>();
+
+    // auto yea = std::type_index<typeid(int)>;
+}
+
+
+// What do you think of this? I am avoiding globals with the appstate
+// But the new and delete are not great. Or could you maybe say its allow for this instance.
+// I also would assume that when I make my game. There is only 1 start up function that gets called by the engine.
+// The game can then spawn game_objects to continue the game.
 
 SDL_AppResult SDL_AppInit(void** appstate, int , char *[])
 {
     SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
 
-    auto engine = new Minigin{};
+    auto engine = new Minigin{&init_game };
     *appstate = reinterpret_cast<void*>(engine);
 
     return SDL_APP_CONTINUE;  
