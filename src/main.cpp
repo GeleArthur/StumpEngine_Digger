@@ -10,11 +10,12 @@
 
 #include "GameObject.h"
 #include "Minigin.h"
+#include "Transform.h"
 
 static void init_game(Minigin& engine)
 {
 	GameObject* coolObject = engine.add_game_object();
-    coolObject->add_component<Component>();
+	coolObject->add_component<Transform>(3.0f, 2.0f);
 
     // auto yea = std::type_index<typeid(int)>;
 }
@@ -24,6 +25,8 @@ static void init_game(Minigin& engine)
 // But the new and delete are not great. Or could you maybe say its allow for this instance.
 // I also would assume that when I make my game. There is only 1 start up function that gets called by the engine.
 // The game can then spawn game_objects to continue the game.
+
+// Maybe just have 1 main function and that handle emscripten my self.
 
 SDL_AppResult SDL_AppInit(void** appstate, int , char *[])
 {

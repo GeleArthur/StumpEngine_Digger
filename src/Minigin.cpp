@@ -28,7 +28,9 @@ Minigin::~Minigin()
 
 GameObject* Minigin::add_game_object()
 {
-	m_game_objects.push_back(std::make_unique<GameObject>());
+	auto game_object = std::make_unique<GameObject>();
+	game_object->engine = this;
+	m_game_objects.push_back(std::move(game_object));
 
 	return m_game_objects[m_game_objects.size() - 1].get();
 }

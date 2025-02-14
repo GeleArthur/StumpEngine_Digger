@@ -13,13 +13,18 @@ public:
 	GameObject() = default;
 	~GameObject() = default;
 
-	template<typename T>
-	T* add_component() {
-		return (m_components[std::type_index(typeid(T))] = std::make_unique<T>()).get();
+	template<typename T, typename... Args> //requires std::derived_from<T, Component>
+	T* add_component(Args&&... arguments)
+	{
+		auto component = std::make_unique<T>(std::forward<Args>(arguments)...);
+		component->AttachedGameObject = this;
+		m_components[std::type_index(typeid(T))] = std::move(component); 
+		return component.get();
 	}
 
 	template<typename T>
-	[[nodiscard]] T* get_component() {
+	[[nodiscard]] T* get_component()
+	{
 		if (T component = m_components.find(std::type_index(typeid(T))); component != m_components.end())
 		{
 			return &component;
@@ -28,6 +33,7 @@ public:
 		return nullptr;
 	}
 
+	Minigin* engine;
 
 	GameObject(const GameObject& other) = delete;
 	GameObject(GameObject&& other) = delete;
