@@ -15,7 +15,7 @@
 static void init_game(Minigin& engine)
 {
 	GameObject* coolObject = engine.add_game_object();
-	coolObject->add_component<Transform>(3.0f, 2.0f);
+    coolObject->add_component<Transform>(glm::vec2{ 3.0f, 2.0f });
 
     // auto yea = std::type_index<typeid(int)>;
 }

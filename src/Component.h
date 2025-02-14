@@ -1,11 +1,12 @@
 #pragma once
 
+class Minigin;
 class GameObject;
 
 class Component
 {
 public:
-	Component() = default;
+	Component(GameObject* attachedGameObject);
 	virtual ~Component() = default;
 
 	Component(const Component& other) = delete;
@@ -13,6 +14,7 @@ public:
 	Component& operator=(const Component& other) = delete;
 	Component& operator=(Component&& other) = delete;
 
+protected:
 	GameObject* AttachedGameObject; // Mmmmmm
 
 private:

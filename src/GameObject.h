@@ -10,14 +10,13 @@ class Minigin;
 class GameObject final
 {
 public:
-	GameObject() = default;
+	explicit GameObject(Minigin* engine);
 	~GameObject() = default;
 
-	template<typename T, typename... Args> //requires std::derived_from<T, Component>
+	template<typename T, typename... Args> requires std::derived_from<T, Component>
 	T* add_component(Args&&... arguments)
 	{
-		auto component = std::make_unique<T>(std::forward<Args>(arguments)...);
-		component->AttachedGameObject = this;
+		auto component = std::make_unique<T>(this, std::forward<Args>(arguments)...);
 		m_components[std::type_index(typeid(T))] = std::move(component); 
 		return component.get();
 	}
@@ -33,7 +32,7 @@ public:
 		return nullptr;
 	}
 
-	Minigin* engine;
+	[[nodiscard]] Minigin* get_engine() const { return m_engine; }
 
 	GameObject(const GameObject& other) = delete;
 	GameObject(GameObject&& other) = delete;
@@ -42,6 +41,8 @@ public:
 
 private:
 	friend Minigin;
+	Minigin* m_engine;
+
 	std::unordered_map<std::type_index, std::unique_ptr<Component>> m_components{};
 
 	void update();

@@ -27,6 +27,8 @@ public:
 	SDL_AppResult iterate();
 	void event(SDL_Event* event);
 
+	SDL_Renderer* get_renderer() const { return m_renderer; }
+
 private:
 	SDL_Window* m_window{};
 	SDL_Renderer* m_renderer{};

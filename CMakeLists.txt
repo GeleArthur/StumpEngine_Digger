@@ -22,18 +22,10 @@ else()
   set(TARGET_PARAM )
 endif()
 
+file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
+
 add_executable(${PROJECT_NAME} ${TARGET_PARAM}
-  src/main.cpp
-  src/GameObject.cpp
-  src/GameObject.h
-  src/Minigin.h
-  src/Minigin.cpp
-  src/Component.h
-  src/Component.cpp
-  src/Transform.cpp
-  src/Transform.h
-  src/ResourceManager.h
-  src/ResourceManager.cpp
+    ${source_files}
 )
 
 if(MSVC)
@@ -110,11 +102,12 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SDL3_mixer)
 
 
-target_link_libraries(${PROJECT_NAME} PUBLIC 
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    glm::glm-header-only
     SDL3_ttf::SDL3_ttf   
     SDL3_mixer::SDL3_mixer  
     SDL3_image::SDL3_image	
-    SDL3::SDL3              
+    SDL3::SDL3          
 )
 
 if(WIN32)
