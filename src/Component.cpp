@@ -2,7 +2,7 @@
 
 #include "Component.h"
 
-Component::Component(GameObject* attachedGameObject): m_attached_game_object(attachedGameObject)
+Component::Component(GameObject* attached_game_object): m_attached_game_object(attached_game_object)
 {
 }
 

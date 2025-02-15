@@ -8,8 +8,10 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
+#include "FpsShowCase.h"
 #include "GameObject.h"
 #include "Minigin.h"
+#include "TextDisplay.h"
 #include "Texture2D.h"
 #include "Transform.h"
 
@@ -23,7 +25,15 @@ static void init_game(Minigin& engine)
     logo->add_component<Transform>(glm::vec2{ 200.0f, 225.0f });
     logo->add_component<Texture2D>("data/logo.tga");
 
-    // auto yea = std::type_index<typeid(int)>;
+    GameObject* fps_display = engine.add_game_object();
+    fps_display->add_component<Transform>(glm::vec2{ 0, 0 });
+    fps_display->add_component<TextDisplay>("data/Lingua.otf", "", 30);
+    fps_display->add_component<FpsShowcase>();
+
+    GameObject* text_display = engine.add_game_object();
+    text_display->add_component<Transform>(glm::vec2{ 200, 0 });
+    text_display->add_component<TextDisplay>("data/Lingua.otf", "Programming 4 Assignment", 30);
+
 }
 
 

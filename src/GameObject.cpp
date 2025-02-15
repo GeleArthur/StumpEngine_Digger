@@ -1,5 +1,7 @@
 #include "GameObject.h"
 
+#include "Texture2D.h"
+
 GameObject::GameObject(Minigin* engine): m_engine(engine)
 {
 

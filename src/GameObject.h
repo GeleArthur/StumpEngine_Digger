@@ -29,6 +29,8 @@ public:
 			return static_cast<T*>(component->second.get());
 		}
 
+		
+
 		return nullptr;
 	}
 

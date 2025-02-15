@@ -5,6 +5,7 @@
 #include <SDL3/SDL.h>
 
 #include "GameObject.h"
+#include "SDL3_ttf/SDL_ttf.h"
 
 Minigin::Minigin(std::function<void(Minigin&)> function)
 {
@@ -12,11 +13,18 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 		SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
 		throw std::exception();
 	}
+	if (!TTF_Init())
+	{
+		SDL_Log("Couldn't initialize TTF: %s", SDL_GetError());
+		throw std::exception();
+	}
 
 	if (!SDL_CreateWindowAndRenderer("Programming 4 Engine", 640, 480, 0, &m_window, &m_renderer)) {
 		SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
 		throw std::exception();
 	}
+
+	SDL_SetRenderVSync(m_renderer, 1);
 	function(*this);
 }
 
@@ -34,6 +42,7 @@ GameObject* Minigin::add_game_object()
 
 SDL_AppResult Minigin::iterate()
 {
+	EngineTime.update();
 	for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
 	{
 		game_object->update();

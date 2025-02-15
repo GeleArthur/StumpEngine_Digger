@@ -10,7 +10,6 @@ public:
 	explicit Texture2D(GameObject* attached_game_object, const std::string& path);
 	~Texture2D() override;
 
-	void render() override;
 
 
 	Texture2D(const Texture2D&) = delete;
@@ -19,6 +18,8 @@ public:
 	Texture2D operator=(Texture2D&&) = delete;
 
 private:
+	void render() override;
+
 	SDL_Texture* m_texture{};
 	std::string m_texture_path;
 };

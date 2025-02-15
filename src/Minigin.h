@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 
+#include "Time.h"
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_init.h"
 #include "SDL3/SDL_render.h"
@@ -28,6 +29,7 @@ public:
 	void event(SDL_Event* event);
 
 	SDL_Renderer* get_renderer() const { return m_renderer; }
+	Time EngineTime{};
 
 private:
 	void delete_marked_game_objects();

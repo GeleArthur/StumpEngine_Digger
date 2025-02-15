@@ -6,7 +6,7 @@ class GameObject;
 class Component
 {
 public:
-	explicit Component(GameObject* attachedGameObject);
+	explicit Component(GameObject* attached_game_object);
 	virtual ~Component() = default;
 
 	Component(const Component& other) = delete;
