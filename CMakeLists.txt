@@ -99,13 +99,14 @@ FetchContent_Declare(
   GIT_SHALLOW TRUE
   GIT_PROGRESS TRUE
 )
-FetchContent_MakeAvailable(SDL3_mixer)
+# Crashes visual studio with clang.
+#FetchContent_MakeAvailable(SDL3_mixer)
 
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
     glm::glm-header-only
     SDL3_ttf::SDL3_ttf   
-    SDL3_mixer::SDL3_mixer  
+   # SDL3_mixer::SDL3_mixer  
     SDL3_image::SDL3_image	
     SDL3::SDL3          
 )
@@ -120,7 +121,7 @@ endif()
 # target_compile_definitions(${PROJECT_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
-target_compile_options(${PROJECT_NAME} PRIVATE
+target_compile_options(${PROJECT_NAME} INTERFACE
   $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
@@ -131,4 +132,8 @@ if(EMSCRIPTING)
   #   "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/Inter-VariableFont.ttf@/\""
   #   "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/the_entertainer.ogg@/\""
   # )
+else()
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+      COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/data" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/data"
+    )
 endif()

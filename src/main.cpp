@@ -10,12 +10,18 @@
 
 #include "GameObject.h"
 #include "Minigin.h"
+#include "Texture2D.h"
 #include "Transform.h"
 
 static void init_game(Minigin& engine)
 {
-	GameObject* coolObject = engine.add_game_object();
-    coolObject->add_component<Transform>(glm::vec2{ 3.0f, 2.0f });
+	GameObject* back_ground = engine.add_game_object();
+    back_ground->add_component<Transform>(glm::vec2{ 0.0f, 0.0f });
+    back_ground->add_component<Texture2D>("data/background.tga");
+
+    GameObject* logo = engine.add_game_object();
+    logo->add_component<Transform>(glm::vec2{ 200.0f, 225.0f });
+    logo->add_component<Texture2D>("data/logo.tga");
 
     // auto yea = std::type_index<typeid(int)>;
 }

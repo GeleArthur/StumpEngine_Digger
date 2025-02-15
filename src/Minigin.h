@@ -30,6 +30,8 @@ public:
 	SDL_Renderer* get_renderer() const { return m_renderer; }
 
 private:
+	void delete_marked_game_objects();
+
 	SDL_Window* m_window{};
 	SDL_Renderer* m_renderer{};
 	std::vector<std::unique_ptr<GameObject>> m_game_objects;

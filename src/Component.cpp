@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "component.h"
+#include "Component.h"
 
-Component::Component(GameObject* attachedGameObject): AttachedGameObject(attachedGameObject)
+Component::Component(GameObject* attachedGameObject): m_attached_game_object(attachedGameObject)
 {
 }
 

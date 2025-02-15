@@ -1,7 +1,7 @@
 #include <exception>
 #include <numbers>
 
-#include "minigin.h"
+#include "Minigin.h"
 #include <SDL3/SDL.h>
 
 #include "GameObject.h"
@@ -54,6 +54,8 @@ SDL_AppResult Minigin::iterate()
 
 	SDL_RenderPresent(m_renderer);
 
+	delete_marked_game_objects();
+
 	if (m_is_quitting) return SDL_APP_SUCCESS;
 	else return SDL_APP_CONTINUE;
 }
@@ -63,4 +65,9 @@ void Minigin::event(SDL_Event* event)
 	if (event->type == SDL_EVENT_QUIT) {
 		m_is_quitting = true;
 	}
+}
+
+void Minigin::delete_marked_game_objects()
+{
+	std::erase_if(m_game_objects, [](const std::unique_ptr<GameObject>& go) {return go->m_marked_for_deletion;});
 }

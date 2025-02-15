@@ -6,7 +6,7 @@ class GameObject;
 class Component
 {
 public:
-	Component(GameObject* attachedGameObject);
+	explicit Component(GameObject* attachedGameObject);
 	virtual ~Component() = default;
 
 	Component(const Component& other) = delete;
@@ -15,7 +15,7 @@ public:
 	Component& operator=(Component&& other) = delete;
 
 protected:
-	GameObject* AttachedGameObject; // Mmmmmm
+	GameObject* m_attached_game_object; // Mmmmmm
 
 private:
 	friend GameObject;

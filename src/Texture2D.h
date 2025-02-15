@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "component.h"
+#include "Component.h"
 #include "SDL3/SDL_render.h"
 
 class Texture2D final : public Component
@@ -9,6 +9,8 @@ class Texture2D final : public Component
 public:
 	explicit Texture2D(GameObject* attached_game_object, const std::string& path);
 	~Texture2D() override;
+
+	void render() override;
 
 
 	Texture2D(const Texture2D&) = delete;
@@ -18,5 +20,5 @@ public:
 
 private:
 	SDL_Texture* m_texture{};
-	std::string m_texturePath;
+	std::string m_texture_path;
 };
