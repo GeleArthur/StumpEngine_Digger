@@ -27,12 +27,12 @@ static void init_game(Minigin& engine)
 
     GameObject* fps_display = engine.add_game_object();
     fps_display->add_component<Transform>(glm::vec2{ 0, 0 });
-    fps_display->add_component<TextDisplay>("data/Lingua.otf", "", 30);
+    fps_display->add_component<TextDisplay>("data/Lingua.otf", "", 30.0f);
     fps_display->add_component<FpsShowcase>();
 
     GameObject* text_display = engine.add_game_object();
     text_display->add_component<Transform>(glm::vec2{ 200, 0 });
-    text_display->add_component<TextDisplay>("data/Lingua.otf", "Programming 4 Assignment", 30);
+    text_display->add_component<TextDisplay>("data/Lingua.otf", "Programming 4 Assignment", 30.0f);
 
 }
 
