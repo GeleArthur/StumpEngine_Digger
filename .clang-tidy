@@ -1,0 +1,8 @@
+﻿# Generated from CLion Inspection settings
+---
+Checks: '-*,
+clang-analyzer-*,
+cppcoreguidelines-*,
+readability-*,
+modernize-*,
+-modernize-use-trailing-return-type'

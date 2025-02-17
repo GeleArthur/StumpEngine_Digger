@@ -6,9 +6,8 @@
 class FpsShowcase final : public Component
 {
 public:
-	explicit FpsShowcase(GameObject* attached_game_object);
+	explicit FpsShowcase(GameObject& attached_game_object);
 
-	
 
 	FpsShowcase(const FpsShowcase& other) = delete;
 	FpsShowcase(FpsShowcase&& other) = delete;

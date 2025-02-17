@@ -3,10 +3,10 @@
 
 class Minigin;
 
-class Time
+class EngineTime
 {
 public:
-    explicit Time();
+    explicit EngineTime();
 
 
 	float DeltaTime{};

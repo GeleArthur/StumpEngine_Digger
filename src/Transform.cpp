@@ -1,5 +1,6 @@
 #include "Transform.h"
 
-Transform::Transform(GameObject* attached_game_object, const glm::vec2& pos): Component(attached_game_object), m_position(pos)
+Transform::Transform(GameObject& attached_game_object, const glm::vec2& pos): Component(attached_game_object),
+                                                                              m_position(pos)
 {
 }

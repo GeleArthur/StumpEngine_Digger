@@ -2,8 +2,13 @@
 
 #include "Component.h"
 
-Component::Component(GameObject* attached_game_object): m_attached_game_object(attached_game_object)
+Component::Component(GameObject& attached_game_object): m_attached_game_object(&attached_game_object)
 {
+}
+
+GameObject* Component::GetGameObject() const
+{
+    return m_attached_game_object;
 }
 
 

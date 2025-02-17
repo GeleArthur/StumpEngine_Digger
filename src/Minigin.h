@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "Time.h"
+#include "EngineTime.h"
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_init.h"
 #include "SDL3/SDL_render.h"
@@ -22,18 +22,19 @@ public:
 	Minigin operator=(Minigin&&) = delete;
 
 	GameObject* add_game_object();
+	[[nodiscard]] SDL_Renderer* get_renderer() const;
+	[[nodiscard]] const EngineTime& get_time() const;
 
-	// TODO: Find a solution to move these to private.
-	// Can't right now because of the SDL main definition
+private:
+	friend SDL_AppResult SDL_AppIterate(void* appstate);
+	friend SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event);
 	SDL_AppResult iterate();
 	void event(SDL_Event* event);
 
-	SDL_Renderer* get_renderer() const { return m_renderer; }
-	Time EngineTime{};
 
-private:
 	void delete_marked_game_objects();
 
+	EngineTime m_engine_time;
 	SDL_Window* m_window{};
 	SDL_Renderer* m_renderer{};
 	std::vector<std::unique_ptr<GameObject>> m_game_objects;

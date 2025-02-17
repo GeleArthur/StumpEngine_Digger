@@ -9,7 +9,8 @@
 
 Minigin::Minigin(std::function<void(Minigin&)> function)
 {
-	if (!SDL_Init(SDL_INIT_VIDEO)) {
+	if (!SDL_Init(SDL_INIT_VIDEO))
+	{
 		SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
 		throw std::exception();
 	}
@@ -19,7 +20,8 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 		throw std::exception();
 	}
 
-	if (!SDL_CreateWindowAndRenderer("Programming 4 Engine", 640, 480, 0, &m_window, &m_renderer)) {
+	if (!SDL_CreateWindowAndRenderer("Programming 4 Engine", 640, 480, 0, &m_window, &m_renderer))
+	{
 		SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
 		throw std::exception();
 	}
@@ -40,15 +42,25 @@ GameObject* Minigin::add_game_object()
 	return m_game_objects[m_game_objects.size() - 1].get();
 }
 
+SDL_Renderer* Minigin::get_renderer() const
+{
+	return m_renderer;
+}
+
+const EngineTime& Minigin::get_time() const
+{
+	return m_engine_time;
+}
+
 SDL_AppResult Minigin::iterate()
 {
-	EngineTime.update();
+	m_engine_time.update();
 	for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
 	{
 		game_object->update();
 	}
 
-	const double now = static_cast<double>(SDL_GetTicks()) / 1000.0; 
+	const double now = static_cast<double>(SDL_GetTicks()) / 1000.0;
 	const float red = static_cast<float>(0.5 + 0.5 * SDL_sin(now));
 	const float green = static_cast<float>(0.5 + 0.5 * SDL_sin(now + std::numbers::pi * 2 / 3));
 	const float blue = static_cast<float>(0.5 + 0.5 * SDL_sin(now + std::numbers::pi * 4 / 3));
@@ -71,12 +83,13 @@ SDL_AppResult Minigin::iterate()
 
 void Minigin::event(SDL_Event* event)
 {
-	if (event->type == SDL_EVENT_QUIT) {
+	if (event->type == SDL_EVENT_QUIT)
+	{
 		m_is_quitting = true;
 	}
 }
 
 void Minigin::delete_marked_game_objects()
 {
-	std::erase_if(m_game_objects, [](const std::unique_ptr<GameObject>& go) {return go->m_marked_for_deletion;});
+	std::erase_if(m_game_objects, [](const std::unique_ptr<GameObject>& go) { return go->m_marked_for_deletion; });
 }

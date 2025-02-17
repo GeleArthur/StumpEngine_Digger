@@ -7,7 +7,7 @@
 class TextDisplay final : public Component
 {
 public:
-	TextDisplay(GameObject* game_object, const std::string& font, std::string_view text = "", float size = 16.0f);
+	TextDisplay(GameObject& game_object, const std::string& font, std::string_view text = "", float size = 16.0f);
 
 	void update_text(std::string_view text);
 

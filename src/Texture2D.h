@@ -7,9 +7,8 @@
 class Texture2D final : public Component
 {
 public:
-	explicit Texture2D(GameObject* attached_game_object, const std::string& path);
+	explicit Texture2D(GameObject& attached_game_object, const std::string& path);
 	~Texture2D() override;
-
 
 
 	Texture2D(const Texture2D&) = delete;
