@@ -10,7 +10,7 @@ FpsShowcase::FpsShowcase(GameObject& attached_game_object): Component(attached_g
 
 void FpsShowcase::update()
 {
-	const float fps = 1.0f / GetGameObject()->get_engine()->get_time().DeltaTime;
+	const float fps = 1.0f / get_game_object().get_engine().get_time().delta_time;
 
 	std::stringstream out;
 	out << std::fixed;
@@ -18,5 +18,5 @@ void FpsShowcase::update()
 	out << fps;
 	out << " :FPS";
 
-	GetGameObject()->get_component<TextDisplay>()->update_text(out.str());;
+	get_game_object().get_component<TextDisplay>()->update_text(out.str());;
 }

@@ -19,17 +19,17 @@ void TextDisplay::update_text(const std::string_view text)
 
 	const SDL_Color color = {255, 255, 255, 255};
 	SDL_Surface* surface = TTF_RenderText_Blended(m_font, text.data(), text.size(), color);
-	m_text_texture = SDL_CreateTextureFromSurface(GetGameObject()->get_engine()->get_renderer(), surface);
+	m_text_texture = SDL_CreateTextureFromSurface(get_game_object().get_engine().get_renderer(), surface);
 	SDL_DestroySurface(surface);
 }
 
 void TextDisplay::render()
 {
-	const Transform* pos = GetGameObject()->get_component<Transform>();
+	const Transform* pos = get_game_object().get_component<Transform>();
 
 	const SDL_FRect dest_location{
 		pos->m_position.x, pos->m_position.y, static_cast<float>(m_text_texture->w),
 		static_cast<float>(m_text_texture->h)
 	};
-	SDL_RenderTexture(GetGameObject()->get_engine()->get_renderer(), m_text_texture, nullptr, &dest_location);
+	SDL_RenderTexture(get_game_object().get_engine().get_renderer(), m_text_texture, nullptr, &dest_location);
 }

@@ -2,6 +2,8 @@
 #include <numbers>
 
 #include "Minigin.h"
+
+#include <thread>
 #include <SDL3/SDL.h>
 
 #include "GameObject.h"
@@ -26,7 +28,10 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 		throw std::exception();
 	}
 
-	SDL_SetRenderVSync(m_renderer, 1);
+
+	SDL_DisplayMode** display_info = SDL_GetFullscreenDisplayModes(SDL_GetPrimaryDisplay(), nullptr);
+	m_refresh_rate_delay = static_cast<int>(1.0f / display_info[0]->refresh_rate * 1000.0f);
+
 	function(*this);
 }
 
@@ -34,12 +39,13 @@ Minigin::~Minigin()
 {
 	SDL_DestroyWindow(m_window);
 	SDL_DestroyRenderer(m_renderer);
+	SDL_Quit();
 }
 
-GameObject* Minigin::add_game_object()
+GameObject& Minigin::add_game_object()
 {
-	m_game_objects.push_back(std::make_unique<GameObject>(this));
-	return m_game_objects[m_game_objects.size() - 1].get();
+	m_game_objects.push_back(std::make_unique<GameObject>(*this));
+	return m_game_objects[m_game_objects.size() - 1].operator*();
 }
 
 SDL_Renderer* Minigin::get_renderer() const
@@ -47,24 +53,58 @@ SDL_Renderer* Minigin::get_renderer() const
 	return m_renderer;
 }
 
-const EngineTime& Minigin::get_time() const
+const engine_time& Minigin::get_time() const
 {
 	return m_engine_time;
 }
 
-SDL_AppResult Minigin::iterate()
+void Minigin::run()
 {
-	m_engine_time.update();
+	auto last_time = std::chrono::high_resolution_clock::now();
+	const auto start_of_loop = std::chrono::high_resolution_clock::now();
+
+	while (!m_is_quitting)
+	{
+		auto current = std::chrono::steady_clock::now();
+		m_engine_time.delta_time = std::chrono::duration<float>(current - last_time).count();
+		m_time_passed += current - last_time;
+		last_time = current;
+		m_engine_time.current_time = std::chrono::duration<float>(current - start_of_loop).count();
+
+		SDL_Event event;
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_EVENT_QUIT)
+			{
+				m_is_quitting = true;
+			}
+		}
+
+		run_one_loop();
+
+		auto time_to_sleep = current + std::chrono::milliseconds(m_refresh_rate_delay) -
+			std::chrono::steady_clock::now();
+		std::this_thread::sleep_for(time_to_sleep);
+	}
+}
+
+void Minigin::run_one_loop()
+{
+	while (m_time_passed > m_fixed_update_time)
+	{
+		m_time_passed -= m_fixed_update_time;
+
+		for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
+		{
+			game_object->fixed_update();
+		}
+	}
+
+
 	for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
 	{
 		game_object->update();
 	}
-
-	const double now = static_cast<double>(SDL_GetTicks()) / 1000.0;
-	const float red = static_cast<float>(0.5 + 0.5 * SDL_sin(now));
-	const float green = static_cast<float>(0.5 + 0.5 * SDL_sin(now + std::numbers::pi * 2 / 3));
-	const float blue = static_cast<float>(0.5 + 0.5 * SDL_sin(now + std::numbers::pi * 4 / 3));
-	SDL_SetRenderDrawColorFloat(m_renderer, red, green, blue, SDL_ALPHA_OPAQUE_FLOAT);
 
 	SDL_RenderClear(m_renderer);
 
@@ -76,20 +116,12 @@ SDL_AppResult Minigin::iterate()
 	SDL_RenderPresent(m_renderer);
 
 	delete_marked_game_objects();
-
-	if (m_is_quitting) return SDL_APP_SUCCESS;
-	else return SDL_APP_CONTINUE;
-}
-
-void Minigin::event(SDL_Event* event)
-{
-	if (event->type == SDL_EVENT_QUIT)
-	{
-		m_is_quitting = true;
-	}
 }
 
 void Minigin::delete_marked_game_objects()
 {
-	std::erase_if(m_game_objects, [](const std::unique_ptr<GameObject>& go) { return go->m_marked_for_deletion; });
+	std::erase_if(m_game_objects, [](const std::unique_ptr<GameObject>& game_object)
+	{
+		return game_object->is_marked_for_deletion();
+	});
 }

@@ -21,23 +21,25 @@ public:
 	Minigin operator=(const Minigin&) = delete;
 	Minigin operator=(Minigin&&) = delete;
 
-	GameObject* add_game_object();
+	GameObject& add_game_object();
 	[[nodiscard]] SDL_Renderer* get_renderer() const;
-	[[nodiscard]] const EngineTime& get_time() const;
+	[[nodiscard]] const engine_time& get_time() const;
+
+	void run();
 
 private:
-	friend SDL_AppResult SDL_AppIterate(void* appstate);
-	friend SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event);
-	SDL_AppResult iterate();
-	void event(SDL_Event* event);
-
-
+	void run_one_loop();
 	void delete_marked_game_objects();
 
-	EngineTime m_engine_time;
+	engine_time m_engine_time;
+	int m_refresh_rate_delay{};
 	SDL_Window* m_window{};
 	SDL_Renderer* m_renderer{};
 	std::vector<std::unique_ptr<GameObject>> m_game_objects;
+	std::chrono::duration<float> m_time_passed{};
+	const std::chrono::duration<float, std::milli> m_fixed_update_time = std::chrono::duration<
+		float, std::milli>(45.0f);
+
 
 	bool m_is_quitting{false};
 };
