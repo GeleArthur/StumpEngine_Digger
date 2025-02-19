@@ -19,10 +19,10 @@ Texture2D::~Texture2D()
 
 void Texture2D::render()
 {
-	Transform* pos = get_game_object().get_component<Transform>();
+	const glm::vec2& pos = get_game_object().get_component<Transform>()->get_world_position();
 
 	const SDL_FRect dest_location{
-		pos->m_position.x, pos->m_position.y, static_cast<float>(m_texture->w), static_cast<float>(m_texture->h)
+		pos.x, pos.y, static_cast<float>(m_texture->w), static_cast<float>(m_texture->h)
 	};
 	SDL_RenderTexture(get_game_object().get_engine().get_renderer(), m_texture, nullptr, &dest_location);
 }

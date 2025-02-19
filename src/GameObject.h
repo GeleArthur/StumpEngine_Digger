@@ -19,15 +19,16 @@ public:
 	GameObject& operator=(GameObject&& other) = delete;
 
 	template <typename T, typename... Args> requires std::derived_from<T, Component>
-	T* add_component(Args&&... arguments)
+	T& add_component(Args&&... arguments)
 	{
 		T* component = get_component<T>();
 		if (component == nullptr)
 		{
 			m_components.push_back(std::make_unique<T>(*this, std::forward<Args>(arguments)...));
+			component = static_cast<T*>(m_components[m_components.size() - 1].get());
 		}
 
-		return component;
+		return *component;
 	}
 
 	template <typename T> requires std::derived_from<T, Component>

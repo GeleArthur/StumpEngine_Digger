@@ -23,7 +23,7 @@ public:
 
 	GameObject& add_game_object();
 	[[nodiscard]] SDL_Renderer* get_renderer() const;
-	[[nodiscard]] const engine_time& get_time() const;
+	[[nodiscard]] const EngineTime& get_time() const;
 
 	void run();
 
@@ -31,7 +31,7 @@ private:
 	void run_one_loop();
 	void delete_marked_game_objects();
 
-	engine_time m_engine_time;
+	EngineTime m_engine_time;
 	int m_refresh_rate_delay{};
 	SDL_Window* m_window{};
 	SDL_Renderer* m_renderer{};

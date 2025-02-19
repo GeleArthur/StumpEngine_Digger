@@ -25,10 +25,10 @@ void TextDisplay::update_text(const std::string_view text)
 
 void TextDisplay::render()
 {
-	const Transform* pos = get_game_object().get_component<Transform>();
+	const glm::vec2& pos = get_game_object().get_component<Transform>()->get_world_position();
 
 	const SDL_FRect dest_location{
-		pos->m_position.x, pos->m_position.y, static_cast<float>(m_text_texture->w),
+		pos.x, pos.y, static_cast<float>(m_text_texture->w),
 		static_cast<float>(m_text_texture->h)
 	};
 	SDL_RenderTexture(get_game_object().get_engine().get_renderer(), m_text_texture, nullptr, &dest_location);

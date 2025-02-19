@@ -2,7 +2,7 @@
 #include <chrono>
 
 
-struct engine_time
+struct EngineTime
 {
 	float delta_time{};
 	float current_time{};

@@ -53,7 +53,7 @@ SDL_Renderer* Minigin::get_renderer() const
 	return m_renderer;
 }
 
-const engine_time& Minigin::get_time() const
+const EngineTime& Minigin::get_time() const
 {
 	return m_engine_time;
 }
