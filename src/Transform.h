@@ -14,6 +14,7 @@ public:
 	[[nodiscard]] const glm::vec2& get_world_position();
 	[[nodiscard]] const glm::vec2& get_local_position() const;
 	void set_local_position(const glm::vec2& new_pos);
+	std::ranges::subrange<std::vector<std::reference_wrapper<Transform>>::iterator> get_children();
 
 private:
 	void remove_child_internal(const Transform& child);

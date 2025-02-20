@@ -81,3 +81,8 @@ void Transform::set_local_position(const glm::vec2& new_pos)
     mark_children_as_dirty();
 }
 
+std::ranges::subrange<std::vector<std::reference_wrapper<Transform>>::iterator> Transform::get_children()
+{
+    return std::ranges::subrange{m_children};
+}
+
