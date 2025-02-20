@@ -4,6 +4,7 @@
 #include <typeindex>
 #include <unordered_map>
 #include "Component.h"
+#include "Transform.h"
 
 class Minigin;
 
@@ -24,7 +25,8 @@ public:
 		T* component = get_component<T>();
 		if (component == nullptr)
 		{
-			m_components.push_back(std::make_unique<T>(*this, std::forward<Args>(arguments)...));
+			auto does_crash = std::make_unique<T>(*this, std::forward<Args>(arguments)...);
+			m_components.push_back(std::move(does_crash));
 			component = static_cast<T*>(m_components[m_components.size() - 1].get());
 		}
 
@@ -54,9 +56,9 @@ public:
 		}
 	}
 
+	Transform& get_transform() const;
 	void removed_marked_components();
-
-	[[nodiscard]] Minigin& get_engine() const { return m_engine; }
+	[[nodiscard]] Minigin& get_engine() const;
 	[[nodiscard]] bool is_marked_for_deletion() const;
 	void mark_for_deletion();
 
@@ -65,8 +67,10 @@ public:
 	void render() const;
 
 private:
-	Minigin& m_engine;
-
 	std::vector<std::unique_ptr<Component>> m_components;
+
+	Minigin& m_engine;
+	Transform& m_transform;
+
 	bool m_marked_for_deletion{false};
 };

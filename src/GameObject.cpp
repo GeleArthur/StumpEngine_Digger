@@ -2,7 +2,9 @@
 
 #include "Texture2D.h"
 
-GameObject::GameObject(Minigin& engine): m_engine(engine)
+GameObject::GameObject(Minigin& engine):
+	m_engine(engine),
+	m_transform(add_component<Transform>(glm::vec2{0.0f, 0.0f}))
 {
 }
 
@@ -19,9 +21,19 @@ void GameObject::fixed_update() const
 	}
 }
 
+Transform& GameObject::get_transform() const
+{
+	return m_transform;
+}
+
 void GameObject::removed_marked_components()
 {
 	std::erase_if(m_components, [](auto& comp) { return comp->is_marked_for_delection(); });
+}
+
+Minigin& GameObject::get_engine() const
+{
+	return m_engine;
 }
 
 bool GameObject::is_marked_for_deletion() const
