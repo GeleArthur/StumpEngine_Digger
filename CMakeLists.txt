@@ -39,15 +39,16 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 include(FetchContent)
 
+FetchContent_Declare(
+        glm
+        URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1-light.zip
+)
+FetchContent_Populate(glm)
+target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
+
 
 if (WIN32) # subcheck support
 
-    FetchContent_Declare(
-            glm
-            URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1-light.zip
-    )
-    FetchContent_Populate(glm)
-    target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
 
     FetchContent_Declare(
             SDL3
@@ -92,13 +93,6 @@ if (WIN32) # subcheck support
 else ()
 
     # add glm
-    FetchContent_Declare(
-            glm
-            GIT_REPOSITORY https://github.com/g-truc/glm.git
-            GIT_TAG release-1.0.2
-            GIT_SHALLOW TRUE
-    )
-    FetchContent_MakeAvailable(glm)
 
     FetchContent_Declare(
             SDL3
@@ -156,7 +150,6 @@ else ()
     #FetchContent_MakeAvailable(SDL3_mixer)
 
     target_link_libraries(${PROJECT_NAME} PUBLIC
-            glm::glm-header-only
             SDL3_ttf::SDL3_ttf
             #            SDL3_mixer::SDL3_mixer
             SDL3_image::SDL3_image
