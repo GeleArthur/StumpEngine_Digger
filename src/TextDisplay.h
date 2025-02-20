@@ -4,6 +4,8 @@
 #include "Component.h"
 #include "SDL3_ttf/SDL_ttf.h"
 
+class Transform;
+
 class TextDisplay final : public Component
 {
 public:
@@ -25,4 +27,5 @@ private:
 	float m_font_size;
 	std::string m_text;
 	SDL_Texture* m_text_texture{};
+	Transform* m_transform;
 };

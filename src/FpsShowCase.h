@@ -3,11 +3,13 @@
 
 #include "Component.h"
 
+class TextDisplay;
+
 class FpsShowcase final : public Component
 {
 public:
 	explicit FpsShowcase(GameObject& attached_game_object);
-
+	~FpsShowcase() override = default;
 
 	FpsShowcase(const FpsShowcase& other) = delete;
 	FpsShowcase(FpsShowcase&& other) = delete;
@@ -16,6 +18,7 @@ public:
 
 private:
 	void update() override;
+	TextDisplay* m_text_display;
 
 	std::chrono::time_point<std::chrono::steady_clock> m_previous;
 };

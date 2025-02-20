@@ -2,12 +2,13 @@
 #include <string>
 
 #include "Component.h"
+#include "Transform.h"
 #include "SDL3/SDL_render.h"
 
 class Texture2D final : public Component
 {
 public:
-	explicit Texture2D(GameObject& attached_game_object, const std::string& path);
+	explicit Texture2D(GameObject& attached_game_object, std::string path);
 	~Texture2D() override;
 
 
@@ -20,5 +21,6 @@ private:
 	void render() override;
 
 	SDL_Texture* m_texture{};
+	Transform* m_transform;
 	std::string m_texture_path;
 };

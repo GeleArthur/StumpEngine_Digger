@@ -23,3 +23,13 @@ void Component::update()
 void Component::render()
 {
 }
+
+void Component::mark_for_delection()
+{
+    m_marked_for_delection = true;
+}
+
+bool Component::is_marked_for_delection() const
+{
+    return m_marked_for_delection;
+}

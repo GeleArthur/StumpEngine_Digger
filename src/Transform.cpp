@@ -20,23 +20,35 @@ void Transform::set_parent(Transform& new_parent)
     m_world_position_needs_updating = true;
 }
 
+void Transform::remove_parent()
+{
+    if (m_parent != nullptr)
+    {
+        m_parent->remove_child_internal(*this);
+        m_parent = nullptr;
+        m_world_position_needs_updating = true;
+    }
+}
+
 void Transform::remove_child_internal(const Transform& child)
 {
-    std::erase_if(
-        m_childern, [&](const std::reference_wrapper<Transform>& element) { return &element.get() == &child; });
+    std::erase_if(m_children, [&](const std::reference_wrapper<Transform>& element)
+    {
+        return &element.get() == &child;
+    });
 }
 
 void Transform::add_child_internal(Transform& child)
 {
-    m_childern.emplace_back(child);
+    m_children.emplace_back(child);
 }
 
-void Transform::mark_childern_as_dirty()
+void Transform::mark_children_as_dirty()
 {
     m_world_position_needs_updating = true;
-    for (std::reference_wrapper<Transform>& child : m_childern)
+    for (std::reference_wrapper<Transform>& child : m_children)
     {
-        child.get().mark_childern_as_dirty();
+        child.get().mark_children_as_dirty();
     }
 }
 
@@ -66,6 +78,6 @@ const glm::vec2& Transform::get_local_position() const
 void Transform::set_local_position(const glm::vec2& new_pos)
 {
     m_local_position = new_pos;
-    mark_childern_as_dirty();
+    mark_children_as_dirty();
 }
 

@@ -25,7 +25,6 @@ static void init_game(Minigin& engine)
     GameObject& logo = engine.add_game_object();
     logo.add_component<Transform>(glm::vec2{200.0f, 225.0f});
     logo.add_component<Texture2D>("data/logo.tga");
-    logo.add_component<OrbitAround>(30.0f, 0.7f);
 
     GameObject& fps_display = engine.add_game_object();
     fps_display.add_component<Transform>(glm::vec2{0, 0});
@@ -37,18 +36,21 @@ static void init_game(Minigin& engine)
     text_display.add_component<TextDisplay>("data/Lingua.otf", "Programming 4 Assignment", 30.0f);
 
 
-    GameObject& logo2 = engine.add_game_object();
-    auto& transform_logo = logo2.add_component<Transform>(glm::vec2{0.0f, 0.0f});
+    GameObject& character1 = engine.add_game_object();
+    character1.add_component<Transform>(glm::vec2{200, 200});
+    character1.add_component<Texture2D>("data/driller.png");
+    character1.add_component<OrbitAround>(50.0f, 3.2f);
 
-    transform_logo.set_parent(*logo.get_component<Transform>());
-    logo2.add_component<Texture2D>("data/logo.tga");
-    logo2.add_component<OrbitAround>(50.0f, 1.2f);
+    GameObject& character2 = engine.add_game_object();
+    auto& transform = character2.add_component<Transform>(glm::vec2{00, 0});
+    transform.set_parent(*character1.get_component<Transform>());
+    character2.add_component<Texture2D>("data/scary.png");
+    character2.add_component<OrbitAround>(80.0f, 4.2f);
 }
 
 int SDL_main(int, char*[])
 {
     auto engine = Minigin{init_game};
-
     engine.run();
 
     return 0;

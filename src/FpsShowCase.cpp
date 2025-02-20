@@ -4,7 +4,9 @@
 #include "Minigin.h"
 #include "TextDisplay.h"
 
-FpsShowcase::FpsShowcase(GameObject& attached_game_object): Component(attached_game_object)
+FpsShowcase::FpsShowcase(GameObject& attached_game_object):
+	Component(attached_game_object),
+	m_text_display(get_game_object().get_component<TextDisplay>())
 {
 }
 
@@ -18,5 +20,5 @@ void FpsShowcase::update()
 	out << fps;
 	out << " :FPS";
 
-	get_game_object().get_component<TextDisplay>()->update_text(out.str());;
+	m_text_display->update_text(out.str());;
 }

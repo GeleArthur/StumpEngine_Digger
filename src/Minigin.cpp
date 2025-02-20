@@ -28,7 +28,6 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 		throw std::exception();
 	}
 
-
 	SDL_DisplayMode** display_info = SDL_GetFullscreenDisplayModes(SDL_GetPrimaryDisplay(), nullptr);
 	m_refresh_rate_delay = static_cast<int>(1.0f / display_info[0]->refresh_rate * 1000.0f);
 
@@ -120,6 +119,11 @@ void Minigin::run_one_loop()
 
 void Minigin::delete_marked_game_objects()
 {
+	for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
+	{
+		game_object->removed_marked_components();
+	}
+
 	std::erase_if(m_game_objects, [](const std::unique_ptr<GameObject>& game_object)
 	{
 		return game_object->is_marked_for_deletion();

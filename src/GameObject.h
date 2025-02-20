@@ -44,6 +44,18 @@ public:
 		return nullptr;
 	}
 
+	template <typename T> requires std::derived_from<T, Component>
+	void remove_component()
+	{
+		T* component = get_component<T>();
+		if (component != nullptr)
+		{
+			component->mark_for_delection();
+		}
+	}
+
+	void removed_marked_components();
+
 	[[nodiscard]] Minigin& get_engine() const { return m_engine; }
 	[[nodiscard]] bool is_marked_for_deletion() const;
 	void mark_for_deletion();

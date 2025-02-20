@@ -28,6 +28,7 @@ public:
 	void run();
 
 private:
+	void handle_input();
 	void run_one_loop();
 	void delete_marked_game_objects();
 

@@ -19,6 +19,11 @@ void GameObject::fixed_update() const
 	}
 }
 
+void GameObject::removed_marked_components()
+{
+	std::erase_if(m_components, [](auto& comp) { return comp->is_marked_for_delection(); });
+}
+
 bool GameObject::is_marked_for_deletion() const
 {
 	return m_marked_for_deletion;

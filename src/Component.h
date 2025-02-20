@@ -20,6 +20,10 @@ public:
 	virtual void update();
 	virtual void render();
 
+	void mark_for_delection();
+	[[nodiscard]] bool is_marked_for_delection() const;
+
 private:
 	GameObject& m_attached_game_object;
+	bool m_marked_for_delection{false};
 };
