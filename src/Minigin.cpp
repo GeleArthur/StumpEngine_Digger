@@ -1,5 +1,6 @@
 #include <exception>
 #include <numbers>
+#include <chrono>
 
 #include "Minigin.h"
 
@@ -59,8 +60,8 @@ const EngineTime& Minigin::get_time() const
 
 void Minigin::run()
 {
-	auto last_time = std::chrono::high_resolution_clock::now();
-	const auto start_of_loop = std::chrono::high_resolution_clock::now();
+	auto last_time = std::chrono::steady_clock::now();
+	const auto start_of_loop = std::chrono::steady_clock::now();
 
 	while (!m_is_quitting)
 	{

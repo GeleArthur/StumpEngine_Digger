@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.28)
 
 # set the output directory for built objects.
 # This makes sure that the dynamic library goes into the build directory automatically.
@@ -43,7 +43,7 @@ FetchContent_Declare(
         glm
         URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1-light.zip
 )
-FetchContent_Populate(glm)
+FetchContent_MakeAvailable(glm)
 target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
 
 

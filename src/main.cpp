@@ -46,7 +46,7 @@ static void init_game(Minigin& engine)
     character2.add_component<OrbitAround>(80.0f, 4.2f);
 }
 
-int SDL_main(int, char*[])
+int main(int, char*[])
 {
     auto engine = Minigin{init_game};
     engine.run();
