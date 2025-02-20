@@ -34,7 +34,7 @@ static void init_game(Minigin& engine)
     GameObject& text_display = engine.add_game_object();
     text_display.get_transform().set_local_position(glm::vec2{200, 0});
     text_display.add_component<TextDisplay>("data/Lingua.otf", "Programming 4 Assignment", 30.0f);
-    
+
     GameObject& character1 = engine.add_game_object();
     character1.get_transform().set_local_position(glm::vec2{200, 200});
     character1.add_component<Texture2D>("data/driller.png");
