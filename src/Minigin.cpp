@@ -71,6 +71,8 @@ void Minigin::run()
 		last_time = current;
 		m_engine_time.current_time = std::chrono::duration<float>(current - start_of_loop).count();
 
+		handle_input();
+
 		SDL_Event event;
 		while (SDL_PollEvent(&event))
 		{
@@ -86,6 +88,11 @@ void Minigin::run()
 			std::chrono::steady_clock::now();
 		std::this_thread::sleep_for(time_to_sleep);
 	}
+}
+
+void Minigin::handle_input()
+{
+	
 }
 
 void Minigin::run_one_loop()

@@ -8,8 +8,9 @@ class Transform final : public Component
 {
 public:
 	explicit Transform(GameObject& attached_game_object, const glm::vec2& pos);
+	~Transform() override;
 
-	void set_parent(Transform& new_parent);
+	void set_parent(Transform& new_parent, bool keep_world_position = false);
 	void remove_parent();
 	[[nodiscard]] const glm::vec2& get_world_position();
 	[[nodiscard]] const glm::vec2& get_local_position() const;
@@ -19,7 +20,7 @@ public:
 private:
 	void remove_child_internal(const Transform& child);
 	void add_child_internal(Transform& child);
-	void mark_children_as_dirty();
+	void mark_me_and_children_as_dirty();
 
 	std::vector<std::reference_wrapper<Transform>> m_children;
 	Transform* m_parent{};

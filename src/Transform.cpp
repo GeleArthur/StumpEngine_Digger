@@ -2,14 +2,29 @@
 
 #include <iostream>
 
-Transform::Transform(GameObject& attached_game_object, const glm::vec2& pos): Component(attached_game_object),
-                                                                              m_local_position(pos),
-                                                                              m_world_position(pos)
+Transform::Transform(GameObject& attached_game_object, const glm::vec2& pos):
+    Component(attached_game_object),
+    m_local_position(pos),
+    m_world_position(pos)
 {
 }
 
-void Transform::set_parent(Transform& new_parent)
+Transform::~Transform()
 {
+    if (m_parent != nullptr)
+    {
+        m_parent->remove_child_internal(*this);
+    }
+    for (auto child : m_children)
+    {
+        child.get().remove_parent();
+    }
+}
+
+void Transform::set_parent(Transform& new_parent, const bool keep_world_position)
+{
+    const glm::vec2 old_world_position = get_world_position();
+
     if (m_parent != nullptr)
     {
         m_parent->remove_child_internal(*this);
@@ -17,7 +32,14 @@ void Transform::set_parent(Transform& new_parent)
 
     new_parent.add_child_internal(*this);
     m_parent = &new_parent;
-    m_world_position_needs_updating = true;
+    mark_me_and_children_as_dirty();
+
+    if (keep_world_position)
+    {
+        const glm::vec2& new_world_position = get_world_position();
+        const glm::vec2 offset = old_world_position - new_world_position;
+        set_local_position(get_local_position() + offset);
+    }
 }
 
 void Transform::remove_parent()
@@ -26,7 +48,7 @@ void Transform::remove_parent()
     {
         m_parent->remove_child_internal(*this);
         m_parent = nullptr;
-        m_world_position_needs_updating = true;
+        mark_me_and_children_as_dirty();
     }
 }
 
@@ -43,12 +65,12 @@ void Transform::add_child_internal(Transform& child)
     m_children.emplace_back(child);
 }
 
-void Transform::mark_children_as_dirty()
+void Transform::mark_me_and_children_as_dirty()
 {
     m_world_position_needs_updating = true;
     for (std::reference_wrapper<Transform>& child : m_children)
     {
-        child.get().mark_children_as_dirty();
+        child.get().mark_me_and_children_as_dirty();
     }
 }
 
@@ -78,7 +100,7 @@ const glm::vec2& Transform::get_local_position() const
 void Transform::set_local_position(const glm::vec2& new_pos)
 {
     m_local_position = new_pos;
-    mark_children_as_dirty();
+    mark_me_and_children_as_dirty();
 }
 
 std::ranges::subrange<std::vector<std::reference_wrapper<Transform>>::iterator> Transform::get_children()

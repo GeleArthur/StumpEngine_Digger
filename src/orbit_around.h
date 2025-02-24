@@ -11,13 +11,11 @@ public:
         m_orbit_size(size),
         m_orbit_speed(speed), m_transform(attached_game_object.get_component<Transform>())
     {
-        m_start_pos = m_transform->get_local_position();
     }
 
     void update() override;
 
 private:
-    glm::vec2 m_start_pos{};
     float m_orbit_size;
     float m_orbit_speed;
     Transform* m_transform;

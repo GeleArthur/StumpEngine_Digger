@@ -55,7 +55,7 @@ if (WIN32) # subcheck support
             URL https://github.com/libsdl-org/SDL/releases/download/release-3.2.4/SDL3-devel-3.2.4-VC.zip
             DOWNLOAD_NO_PROGRESS ON
     )
-    FetchContent_Populate(SDL3)
+    FetchContent_MakeAvailable(SDL3)
 
     target_include_directories(${PROJECT_NAME} PRIVATE ${sdl3_SOURCE_DIR}/include)
     target_link_libraries(${PROJECT_NAME} PUBLIC ${sdl3_SOURCE_DIR}/lib/x64/SDL3.lib)
@@ -69,7 +69,7 @@ if (WIN32) # subcheck support
             URL https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.0/SDL3_image-devel-3.2.0-VC.zip
             DOWNLOAD_NO_PROGRESS ON
     )
-    FetchContent_Populate(SDL3_image)
+    FetchContent_MakeAvailable(SDL3_image)
     target_include_directories(${PROJECT_NAME} PRIVATE ${sdl3_image_SOURCE_DIR}/include)
     target_link_libraries(${PROJECT_NAME} PUBLIC ${sdl3_image_SOURCE_DIR}/lib/x64/SDL3_image.lib)
 
@@ -82,7 +82,7 @@ if (WIN32) # subcheck support
             URL https://github.com/libsdl-org/SDL_ttf/releases/download/preview-3.1.0/SDL3_ttf-devel-3.1.0-VC.zip
             DOWNLOAD_NO_PROGRESS ON
     )
-    FetchContent_Populate(SDL3_ttf)
+    FetchContent_MakeAvailable(SDL3_ttf)
     target_include_directories(${PROJECT_NAME} PRIVATE ${sdl3_ttf_SOURCE_DIR}/include)
     target_link_libraries(${PROJECT_NAME} PUBLIC ${sdl3_ttf_SOURCE_DIR}/lib/x64/SDL3_ttf.lib)
 
@@ -91,7 +91,6 @@ if (WIN32) # subcheck support
     )
 
 else ()
-
     # add glm
 
     FetchContent_Declare(
