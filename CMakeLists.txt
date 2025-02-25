@@ -46,10 +46,26 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glm)
 target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
 
+FetchContent_Declare(
+        imgui
+        URL https://github.com/ocornut/imgui/archive/refs/tags/v1.91.8.zip
+)
+FetchContent_MakeAvailable(imgui)
+target_include_directories(${PROJECT_NAME} PRIVATE ${imgui_SOURCE_DIR})
+target_sources(${PROJECT_NAME} PRIVATE
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${imgui_SOURCE_DIR}/imgui_demo.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.h
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.h
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
+)
 
-if (WIN32) # subcheck support
 
-
+if (WIN32) # subcheck support     
     FetchContent_Declare(
             SDL3
             URL https://github.com/libsdl-org/SDL/releases/download/release-3.2.4/SDL3-devel-3.2.4-VC.zip
@@ -183,3 +199,5 @@ else ()
             COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/data" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/data"
     )
 endif ()
+
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/.gitignore *)

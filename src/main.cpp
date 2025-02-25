@@ -49,7 +49,6 @@ static void init_game(Minigin& engine)
     character2.get_transform().set_parent(character1.get_transform(), false);
     character2.add_component<Texture2D>("data/scary.png");
     // character2.add_component<OrbitAround>(80.0f, 4.2f);
-
 }
 
 int main(int, char*[])

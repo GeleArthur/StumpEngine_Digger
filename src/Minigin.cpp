@@ -8,6 +8,9 @@
 #include <SDL3/SDL.h>
 
 #include "GameObject.h"
+#include "imgui.h"
+#include "../cmake-build-wsl/_deps/imgui-src/backends/imgui_impl_sdlrenderer3.h"
+#include "backends/imgui_impl_sdl3.h"
 #include "SDL3_ttf/SDL_ttf.h"
 
 Minigin::Minigin(std::function<void(Minigin&)> function)
@@ -32,11 +35,21 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 	SDL_DisplayMode** display_info = SDL_GetFullscreenDisplayModes(SDL_GetPrimaryDisplay(), nullptr);
 	m_refresh_rate_delay = static_cast<int>(1.0f / display_info[0]->refresh_rate * 1000.0f);
 
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui_ImplSDL3_InitForSDLRenderer(m_window, m_renderer);
+	ImGui_ImplSDLRenderer3_Init(m_renderer);
+
+
 	function(*this);
 }
 
 Minigin::~Minigin()
 {
+	ImGui_ImplSDLRenderer3_Shutdown();
+	ImGui_ImplSDL3_Shutdown();
+	ImGui::DestroyContext();
+
 	SDL_DestroyWindow(m_window);
 	SDL_DestroyRenderer(m_renderer);
 	SDL_Quit();
@@ -73,15 +86,6 @@ void Minigin::run()
 
 		handle_input();
 
-		SDL_Event event;
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_EVENT_QUIT)
-			{
-				m_is_quitting = true;
-			}
-		}
-
 		run_one_loop();
 
 		auto time_to_sleep = current + std::chrono::milliseconds(m_refresh_rate_delay) -
@@ -92,7 +96,15 @@ void Minigin::run()
 
 void Minigin::handle_input()
 {
-	
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_EVENT_QUIT)
+		{
+			m_is_quitting = true;
+		}
+		ImGui_ImplSDL3_ProcessEvent(&event);
+	}
 }
 
 void Minigin::run_one_loop()
@@ -119,6 +131,14 @@ void Minigin::run_one_loop()
 	{
 		game_object->render();
 	}
+
+	ImGui_ImplSDLRenderer3_NewFrame();
+	ImGui_ImplSDL3_NewFrame();
+	ImGui::NewFrame();
+	ImGui::ShowDemoWindow();
+	ImGui::Render();
+	ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), m_renderer);
+
 
 	SDL_RenderPresent(m_renderer);
 
