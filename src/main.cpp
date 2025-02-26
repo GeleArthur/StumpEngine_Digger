@@ -9,8 +9,9 @@
 
 #include "FpsShowCase.h"
 #include "GameObject.h"
+#include "ImguiCacheTest.h"
 #include "Minigin.h"
-#include "orbit_around.h"
+#include "OrbitAround.h"
 #include "TextDisplay.h"
 #include "Texture2D.h"
 #include "Transform.h"
@@ -49,6 +50,9 @@ static void init_game(Minigin& engine)
     character2.get_transform().set_parent(character1.get_transform(), false);
     character2.add_component<Texture2D>("data/scary.png");
     // character2.add_component<OrbitAround>(80.0f, 4.2f);
+
+    GameObject& imgui_stuff = engine.add_game_object();
+    imgui_stuff.add_component<ImguiCacheTest>();
 }
 
 int main(int, char*[])

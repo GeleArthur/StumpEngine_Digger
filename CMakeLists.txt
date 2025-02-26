@@ -64,6 +64,18 @@ target_sources(${PROJECT_NAME} PRIVATE
         ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
 )
 
+FetchContent_Declare(
+        implot
+        URL https://github.com/epezent/implot/archive/refs/tags/v0.16.zip
+)
+FetchContent_MakeAvailable(implot)
+target_include_directories(${PROJECT_NAME} PRIVATE ${implot_SOURCE_DIR})
+target_sources(${PROJECT_NAME} PRIVATE
+        ${implot_SOURCE_DIR}/implot.cpp
+        ${implot_SOURCE_DIR}/implot_items.cpp
+        ${implot_SOURCE_DIR}/implot_demo.cpp
+)
+
 
 if (WIN32) # subcheck support     
     FetchContent_Declare(

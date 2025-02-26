@@ -4,12 +4,13 @@
 
 #include "Minigin.h"
 
+#include <implot.h>
 #include <thread>
 #include <SDL3/SDL.h>
 
 #include "GameObject.h"
 #include "imgui.h"
-#include "../cmake-build-wsl/_deps/imgui-src/backends/imgui_impl_sdlrenderer3.h"
+#include "backends/imgui_impl_sdlrenderer3.h"
 #include "backends/imgui_impl_sdl3.h"
 #include "SDL3_ttf/SDL_ttf.h"
 
@@ -26,7 +27,7 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 		throw std::exception();
 	}
 
-	if (!SDL_CreateWindowAndRenderer("Programming 4 Engine", 640, 480, 0, &m_window, &m_renderer))
+	if (!SDL_CreateWindowAndRenderer("Programming 4 Engine", 640 * 2, 480 * 2, 0, &m_window, &m_renderer))
 	{
 		SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
 		throw std::exception();
@@ -36,10 +37,12 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 	m_refresh_rate_delay = static_cast<int>(1.0f / display_info[0]->refresh_rate * 1000.0f);
 
 	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
+	ImGuiContext* imgui_context = ImGui::CreateContext();
 	ImGui_ImplSDL3_InitForSDLRenderer(m_window, m_renderer);
 	ImGui_ImplSDLRenderer3_Init(m_renderer);
 
+	ImPlot::SetImGuiContext(imgui_context);
+	ImPlot::CreateContext();
 
 	function(*this);
 }
@@ -49,6 +52,7 @@ Minigin::~Minigin()
 	ImGui_ImplSDLRenderer3_Shutdown();
 	ImGui_ImplSDL3_Shutdown();
 	ImGui::DestroyContext();
+	ImPlot::DestroyContext();
 
 	SDL_DestroyWindow(m_window);
 	SDL_DestroyRenderer(m_renderer);
@@ -127,21 +131,19 @@ void Minigin::run_one_loop()
 
 	SDL_RenderClear(m_renderer);
 
+	ImGui_ImplSDLRenderer3_NewFrame();
+	ImGui_ImplSDL3_NewFrame();
+	ImGui::NewFrame();
 	for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
 	{
 		game_object->render();
 	}
 
-	ImGui_ImplSDLRenderer3_NewFrame();
-	ImGui_ImplSDL3_NewFrame();
-	ImGui::NewFrame();
-	ImGui::ShowDemoWindow();
+	// ImGui::ShowDemoWindow();
 	ImGui::Render();
 	ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), m_renderer);
 
-
 	SDL_RenderPresent(m_renderer);
-
 	delete_marked_game_objects();
 }
 
