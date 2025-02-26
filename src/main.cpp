@@ -9,7 +9,7 @@
 
 #include "FpsShowCase.h"
 #include "GameObject.h"
-#include "ImguiCacheTest.h"
+#include "ImguiTashTheCache.h"
 #include "Minigin.h"
 #include "OrbitAround.h"
 #include "TextDisplay.h"
@@ -52,7 +52,7 @@ static void init_game(Minigin& engine)
     // character2.add_component<OrbitAround>(80.0f, 4.2f);
 
     GameObject& imgui_stuff = engine.add_game_object();
-    imgui_stuff.add_component<ImguiCacheTest>();
+    imgui_stuff.add_component<ImguiTashTheCache>();
 }
 
 int main(int, char*[])
