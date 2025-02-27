@@ -189,6 +189,7 @@ if (WIN32)
     find_package(VLD CONFIG)
     target_include_directories(${PROJECT_NAME} PRIVATE ${VLD_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} PUBLIC ${VLD_LIBRARY})
+    set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
 endif ()
 
 
