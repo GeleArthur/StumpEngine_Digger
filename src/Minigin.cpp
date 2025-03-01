@@ -27,7 +27,7 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 		throw std::exception();
 	}
 
-	if (!SDL_CreateWindowAndRenderer("Programming 4 Engine", 640 * 2, 480 * 2, 0, &m_window, &m_renderer))
+	if (!SDL_CreateWindowAndRenderer("Programming 4 Engine", 640, 480, 0, &m_window, &m_renderer))
 	{
 		SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
 		throw std::exception();

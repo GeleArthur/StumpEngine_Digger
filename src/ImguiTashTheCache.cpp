@@ -84,12 +84,13 @@ public:
 void ImguiTashTheCache::exercise2()
 {
     ImGui::SetNextWindowSize({400, 450}, ImGuiCond_Appearing);
+    ImGui::SetNextWindowPos({100, 100}, ImGuiCond_FirstUseEver);
     ImGui::Begin("Exercise2");
 
     ImGui::InputInt("Samples", &m_exercise2_samples);
     if (ImGui::Button("Trash The Cache With GameObjects3D"))
     {
-        trash_the_cache<Gameobject3D, true>(m_exercise2_y_data, m_exercise2_samples, 3000'000);
+        trash_the_cache<Gameobject3D, true>(m_exercise2_y_data, m_exercise2_samples, 1000'000);
         m_exercise2_max_height = *std::ranges::max_element(m_exercise2_y_data);
         if (!m_exercise3_y_data.empty())
         {
@@ -111,7 +112,7 @@ void ImguiTashTheCache::exercise2()
 
     if (ImGui::Button("Trash The Cache With GameObjects3DALT"))
     {
-        trash_the_cache<Gameobject3DAlt, true>(m_exercise3_y_data, m_exercise2_samples, 3000'000);
+        trash_the_cache<Gameobject3DAlt, true>(m_exercise3_y_data, m_exercise2_samples, 1000'000);
         m_exercise3_max_height = *std::ranges::max_element(m_exercise3_y_data);
         if (!m_exercise2_y_data.empty())
         {
