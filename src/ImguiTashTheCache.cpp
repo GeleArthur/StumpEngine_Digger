@@ -22,6 +22,18 @@ void ImguiTashTheCache::render()
     ImGui::Begin("Exercise1");
 
     ImGui::InputInt("Samples", &m_exercise1_samples);
+
+    std::array<int, exercise_skip_levels> m_exercise1_x_data;
+
+    constexpr auto m_exercise1_x_data2 =
+        std::views::iota(0, exercise_skip_levels)
+        | std::views::transform([](const int n)
+        {
+            return static_cast<int>(std::pow(2, n));
+        });
+    std::ranges::copy(m_exercise1_x_data2, m_exercise1_x_data.begin());
+
+
     if (ImGui::Button("Trash The Cache"))
     {
         m_exercise1_y_data.clear();
