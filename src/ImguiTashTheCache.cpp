@@ -1,5 +1,6 @@
 ﻿#include "ImguiTashTheCache.h"
 
+#include <algorithm>
 #include <complex>
 
 #include "imgui.h"
@@ -23,57 +24,45 @@ void ImguiTashTheCache::render()
     ImGui::InputInt("Samples", &m_exercise1_samples);
     if (ImGui::Button("Trash The Cache"))
     {
-        m_exercise1_x_data.clear();
         m_exercise1_y_data.clear();
-
-        auto results = std::vector<std::vector<long long>>(
-            static_cast<int>(std::log2(exercise_power_of_2_max_size) + 1));
-        for (std::vector<long long>& arrays : results)
+        std::vector<int> array_to_mess_with(1000'000'0, 3);
+        for (const int skip_index : m_exercise1_x_data)
         {
-            arrays.resize(m_exercise1_samples);
-        }
-
-        auto large_array_of_ints = std::vector<int>(1'000'000'0);
-        for (int sample_index = 0; sample_index < m_exercise1_samples; ++sample_index)
-        {
-            using namespace std::chrono;
-            for (auto stepsize = 1; stepsize <= exercise_power_of_2_max_size; stepsize *= 2)
+            std::vector<int> time_record(m_exercise1_samples);
+            for (int sample_count = 0; sample_count < m_exercise1_samples; ++sample_count)
             {
-                auto start = high_resolution_clock::now();
-                for (int i = 0; i < static_cast<int>(large_array_of_ints.size()); i += stepsize)
+                using namespace std::chrono;
+                auto start_time = high_resolution_clock::now();
+                for (size_t i = 0; i < array_to_mess_with.size(); i += skip_index)
                 {
-                    large_array_of_ints[i] *= 2;
+                    array_to_mess_with[i] *= 2;
                 }
-                auto end = high_resolution_clock::now();
-                const auto time_took = (end - start).count();
+                auto end_time = high_resolution_clock::now();
 
-                results[static_cast<int>(std::log2(stepsize))][sample_index] = time_took;
+                const auto time_it_took = duration_cast<microseconds>(end_time - start_time).count();
+                time_record[sample_count] = static_cast<int>(time_it_took);
             }
-        }
 
-        for (auto stepsize = 1; stepsize <= exercise_power_of_2_max_size; stepsize *= 2)
-        {
-            m_exercise1_x_data.push_back(stepsize);
-        }
+            std::ranges::sort(time_record);
+            auto results = std::ranges::subrange(++time_record.begin(), --time_record.end());
+            auto avarage =
+                std::accumulate(results.begin(), results.end(), 0)
+                / (m_exercise1_samples - 2);
 
-        for (int i = 0; i < results.size(); ++i)
-        {
-            long long average = std::accumulate(results[i].begin(), results[i].end(), 0ll);
-            average /= static_cast<long long>(results.size());
-            m_exercise1_y_data.push_back(static_cast<int>(average));
+            m_exercise1_y_data.push_back(avarage);
         }
     }
 
 
-    if (!m_exercise1_x_data.empty())
+    if (!m_exercise1_y_data.empty())
     {
         if (ImPlot::BeginPlot("Exercise1 plot"))
         {
             ImPlot::SetupAxesLimits(
-                *std::min_element(m_exercise1_x_data.begin(), m_exercise1_x_data.end()),
-                *std::max_element(m_exercise1_x_data.begin(), m_exercise1_x_data.end()),
-                *std::min_element(m_exercise1_y_data.begin(), m_exercise1_y_data.end()),
-                *std::max_element(m_exercise1_y_data.begin(), m_exercise1_y_data.end())
+                *std::ranges::min_element(m_exercise1_x_data),
+                *std::ranges::max_element(m_exercise1_x_data),
+                *std::ranges::min_element(m_exercise1_y_data),
+                *std::ranges::max_element(m_exercise1_y_data)
             );
             ImPlot::PlotLine("Exercise1 line",
                              m_exercise1_x_data.data(),
