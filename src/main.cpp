@@ -43,13 +43,13 @@ static void init_game(Minigin& engine)
     character1.get_transform().set_local_position({100, 100});
     character1.get_transform().set_parent(center.get_transform(), false);
     character1.add_component<Texture2D>("data/driller.png");
-    // character1.add_component<OrbitAround>(50.0f, 3.2f);
+    character1.add_component<OrbitAround>(50.0f, 3.2f);
 
     GameObject& character2 = engine.add_game_object();
     character2.get_transform().set_local_position({100, 100});
     character2.get_transform().set_parent(character1.get_transform(), false);
     character2.add_component<Texture2D>("data/scary.png");
-    // character2.add_component<OrbitAround>(80.0f, 4.2f);
+    character2.add_component<OrbitAround>(80.0f, 4.2f);
 
     GameObject& imgui_stuff = engine.add_game_object();
     imgui_stuff.add_component<ImguiTashTheCache>();

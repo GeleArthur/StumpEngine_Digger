@@ -24,7 +24,7 @@ void ImguiTashTheCache::render()
 
 void ImguiTashTheCache::exercise1()
 {
-    ImGui::SetNextWindowSize({400, 450});
+    ImGui::SetNextWindowSize({300, 350});
     ImGui::Begin("Exercise1");
 
     ImGui::InputInt("Samples", &m_exercise1_samples);
@@ -83,7 +83,7 @@ public:
 
 void ImguiTashTheCache::exercise2()
 {
-    ImGui::SetNextWindowSize({400, 450}, ImGuiCond_Appearing);
+    ImGui::SetNextWindowSize({300, 350}, ImGuiCond_Appearing);
     ImGui::SetNextWindowPos({100, 100}, ImGuiCond_FirstUseEver);
     ImGui::Begin("Exercise2");
 

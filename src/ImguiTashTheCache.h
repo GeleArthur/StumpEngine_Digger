@@ -7,25 +7,12 @@
 #include <algorithm>
 #include <complex>
 #include <chrono>
+#include <iostream>
+
+#define NOMINMAX
+#include <Windows.h>
 
 #include "Component.h"
-
-struct TrashTheCacheTransform3D
-{
-    float matrix[16] = {
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
-    };
-};
-
-class TrashTheCacheGameObject
-{
-public:
-    TrashTheCacheTransform3D* local = new TrashTheCacheTransform3D{};
-    int id{};
-};
 
 class ImguiTashTheCache final : public Component
 {
