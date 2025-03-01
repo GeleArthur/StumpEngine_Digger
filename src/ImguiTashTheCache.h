@@ -68,7 +68,7 @@ private:
 
                 for (int i = 0; i < largeArray.size(); i += stepsize)
                 {
-                    if constexpr (hasID) // ????
+                    if constexpr (hasID)
                     {
                         largeArray[i].id *= 2;
                     }
@@ -78,7 +78,7 @@ private:
                     }
                 }
                 const auto end = high_resolution_clock::now();
-                const auto time_took = duration_cast<nanoseconds>(end - start).count();
+                const auto time_took = duration_cast<microseconds>(end - start).count();
 
                 array_of_times.push_back(static_cast<int>(time_took));
             }
