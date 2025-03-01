@@ -66,7 +66,7 @@ private:
                 using namespace std::chrono;
                 const auto start = high_resolution_clock::now();
 
-                for (int i = 0; i < largeArray.size(); i += stepsize)
+                for (size_t i = 0; i < largeArray.size(); i += stepsize)
                 {
                     if constexpr (hasID)
                     {
