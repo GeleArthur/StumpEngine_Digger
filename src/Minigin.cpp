@@ -88,8 +88,6 @@ void Minigin::run()
 		last_time = current;
 		m_engine_time.current_time = std::chrono::duration<float>(current - start_of_loop).count();
 
-		handle_input();
-
 		run_one_loop();
 
 		auto time_to_sleep = current + std::chrono::milliseconds(m_refresh_rate_delay) -
@@ -109,10 +107,13 @@ void Minigin::handle_input()
 		}
 		ImGui_ImplSDL3_ProcessEvent(&event);
 	}
+
+	m_input_handler.process_input();
 }
 
 void Minigin::run_one_loop()
 {
+	handle_input();
 	while (m_time_passed > m_fixed_update_time)
 	{
 		m_time_passed -= m_fixed_update_time;
@@ -122,7 +123,6 @@ void Minigin::run_one_loop()
 			game_object->fixed_update();
 		}
 	}
-
 
 	for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
 	{
@@ -139,7 +139,6 @@ void Minigin::run_one_loop()
 		game_object->render();
 	}
 
-	// ImGui::ShowDemoWindow();
 	ImGui::Render();
 	ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), m_renderer);
 

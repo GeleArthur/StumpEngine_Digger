@@ -20,6 +20,7 @@ public:
 private:
 	void remove_child_internal(const Transform& child);
 	void add_child_internal(Transform& child);
+	bool do_you_have_this_child(Transform& child) const;
 	void mark_me_and_children_as_dirty();
 
 	std::vector<std::reference_wrapper<Transform>> m_children;

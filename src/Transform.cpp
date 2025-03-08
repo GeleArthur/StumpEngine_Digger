@@ -23,6 +23,11 @@ Transform::~Transform()
 
 void Transform::set_parent(Transform& new_parent, const bool keep_world_position)
 {
+    if (do_you_have_this_child(new_parent))
+    {
+        // Maybe we should throw?
+        return;
+    }
     const glm::vec2 old_world_position = get_world_position();
 
     if (m_parent != nullptr)
@@ -63,6 +68,23 @@ void Transform::remove_child_internal(const Transform& child)
 void Transform::add_child_internal(Transform& child)
 {
     m_children.emplace_back(child);
+}
+
+bool Transform::do_you_have_this_child(Transform& child) const
+{
+    if (&child == this)
+    {
+        return true;
+    }
+    for (auto my_child : m_children)
+    {
+        if (my_child.get().do_you_have_this_child(child))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Transform::mark_me_and_children_as_dirty()

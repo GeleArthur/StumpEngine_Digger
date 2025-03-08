@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "EngineTime.h"
+#include "InputHandler.h"
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_init.h"
 #include "SDL3/SDL_render.h"
@@ -33,6 +34,7 @@ private:
 	void delete_marked_game_objects();
 
 	EngineTime m_engine_time;
+	InputHandler m_input_handler;
 	int m_refresh_rate_delay{};
 	SDL_Window* m_window{};
 	SDL_Renderer* m_renderer{};

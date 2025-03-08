@@ -16,6 +16,25 @@
 #include "Texture2D.h"
 #include "Transform.h"
 
+void AllocateConsole()
+{
+#if defined(WIN32)
+    if (AllocConsole()) // Allocate a new console for the application
+    {
+        FILE* fp; // Redirect STDOUT to the console
+        freopen_s(&fp, "CONOUT$", "w", stdout);
+        setvbuf(stdout, NULL, _IONBF, 0); // Disable buffering for stdout
+
+        freopen_s(&fp, "CONOUT$", "w", stderr); // Redirect STDERR to the console
+        setvbuf(stderr, NULL, _IONBF, 0); // Disable buffering for stderr
+
+        freopen_s(&fp, "CONIN$", "r", stdin); // Redirect STDIN to the console
+        setvbuf(stdin, NULL, _IONBF, 0); // Disable buffering for stdin
+
+        std::ios::sync_with_stdio(true); // Sync C++ streams with the console
+    }
+#endif
+}
 
 static void init_game(Minigin& engine)
 {
@@ -51,12 +70,13 @@ static void init_game(Minigin& engine)
     character2.add_component<Texture2D>("data/scary.png");
     character2.add_component<OrbitAround>(80.0f, 4.2f);
 
-    GameObject& imgui_stuff = engine.add_game_object();
-    imgui_stuff.add_component<ImguiTashTheCache>();
+    //GameObject& imgui_stuff = engine.add_game_object();
+    //imgui_stuff.add_component<ImguiTashTheCache>();
 }
 
 int main(int, char*[])
 {
+    AllocateConsole();
     auto engine = Minigin{init_game};
     engine.run();
 
