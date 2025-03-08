@@ -36,6 +36,15 @@ void AllocateConsole()
 #endif
 }
 
+class SuperCoolTest final : public Command
+{
+public:
+    virtual void execute() override
+    {
+        std::cout << "YOU PRESSED W";
+    };
+};
+
 static void init_game(Minigin& engine)
 {
     GameObject& back_ground = engine.add_game_object();
@@ -69,6 +78,10 @@ static void init_game(Minigin& engine)
     character2.get_transform().set_parent(character1.get_transform(), false);
     character2.add_component<Texture2D>("data/scary.png");
     character2.add_component<OrbitAround>(80.0f, 4.2f);
+
+    engine.get_input().bind_keyboard(
+        {SDL_SCANCODE_W, input_pressed_type::let_go_this_frame, false},
+        std::make_unique<SuperCoolTest>());
 
     //GameObject& imgui_stuff = engine.add_game_object();
     //imgui_stuff.add_component<ImguiTashTheCache>();

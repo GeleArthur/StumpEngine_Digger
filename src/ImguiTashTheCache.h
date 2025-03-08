@@ -9,9 +9,6 @@
 #include <chrono>
 #include <iostream>
 
-#define NOMINMAX
-#include <Windows.h>
-
 #include "Component.h"
 
 class ImguiTashTheCache final : public Component

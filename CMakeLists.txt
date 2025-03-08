@@ -25,6 +25,13 @@ endif ()
 # I gave in
 file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
 
+if (WIN32)
+    list(REMOVE_ITEM source_files "src/GamepadHandlerSDL.cpp")
+else ()
+    list(REMOVE_ITEM source_files "src/GamepadHandlerXInput.cpp")
+endif ()
+
+
 add_executable(${PROJECT_NAME} ${TARGET_PARAM}
         ${source_files}
 )

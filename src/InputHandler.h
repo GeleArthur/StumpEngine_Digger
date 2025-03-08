@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <iostream>
+#include <span>
 #include <vector>
 
 #include <SDL3/SDL_gamepad.h>
@@ -35,18 +36,21 @@ struct KeyboardInputSignature
 {
     SDL_Scancode key_code;
     input_pressed_type input_type;
+    bool previous_performed;
 };
 
 struct GamepadButtonSignature
 {
     SDL_GamepadButton gamepad_button;
     input_pressed_type input_type;
+    bool previous_performed;
 };
 
 struct GamepadAxisSignature
 {
     gamepad_axis_type gamepad_axis;
     input_pressed_type input_type;
+    bool previous_performed;
 };
 
 struct GamepadAxis2DSignature
@@ -58,6 +62,8 @@ struct GamepadAxis2DSignature
 class InputHandler
 {
 public:
+    InputHandler();
+
     void process_input();
     void bind_keyboard(const KeyboardInputSignature& keyboard_input_signature, std::unique_ptr<Command>&& command);
     void bind_gamepad_button(const GamepadButtonSignature& gamepad_button, std::unique_ptr<Command> command);
@@ -65,6 +71,8 @@ public:
     void bind_gamepad_axis2d(const GamepadAxis2DSignature& gamepad_axis2d, std::unique_ptr<CommandAxis2D> command);
 
 private:
+    std::span<const bool> m_sdl_keyboard_state;
+
     std::vector<std::tuple<KeyboardInputSignature, std::unique_ptr<Command>>> m_keyboard_bindings;
     std::vector<std::tuple<GamepadButtonSignature, std::unique_ptr<Command>>> m_gamepad_button_bindings;
     std::vector<std::tuple<GamepadAxisSignature, std::unique_ptr<CommandAxis>>> m_gamepad_axis_bindings;

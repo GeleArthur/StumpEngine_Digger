@@ -75,6 +75,11 @@ const EngineTime& Minigin::get_time() const
 	return m_engine_time;
 }
 
+InputHandler& Minigin::get_input()
+{
+	return m_input_handler;
+}
+
 void Minigin::run()
 {
 	auto last_time = std::chrono::steady_clock::now();

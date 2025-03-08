@@ -25,6 +25,7 @@ public:
 	GameObject& add_game_object();
 	[[nodiscard]] SDL_Renderer* get_renderer() const;
 	[[nodiscard]] const EngineTime& get_time() const;
+	[[nodiscard]] InputHandler& get_input();
 
 	void run();
 

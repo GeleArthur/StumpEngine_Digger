@@ -1,5 +1,4 @@
-﻿# Generated from CLion Inspection settings
----
+﻿---
 Checks: '-*,
 clang-analyzer-*,
 cppcoreguidelines-*,
