@@ -16,6 +16,10 @@
 #include "Texture2D.h"
 #include "Transform.h"
 
+#if defined(WIN32)
+#include <windows.h>
+#endif
+
 void AllocateConsole()
 {
 #if defined(WIN32)

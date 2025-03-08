@@ -1,13 +1,13 @@
 ﻿#include "GamepadHandler.h"
 
 
-class GamepadHandler::XInputHandlerImlp
+class GamepadHandler::GamepadHandlerImpl
 {
 public:
     void poll_gamepad_impl();
 };
 
-void GamepadHandler::XInputHandlerImlp::poll_gamepad_impl()
+void GamepadHandler::GamepadHandlerImpl::poll_gamepad_impl()
 {
 }
 

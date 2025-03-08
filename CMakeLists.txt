@@ -10,36 +10,38 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}" CACHE INTERNAL "")
 
 project(miniginSDL3)
 
-if (EMSCRIPTEN)
+if(EMSCRIPTEN)
     set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")    # Disable shared builds on platforms where it does not make sense to use them
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
-endif ()
+endif()
 
 
-if (WIN32)
+if(WIN32)
     set(TARGET_PARAM WIN32)
-else ()
+else()
     set(TARGET_PARAM)
-endif ()
+endif()
 
 # I gave in
 file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
 
-if (WIN32)
-    list(REMOVE_ITEM source_files "src/GamepadHandlerSDL.cpp")
-else ()
-    list(REMOVE_ITEM source_files "src/GamepadHandlerXInput.cpp")
-endif ()
+if(WIN32)
+    get_filename_component(full_path ${CMAKE_CURRENT_SOURCE_DIR}/src/GamepadHandlerSDL.cpp ABSOLUTE)
+    list(REMOVE_ITEM source_files ${full_path})
+else()
+    get_filename_component(full_path ${CMAKE_CURRENT_SOURCE_DIR}/src/GamepadHandlerXInput.cpp ABSOLUTE)
+    list(REMOVE_ITEM source_files ${full_path})
+endif()
 
 
 add_executable(${PROJECT_NAME} ${TARGET_PARAM}
         ${source_files}
 )
 
-if (MSVC)
+if(MSVC)
     # VLD reports memory leaks
     #target_compile_options(${PROJECT_NAME} PUBLIC /fsanitize=address)
-endif ()
+endif()
 
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
@@ -84,7 +86,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 )
 
 
-if (WIN32) # subcheck support     
+if(WIN32) # subcheck support     
     FetchContent_Declare(
             SDL3
             URL https://github.com/libsdl-org/SDL/releases/download/release-3.2.4/SDL3-devel-3.2.4-VC.zip
@@ -125,7 +127,7 @@ if (WIN32) # subcheck support
             COMMAND "${CMAKE_COMMAND}" -E copy "${sdl3_ttf_SOURCE_DIR}/lib/x64/SDL3_ttf.dll" "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
     )
 
-else ()
+else()
     # add glm
 
     FetchContent_Declare(
@@ -189,15 +191,15 @@ else ()
             SDL3_image::SDL3_image
             SDL3::SDL3
     )
-endif ()
+endif()
 
 
-if (WIN32)
+if(WIN32)
     find_package(VLD CONFIG)
     target_include_directories(${PROJECT_NAME} PRIVATE ${VLD_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} PUBLIC ${VLD_LIBRARY})
     set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
-endif ()
+endif()
 
 
 # target_compile_definitions(${PROJECT_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
@@ -208,16 +210,16 @@ target_compile_options(${PROJECT_NAME} PRIVATE
         $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
 
-if (EMSCRIPTING)
+if(EMSCRIPTING)
     # TODO: Import all of the data folder
     # target_link_libraries(${PROJECT_NAME} PRIVATE 
     #   "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/Inter-VariableFont.ttf@/\""
     #   "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/the_entertainer.ogg@/\""
     # )
-else ()
+else()
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/data" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/data"
     )
-endif ()
+endif()
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/.gitignore *)

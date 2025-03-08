@@ -8,6 +8,6 @@ public:
     void poll_gamepad();
 
 private:
-    class XInputHandlerImlp;
-    std::unique_ptr<XInputHandlerImlp> m_handler_imlp;
+    class GamepadHandlerImpl;
+    std::unique_ptr<GamepadHandlerImpl> m_handler_imlp;
 };

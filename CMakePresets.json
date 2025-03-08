@@ -16,7 +16,7 @@
       "name": "WSL",
       "hidden": true,
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/${presetName}",
+      "binaryDir": "//wsl.localhost/Ubuntu/home/a/clion-builds/prog4/${presetName}",
       "vendor": {
         "jetbrains.com/clion": {
           "toolchain": "WSL"
