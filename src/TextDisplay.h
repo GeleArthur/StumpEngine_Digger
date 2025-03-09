@@ -10,6 +10,7 @@ class TextDisplay final : public Component
 {
 public:
 	TextDisplay(GameObject& game_object, const std::string& font, std::string_view text = "", float size = 16.0f);
+	~TextDisplay() override;
 
 	void update_text(std::string_view text);
 
@@ -27,5 +28,5 @@ private:
 	float m_font_size;
 	std::string m_text;
 	SDL_Texture* m_text_texture{};
-	Transform* m_transform;
+	Transform& m_transform;
 };

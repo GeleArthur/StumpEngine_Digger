@@ -16,6 +16,8 @@
 #include "Texture2D.h"
 #include "Transform.h"
 
+#include "FACK.h"
+
 #if defined(WIN32)
 #include <windows.h>
 #endif
@@ -83,8 +85,8 @@ static void init_game(Minigin& engine)
     character2.add_component<Texture2D>("data/scary.png");
     character2.add_component<OrbitAround>(80.0f, 4.2f);
 
-    engine.get_input().bind_keyboard(
-        {SDL_SCANCODE_W, input_pressed_type::let_go_this_frame, false},
+    engine.get_input().bind_gamepad_button(
+        SDL_GAMEPAD_BUTTON_SOUTH, input_pressed_type::held_down,
         std::make_unique<SuperCoolTest>());
 
     //GameObject& imgui_stuff = engine.add_game_object();
@@ -93,6 +95,7 @@ static void init_game(Minigin& engine)
 
 int main(int, char*[])
 {
+    foo damm = foo();
     AllocateConsole();
     auto engine = Minigin{init_game};
     engine.run();

@@ -1,18 +1,23 @@
 ﻿#include "GamepadHandler.h"
 
-
 class GamepadHandler::GamepadHandlerImpl
 {
-public:
-    void poll_gamepad_impl();
 };
 
-void GamepadHandler::GamepadHandlerImpl::poll_gamepad_impl()
+
+void GamepadHandler::poll_gamepad() const
 {
 }
 
-
-void GamepadHandler::poll_gamepad()
+void GamepadHandler::bind_gamepad_button(uint16_t gamepad_button, input_pressed_type input_type, std::unique_ptr<Command>&& command) const
 {
-    m_handler_imlp->poll_gamepad_impl();
 }
+
+GamepadHandler::GamepadHandler():
+    m_handler_imlp{std::make_unique<GamepadHandlerImpl>()}
+{
+}
+
+GamepadHandler::~GamepadHandler() = default;
+
+

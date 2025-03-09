@@ -8,9 +8,15 @@ TextDisplay::TextDisplay(GameObject& game_object, const std::string& font, std::
 	Component(game_object),
 	m_font(TTF_OpenFont(font.c_str(), size)),
 	m_font_size(size), m_text(std::move(text)),
-	m_transform(get_game_object().get_component<Transform>())
+	m_transform(get_game_object().get_transform())
 {
 	update_text(text);
+}
+
+TextDisplay::~TextDisplay()
+{
+	TTF_CloseFont(m_font);
+	SDL_DestroyTexture(m_text_texture);
 }
 
 void TextDisplay::update_text(const std::string_view text)
@@ -25,7 +31,7 @@ void TextDisplay::update_text(const std::string_view text)
 
 void TextDisplay::render()
 {
-	const glm::vec2& pos = m_transform->get_world_position();
+	const glm::vec2& pos = m_transform.get_world_position();
 
 	const SDL_FRect dest_location{
 		pos.x, pos.y, static_cast<float>(m_text_texture->w),

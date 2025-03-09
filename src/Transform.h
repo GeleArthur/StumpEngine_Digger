@@ -10,6 +10,11 @@ public:
 	explicit Transform(GameObject& attached_game_object, const glm::vec2& pos);
 	~Transform() override;
 
+	Transform(const Transform& other) = delete;
+	Transform(Transform&& other) = delete;
+	Transform& operator=(const Transform& other) = delete;
+	Transform& operator=(Transform&& other) = delete;
+
 	void set_parent(Transform& new_parent, bool keep_world_position = false);
 	void remove_parent();
 	[[nodiscard]] const glm::vec2& get_world_position();
