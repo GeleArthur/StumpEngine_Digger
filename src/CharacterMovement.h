@@ -12,9 +12,8 @@ public:
     CharacterMovement& operator=(const CharacterMovement& other) = delete;
     CharacterMovement& operator=(CharacterMovement&& other) = delete;
 
-    virtual void update() override;
+    void change_movement(glm::vec2 movement) const;
 
 private:
-    glm::vec2 m_input_vector{};
     bool m_is_gamepad;
 };
