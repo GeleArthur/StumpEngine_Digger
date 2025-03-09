@@ -7,16 +7,15 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
+#include "CharacterMovement.h"
 #include "FpsShowCase.h"
 #include "GameObject.h"
 #include "ImguiTashTheCache.h"
 #include "Minigin.h"
-#include "OrbitAround.h"
 #include "TextDisplay.h"
 #include "Texture2D.h"
 #include "Transform.h"
 
-#include "FACK.h"
 
 #if defined(WIN32)
 #include <windows.h>
@@ -42,15 +41,6 @@ void AllocateConsole()
 #endif
 }
 
-class SuperCoolTest final : public Command
-{
-public:
-    virtual void execute() override
-    {
-        std::cout << "YOU PRESSED W";
-    };
-};
-
 static void init_game(Minigin& engine)
 {
     GameObject& back_ground = engine.add_game_object();
@@ -73,21 +63,17 @@ static void init_game(Minigin& engine)
     GameObject& center = engine.add_game_object();
     center.get_transform().set_local_position({200, 200});
 
+
     GameObject& character1 = engine.add_game_object();
     character1.get_transform().set_local_position({100, 100});
-    character1.get_transform().set_parent(center.get_transform(), false);
     character1.add_component<Texture2D>("data/driller.png");
-    character1.add_component<OrbitAround>(50.0f, 3.2f);
+    character1.add_component<CharacterMovement>(true);
 
     GameObject& character2 = engine.add_game_object();
-    character2.get_transform().set_local_position({100, 100});
-    character2.get_transform().set_parent(character1.get_transform(), false);
+    character2.get_transform().set_local_position({100, 200});
     character2.add_component<Texture2D>("data/scary.png");
-    character2.add_component<OrbitAround>(80.0f, 4.2f);
+    character2.add_component<CharacterMovement>(false);
 
-    engine.get_input().bind_gamepad_button(
-        SDL_GAMEPAD_BUTTON_SOUTH, input_pressed_type::held_down,
-        std::make_unique<SuperCoolTest>());
 
     //GameObject& imgui_stuff = engine.add_game_object();
     //imgui_stuff.add_component<ImguiTashTheCache>();
@@ -95,7 +81,6 @@ static void init_game(Minigin& engine)
 
 int main(int, char*[])
 {
-    foo damm = foo();
     AllocateConsole();
     auto engine = Minigin{init_game};
     engine.run();

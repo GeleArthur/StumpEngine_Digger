@@ -28,8 +28,10 @@ public:
     InputHandler();
 
     void process_input();
-    void bind_keyboard(const KeyboardInputSignature& keyboard_input_signature, std::unique_ptr<Command>&& command);
+    void bind_keyboard(SDL_Scancode key_code, input_pressed_type input_type, std::unique_ptr<Command>&& command);
     void bind_gamepad_button(SDL_GamepadButton gamepad_button, input_pressed_type input_type, std::unique_ptr<Command>&& command) const;
+    void unbind_gamepad_button(SDL_GamepadButton gamepad_button, input_pressed_type input_type) const;
+    void unbind_keyboard(SDL_Scancode key_code, input_pressed_type input_type);
 
 private:
     std::span<const bool> m_sdl_keyboard_state;
