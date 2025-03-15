@@ -1,7 +1,7 @@
 #include "TextDisplay.h"
 
-#include "GameObject.h"
-#include "Minigin.h"
+#include "../GameObject.h"
+#include "../Minigin.h"
 #include "Transform.h"
 
 TextDisplay::TextDisplay(GameObject& game_object, const std::string& font, std::string_view text, const float size):

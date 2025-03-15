@@ -1,7 +1,6 @@
 #pragma once
 #include <chrono>
 
-
 struct EngineTime
 {
 	float delta_time{};

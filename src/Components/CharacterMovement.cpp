@@ -2,8 +2,9 @@
 
 #include <iostream>
 
-#include "GameObject.h"
-#include "Minigin.h"
+#include "Transform.h"
+#include "../GameObject.h"
+#include "../Minigin.h"
 
 class CommandMove final : public Command
 {

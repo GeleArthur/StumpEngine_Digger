@@ -9,6 +9,7 @@
 #include <SDL3/SDL.h>
 
 #include "GameObject.h"
+#include "Sleep/HighResolutionSleep.h"
 #include "imgui.h"
 #include "backends/imgui_impl_sdlrenderer3.h"
 #include "backends/imgui_impl_sdl3.h"
@@ -34,7 +35,7 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 	}
 
 	SDL_DisplayMode** display_info = SDL_GetFullscreenDisplayModes(SDL_GetPrimaryDisplay(), nullptr);
-	m_refresh_rate_delay = static_cast<int>(1.0f / display_info[0]->refresh_rate * 1000.0f);
+	m_refresh_rate_delay = 1.0 / display_info[0]->refresh_rate;
 
 	IMGUI_CHECKVERSION();
 	ImGuiContext* imgui_context = ImGui::CreateContext();
@@ -43,6 +44,8 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 
 	ImPlot::SetImGuiContext(imgui_context);
 	ImPlot::CreateContext();
+
+	high_resolution_sleep::init_precise_sleep();
 
 	function(*this);
 }
@@ -82,22 +85,22 @@ InputHandler& Minigin::get_input()
 
 void Minigin::run()
 {
-	auto last_time = std::chrono::steady_clock::now();
-	const auto start_of_loop = std::chrono::steady_clock::now();
+	using namespace std::chrono;
+	auto last_time = high_resolution_clock::now();
+	const auto start_of_loop = high_resolution_clock::now();
 
 	while (!m_is_quitting)
 	{
-		auto current = std::chrono::steady_clock::now();
-		m_engine_time.delta_time = std::chrono::duration<float>(current - last_time).count();
+		auto current = high_resolution_clock::now();
+		m_engine_time.delta_time = duration<float>(current - last_time).count();
 		m_time_passed += current - last_time;
 		last_time = current;
-		m_engine_time.current_time = std::chrono::duration<float>(current - start_of_loop).count();
+		m_engine_time.current_time = duration<float>(current - start_of_loop).count();
 
 		run_one_loop();
 
-		auto time_to_sleep = current + std::chrono::milliseconds(m_refresh_rate_delay) -
-			std::chrono::steady_clock::now();
-		std::this_thread::sleep_for(time_to_sleep);
+		auto time_to_sleep = current + duration<double>(m_refresh_rate_delay) - high_resolution_clock::now();
+		high_resolution_sleep::precise_sleep(time_to_sleep.count() / 1000000000.0);
 	}
 }
 

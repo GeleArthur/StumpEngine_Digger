@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Component.h"
-#include "GameObject.h"
+#include "../GameObject.h"
 #include "Transform.h"
 
 class OrbitAround final : public Component

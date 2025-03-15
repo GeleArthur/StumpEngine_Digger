@@ -26,11 +26,15 @@ endif()
 file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
 
 if(WIN32)
-    get_filename_component(full_path ${CMAKE_CURRENT_SOURCE_DIR}/src/GamepadHandlerSDL.cpp ABSOLUTE)
+    get_filename_component(full_path ${CMAKE_CURRENT_SOURCE_DIR}/src/Input/GamepadHandlerSDL.cpp ABSOLUTE)
     list(REMOVE_ITEM source_files ${full_path})
+    get_filename_component(full_path2 ${CMAKE_CURRENT_SOURCE_DIR}/src/Sleep/HighResolutionSleepGlobal.cpp ABSOLUTE)
+    list(REMOVE_ITEM source_files ${full_path2})
 else()
-    get_filename_component(full_path ${CMAKE_CURRENT_SOURCE_DIR}/src/GamepadHandlerXInput.cpp ABSOLUTE)
+    get_filename_component(full_path ${CMAKE_CURRENT_SOURCE_DIR}/src/Input/GamepadHandlerXInput.cpp ABSOLUTE)
     list(REMOVE_ITEM source_files ${full_path})
+    get_filename_component(full_path2 ${CMAKE_CURRENT_SOURCE_DIR}/src/Sleep/HighResolutionSleepWindows.cpp ABSOLUTE)
+    list(REMOVE_ITEM source_files ${full_path2})
 endif()
 
 

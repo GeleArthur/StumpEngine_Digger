@@ -7,7 +7,7 @@
 #include <SDL3/SDL_gamepad.h>
 #include <SDL3/SDL_scancode.h>
 
-#include "Command.h"
+#include "../Command.h"
 #include "GamePadEnums.h"
 #include "GamepadHandler.h"
 

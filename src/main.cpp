@@ -7,14 +7,16 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-#include "CharacterMovement.h"
-#include "FpsShowCase.h"
+#include "Event.h"
+#include "EventListener.h"
 #include "GameObject.h"
-#include "ImguiTashTheCache.h"
 #include "Minigin.h"
-#include "TextDisplay.h"
-#include "Texture2D.h"
-#include "Transform.h"
+#include "Components/CharacterMovement.h"
+#include "Components/FpsShowCase.h"
+#include "Components/ImguiTashTheCache.h"
+#include "Components/TextDisplay.h"
+#include "Components/Texture2D.h"
+#include "Components/Transform.h"
 
 
 #if defined(WIN32)
@@ -74,6 +76,22 @@ static void init_game(Minigin& engine)
     character2.add_component<Texture2D>("data/scary.png");
     character2.add_component<CharacterMovement>(false);
 
+    struct Fack : public EventListener<int>
+    {
+        virtual void notify(int hi) override
+        {
+            std::cout << hi << '\n';
+        }
+    };
+
+    Event<int> hello{};
+    Fack damm{};
+    Fack damm2{};
+    hello.add_listener(&damm);
+    hello.add_listener(&damm2);
+    hello.notify_listeners(3);
+
+    std::vector<int> what;
 
     //GameObject& imgui_stuff = engine.add_game_object();
     //imgui_stuff.add_component<ImguiTashTheCache>();
@@ -84,6 +102,7 @@ int main(int, char*[])
     AllocateConsole();
     auto engine = Minigin{init_game};
     engine.run();
+
 
     return 0;
 }

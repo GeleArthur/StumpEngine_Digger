@@ -1,5 +1,5 @@
 ﻿#include "OrbitAround.h"
-#include "Minigin.h"
+#include "../Minigin.h"
 
 void OrbitAround::update()
 {

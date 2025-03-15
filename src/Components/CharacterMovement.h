@@ -6,7 +6,7 @@ class CharacterMovement final : public Component
 {
 public:
     explicit CharacterMovement(GameObject& attached_game_object, bool is_gamepad);
-    ~CharacterMovement() = default;
+    ~CharacterMovement() override = default;
     CharacterMovement(const CharacterMovement& other) = delete;
     CharacterMovement(CharacterMovement&& other) = delete;
     CharacterMovement& operator=(const CharacterMovement& other) = delete;

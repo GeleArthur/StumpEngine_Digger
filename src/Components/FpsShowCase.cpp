@@ -1,7 +1,7 @@
 #include "FpsShowCase.h"
 
-#include "GameObject.h"
-#include "Minigin.h"
+#include "../GameObject.h"
+#include "../Minigin.h"
 #include "TextDisplay.h"
 
 FpsShowcase::FpsShowcase(GameObject& attached_game_object):

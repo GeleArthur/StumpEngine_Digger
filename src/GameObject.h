@@ -3,9 +3,10 @@
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
-#include "Component.h"
-#include "Transform.h"
+#include <vector>
+#include "Components/Component.h"
 
+class Transform;
 class Minigin;
 
 class GameObject final
@@ -56,7 +57,7 @@ public:
 		}
 	}
 
-	Transform& get_transform() const;
+	[[nodiscard]] Transform& get_transform() const;
 	void removed_marked_components();
 	[[nodiscard]] Minigin& get_engine() const;
 	[[nodiscard]] bool is_marked_for_deletion() const;
