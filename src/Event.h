@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 
+// tbf idk what happened. Lets engineer. 
+
 class EventListener;
 
 template <typename... Args>
@@ -40,7 +42,7 @@ class Event final : public BaseEvent
 {
 public:
     Event() = default;
-    ~Event();
+    ~Event() override;
 
     Event(const Event& other) = delete;
     Event(Event&& other) = delete;

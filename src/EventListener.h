@@ -2,9 +2,9 @@
 #include <unordered_set>
 
 class BaseEvent;
+
 template <typename... Args>
 class Event;
-
 
 class EventListener
 {
@@ -46,26 +46,4 @@ inline void EventListener::remove_from_event_internal(BaseEvent* event)
 {
     m_event.erase(event);
 }
-
-
-// template <typename... Args>
-// EventListener<Args...>::~EventListener()
-// {
-//     if (m_event != nullptr)
-//     {
-//         m_event->remove_listener(this);
-//     }
-// }
-//
-// template <typename... Args>
-// void EventListener<Args...>::add_to_event_internal(Event<Args...>* event)
-// {
-//     m_event = event;
-// }
-//
-// template <typename... Args>
-// void EventListener<Args...>::remove_from_event_internal()
-// {
-//     m_event = nullptr;
-// }
 

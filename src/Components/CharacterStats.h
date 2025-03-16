@@ -6,15 +6,18 @@
 #include "../EventListener.h"
 
 
-class CharacterHealth final : public Component
+class CharacterStats final : public Component
 {
 public:
-    explicit CharacterHealth(GameObject& game_object, int start_health);
+    explicit CharacterStats(GameObject& game_object);
 
     void remove_health();
+    void add_score(int amount);
 
     Event<int> on_health_changed;
+    Event<int> on_score_changed;
 
 private:
     int m_health;
+    int m_score;
 };

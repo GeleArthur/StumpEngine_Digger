@@ -1,30 +1,38 @@
 ﻿#pragma once
 #include <format>
-#include "CharacterHealth.h"
+#include <isteamuserstats.h>
+
+#include "CharacterStats.h"
 #include "Component.h"
 #include "TextDisplay.h"
+#include "../EventListener.h"
 #include "../GameObject.h"
 
-class CharacterHealth;
+class CharacterStats;
 
-class CharacterStatsDisplay : public Component, EventListener<int>
+class CharacterStatsDisplay final : public Component, public EventListener
 {
 public:
-    CharacterStatsDisplay(GameObject& game_object, CharacterHealth& health):
+    CharacterStatsDisplay(GameObject& game_object, CharacterStats& health):
         Component{game_object},
         m_character(health),
         m_text_display{*game_object.get_component<TextDisplay>()}
     {
-        m_character.on_health_changed.add_listener(this);
     }
 
-    virtual void notify(int health) override
+    void on_health_changed(int health)
     {
         m_text_display.update_text(std::format("#lives {}", health));
+
+        if (health < 0)
+        {
+            SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
+            // SteamUserStats()->ClearAchievement("ACH_WIN_ONE_GAME");
+        }
     }
 
 private:
-    CharacterHealth& m_character;
+    CharacterStats& m_character;
     TextDisplay& m_text_display;
 };
 

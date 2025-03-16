@@ -74,7 +74,7 @@ static void init_game(Minigin& engine)
     character1.get_transform().set_local_position({100, 100});
     character1.add_component<Texture2D>("data/driller.png");
     character1.add_component<CharacterMovement>(true);
-    CharacterStats& stats = character1.add_component<CharacterStats>();
+    //    CharacterStats& stats = character1.add_component<CharacterStats>();
 
     GameObject& character2 = engine.add_game_object();
     character2.get_transform().set_local_position({100, 200});
@@ -84,28 +84,32 @@ static void init_game(Minigin& engine)
     GameObject& text_display1 = engine.add_game_object();
     text_display1.get_transform().set_local_position({0, 200});
     text_display1.add_component<TextDisplay>("data/Lingua.otf", "#lives 3", 16.0f);
-    text_display1.add_component<CharacterStatsDisplay>(stats);
+    //    CharacterStatsDisplay& display = text_display1.add_component<CharacterStatsDisplay>(stats);
+    // stats.on_health_changed.add_listener(&display, &CharacterStatsDisplay::on_health_changed);
 
 
     //GameObject& imgui_stuff = engine.add_game_object();
     //imgui_stuff.add_component<ImguiTashTheCache>();
 
-    struct FACK : public EventListener
+    class FACK : public Component, public EventListener
     {
-        void callmebaby(int damm, int)
+    public:
+        FACK(GameObject& fack) : Component{fack}
         {
-            std::cout << damm;
+            damm.add_listener(this, &FACK::callmebaby);
+            damm.notify_listeners(3, 5);
         }
+
+    private:
+        void callmebaby(int input, int)
+        {
+            std::cout << input;
+        }
+
+        Event<int, int> damm;
     };
 
-
-    FACK damm2{};
-
-    {
-        Event<int, int> damm;
-        damm.add_listener(&damm2, &FACK::callmebaby);
-        damm.notify_listeners(3, 5);
-    }
+    text_display.add_component<FACK>();
 }
 
 int main(int, char*[])
