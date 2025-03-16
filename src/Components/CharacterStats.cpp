@@ -46,6 +46,10 @@ CharacterStats::CharacterStats(GameObject& game_object):
     m_health{3},
     m_score{0}
 {
+    game_object.get_engine().get_input().bind_keyboard(
+        SDL_SCANCODE_E,
+        input_pressed_type::pressed_this_frame,
+        std::make_unique<HurtPlayerCommand>(*this));
 }
 
 void CharacterStats::remove_health()
@@ -54,7 +58,7 @@ void CharacterStats::remove_health()
     on_health_changed.notify_listeners(m_health);
 }
 
-void CharacterStats::add_score(int amount)
+void CharacterStats::add_score(const int amount)
 {
     m_score -= amount;
     on_score_changed.notify_listeners(m_score);

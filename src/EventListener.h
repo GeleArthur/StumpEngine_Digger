@@ -6,44 +6,64 @@ class BaseEvent;
 template <typename... Args>
 class Event;
 
-class EventListener
+template <typename... Args>
+class EventListener final
 {
 public:
-    EventListener() = default;
-    virtual ~EventListener();
+    explicit EventListener(std::function<void(Args...)> function);
+    ~EventListener();
 
     EventListener(const EventListener& other) = delete;
     EventListener(EventListener&& other) = delete;
     EventListener& operator=(const EventListener& other) = delete;
     EventListener& operator=(EventListener&& other) = delete;
 
+    void call_function(Args&&... args);
+
 private:
-    template <typename... Args>
+    template <typename... Args2>
     friend class Event;
 
-    void add_to_event_internal(BaseEvent* event);
-    void remove_from_event_internal(BaseEvent* event);
+    void add_to_event_internal(Event<Args...>* event);
+    void remove_from_event_internal();
 
-    std::unordered_set<BaseEvent*> m_event;
+    std::function<void(Args...)> m_function;
+    Event<Args...>* m_event{};
 };
 
 #include "Event.h"
 
-inline EventListener::~EventListener()
+template <typename... Args>
+EventListener<Args...>::EventListener(std::function<void(Args...)> function):
+    m_function{function}
 {
-    for (BaseEvent* event : m_event)
+}
+
+template <typename... Args>
+EventListener<Args...>::~EventListener()
+{
+    if (m_event != nullptr)
     {
-        event->remove_all_listener_of_class(this);
+        m_event->remove_listener(this);
     }
 }
 
-inline void EventListener::add_to_event_internal(BaseEvent* event)
+template <typename... Args>
+void EventListener<Args...>::call_function(Args&&... args)
 {
-    m_event.emplace(event);
+    m_function(std::forward<Args>(args)...);
 }
 
-inline void EventListener::remove_from_event_internal(BaseEvent* event)
+template <typename... Args>
+void EventListener<Args...>::add_to_event_internal(Event<Args...>* event)
 {
-    m_event.erase(event);
+    assert(m_event == nullptr && "Please remove event before assigning a new one");
+    m_event = event;
+}
+
+template <typename... Args>
+void EventListener<Args...>::remove_from_event_internal()
+{
+    m_event = nullptr;
 }
 
