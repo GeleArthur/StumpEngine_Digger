@@ -12,7 +12,7 @@
 #include "EventListener.h"
 #include "GameObject.h"
 #include "Minigin.h"
-#include "Components/CharacterHealth.h"
+#include "Components/CharacterStats.h"
 #include "Components/CharacterMovement.h"
 #include "Components/CharacterStatsDisplay.h"
 #include "Components/FpsShowCase.h"
@@ -46,6 +46,7 @@ void AllocateConsole()
 #endif
 }
 
+
 static void init_game(Minigin& engine)
 {
     GameObject& back_ground = engine.add_game_object();
@@ -73,7 +74,7 @@ static void init_game(Minigin& engine)
     character1.get_transform().set_local_position({100, 100});
     character1.add_component<Texture2D>("data/driller.png");
     character1.add_component<CharacterMovement>(true);
-    CharacterHealth& health1 = character1.add_component<CharacterHealth>(3);
+    CharacterStats& stats = character1.add_component<CharacterStats>();
 
     GameObject& character2 = engine.add_game_object();
     character2.get_transform().set_local_position({100, 200});
@@ -83,11 +84,28 @@ static void init_game(Minigin& engine)
     GameObject& text_display1 = engine.add_game_object();
     text_display1.get_transform().set_local_position({0, 200});
     text_display1.add_component<TextDisplay>("data/Lingua.otf", "#lives 3", 16.0f);
-    text_display1.add_component<CharacterStatsDisplay>(health1);
+    text_display1.add_component<CharacterStatsDisplay>(stats);
 
 
     //GameObject& imgui_stuff = engine.add_game_object();
     //imgui_stuff.add_component<ImguiTashTheCache>();
+
+    struct FACK : public EventListener
+    {
+        void callmebaby(int damm, int)
+        {
+            std::cout << damm;
+        }
+    };
+
+
+    FACK damm2{};
+
+    {
+        Event<int, int> damm;
+        damm.add_listener(&damm2, &FACK::callmebaby);
+        damm.notify_listeners(3, 5);
+    }
 }
 
 int main(int, char*[])
