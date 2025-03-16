@@ -4,6 +4,7 @@
 #include <vld.h>
 #endif
 #endif
+#include <steam_api.h>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
@@ -11,7 +12,9 @@
 #include "EventListener.h"
 #include "GameObject.h"
 #include "Minigin.h"
+#include "Components/CharacterHealth.h"
 #include "Components/CharacterMovement.h"
+#include "Components/CharacterStatsDisplay.h"
 #include "Components/FpsShowCase.h"
 #include "Components/ImguiTashTheCache.h"
 #include "Components/TextDisplay.h"
@@ -70,28 +73,18 @@ static void init_game(Minigin& engine)
     character1.get_transform().set_local_position({100, 100});
     character1.add_component<Texture2D>("data/driller.png");
     character1.add_component<CharacterMovement>(true);
+    CharacterHealth& health1 = character1.add_component<CharacterHealth>(3);
 
     GameObject& character2 = engine.add_game_object();
     character2.get_transform().set_local_position({100, 200});
     character2.add_component<Texture2D>("data/scary.png");
     character2.add_component<CharacterMovement>(false);
 
-    struct Fack : public EventListener<int>
-    {
-        virtual void notify(int hi) override
-        {
-            std::cout << hi << '\n';
-        }
-    };
+    GameObject& text_display1 = engine.add_game_object();
+    text_display1.get_transform().set_local_position({0, 200});
+    text_display1.add_component<TextDisplay>("data/Lingua.otf", "#lives 3", 16.0f);
+    text_display1.add_component<CharacterStatsDisplay>(health1);
 
-    Event<int> hello{};
-    Fack damm{};
-    Fack damm2{};
-    hello.add_listener(&damm);
-    hello.add_listener(&damm2);
-    hello.notify_listeners(3);
-
-    std::vector<int> what;
 
     //GameObject& imgui_stuff = engine.add_game_object();
     //imgui_stuff.add_component<ImguiTashTheCache>();
@@ -102,7 +95,6 @@ int main(int, char*[])
     AllocateConsole();
     auto engine = Minigin{init_game};
     engine.run();
-
 
     return 0;
 }

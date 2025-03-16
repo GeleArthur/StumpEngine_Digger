@@ -25,6 +25,7 @@ endif()
 # I gave in
 file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
 
+# The results of me giving in
 if(WIN32)
     get_filename_component(full_path ${CMAKE_CURRENT_SOURCE_DIR}/src/Input/GamepadHandlerSDL.cpp ABSOLUTE)
     list(REMOVE_ITEM source_files ${full_path})
@@ -37,7 +38,6 @@ else()
     list(REMOVE_ITEM source_files ${full_path2})
 endif()
 
-
 add_executable(${PROJECT_NAME} ${TARGET_PARAM}
         ${source_files}
 )
@@ -46,12 +46,10 @@ if(MSVC)
     # VLD reports memory leaks
     #target_compile_options(${PROJECT_NAME} PUBLIC /fsanitize=address)
 endif()
-
-
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
-include(FetchContent)
 
+include(FetchContent)
 FetchContent_Declare(
         glm
         URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1-light.zip
@@ -132,8 +130,6 @@ if(WIN32) # subcheck support
     )
 
 else()
-    # add glm
-
     FetchContent_Declare(
             SDL3
             GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
@@ -197,6 +193,26 @@ else()
     )
 endif()
 
+if(NOT EMSCRIPTING)
+    set(STEAM_SDK ${CMAKE_SOURCE_DIR}/ThirdParty/SteamSDK)
+    target_include_directories(${PROJECT_NAME} PRIVATE ${STEAM_SDK}/public/steam)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_SOURCE_DIR}/steam_appid.txt" "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+    )
+    if(WIN32)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${STEAM_SDK}/redistributable_bin/win64/steam_api64.lib)
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND "${CMAKE_COMMAND}" -E copy "${STEAM_SDK}/redistributable_bin/win64/steam_api64.dll" "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+        )
+        target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
+    endif()
+
+    if(UNIX)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${STEAM_SDK}/redistributable_bin/linux64/libsteam_api.so)
+    endif()
+
+endif()
+
 
 if(WIN32)
     find_package(VLD CONFIG)
@@ -206,7 +222,6 @@ if(WIN32)
 endif()
 
 
-# target_compile_definitions(${PROJECT_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 target_compile_options(${PROJECT_NAME} PRIVATE

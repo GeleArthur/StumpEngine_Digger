@@ -5,6 +5,7 @@
 #include "Minigin.h"
 
 #include <implot.h>
+#include <iostream>
 #include <thread>
 #include <SDL3/SDL.h>
 
@@ -14,9 +15,16 @@
 #include "backends/imgui_impl_sdlrenderer3.h"
 #include "backends/imgui_impl_sdl3.h"
 #include "SDL3_ttf/SDL_ttf.h"
+#include <steam_api.h>
 
 Minigin::Minigin(std::function<void(Minigin&)> function)
 {
+	SteamErrMsg err_msg;
+	if (SteamAPI_InitEx(&err_msg) != k_ESteamAPIInitResult_OK)
+	{
+		std::cout << static_cast<char*>(err_msg) << std::endl;
+	}
+
 	if (!SDL_Init(SDL_INIT_VIDEO))
 	{
 		SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
@@ -60,6 +68,7 @@ Minigin::~Minigin()
 	SDL_DestroyWindow(m_window);
 	SDL_DestroyRenderer(m_renderer);
 	SDL_Quit();
+	SteamAPI_Shutdown();
 }
 
 GameObject& Minigin::add_game_object()
@@ -121,6 +130,7 @@ void Minigin::handle_input()
 
 void Minigin::run_one_loop()
 {
+	SteamAPI_RunCallbacks();
 	handle_input();
 	while (m_time_passed > m_fixed_update_time)
 	{
