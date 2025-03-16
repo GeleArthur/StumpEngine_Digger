@@ -48,8 +48,8 @@ Event<Args...>::~Event()
 template <typename... Args>
 void Event<Args...>::add_listener(EventListener<Args...>* listener)
 {
-    m_function_pointers.push_back(listener);
     listener->add_to_event_internal(this);
+    m_function_pointers.push_back(listener);
 }
 
 template <typename... Args>
@@ -66,6 +66,8 @@ void Event<Args...>::notify_listeners(Args... args)
         function->call_function(std::forward<Args>(args)...);
     }
 }
+
+// Past attempt. But issues came up when needing to cast that had inheriting 2 things. Which was not possible. 
 
 // template <typename... Args>
 // Event<Args...>::~Event()

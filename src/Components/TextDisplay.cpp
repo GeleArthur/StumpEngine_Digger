@@ -24,7 +24,7 @@ void TextDisplay::update_text(const std::string_view text)
 	SDL_DestroyTexture(m_text_texture);
 
 	constexpr SDL_Color color = {255, 255, 255, 255};
-	SDL_Surface* surface = TTF_RenderText_Blended(m_font, text.data(), text.size(), color);
+	SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(m_font, text.data(), text.size(), color, 0);
 	m_text_texture = SDL_CreateTextureFromSurface(get_game_object().get_engine().get_renderer(), surface);
 	SDL_DestroySurface(surface);
 }

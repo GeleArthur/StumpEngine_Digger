@@ -11,6 +11,9 @@ class CharacterStats final : public Component
 public:
     explicit CharacterStats(GameObject& game_object);
 
+    int get_health() const { return m_health; };
+    int get_score() const { return m_score; };
+
     void remove_health();
     void add_score(int amount);
 
