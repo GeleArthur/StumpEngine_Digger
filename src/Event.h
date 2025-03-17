@@ -55,6 +55,7 @@ void Event<Args...>::add_listener(EventListener<Args...>* listener)
 template <typename... Args>
 void Event<Args...>::remove_listener(EventListener<Args...>* listener)
 {
+    listener->remove_from_event_internal();
     std::erase(m_function_pointers, listener);
 }
 
@@ -67,7 +68,8 @@ void Event<Args...>::notify_listeners(Args... args)
     }
 }
 
-// Past attempt. But issues came up when needing to cast that had inheriting 2 things. Which was not possible. 
+// Past attempt. But issues came up when needing to cast that had inheriting 2 things. Which was not possible.
+// So when for a wrapper around the event listener function.
 
 // template <typename... Args>
 // Event<Args...>::~Event()

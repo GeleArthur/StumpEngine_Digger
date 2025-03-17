@@ -1,6 +1,6 @@
+#include <chrono>
 #include <exception>
 #include <numbers>
-#include <chrono>
 
 #include "Minigin.h"
 
@@ -9,13 +9,13 @@
 #include <thread>
 #include <SDL3/SDL.h>
 
-#include "GameObject.h"
-#include "Sleep/HighResolutionSleep.h"
-#include "imgui.h"
-#include "backends/imgui_impl_sdlrenderer3.h"
-#include "backends/imgui_impl_sdl3.h"
-#include "SDL3_ttf/SDL_ttf.h"
 #include <steam_api.h>
+#include "GameObject.h"
+#include "imgui.h"
+#include "backends/imgui_impl_sdl3.h"
+#include "backends/imgui_impl_sdlrenderer3.h"
+#include "SDL3_ttf/SDL_ttf.h"
+#include "Sleep/HighResolutionSleep.h"
 
 Minigin::Minigin(std::function<void(Minigin&)> function)
 {
@@ -56,6 +56,7 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 	high_resolution_sleep::init_precise_sleep();
 
 	function(*this);
+	m_achievement_system.world_is_loaded();
 }
 
 Minigin::~Minigin()
@@ -90,6 +91,11 @@ const EngineTime& Minigin::get_time() const
 InputHandler& Minigin::get_input()
 {
 	return m_input_handler;
+}
+
+AchievementSystem& Minigin::get_achievementSystem()
+{
+	return m_achievement_system;
 }
 
 void Minigin::run()

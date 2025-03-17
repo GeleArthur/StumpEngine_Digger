@@ -1,9 +1,4 @@
-﻿//
-// Created by a on 13/03/2025.
-//
-
-#include "CharacterStats.h"
-
+﻿#include "CharacterStats.h"
 #include "../GameObject.h"
 
 CharacterStats::CharacterStats(GameObject& game_object):

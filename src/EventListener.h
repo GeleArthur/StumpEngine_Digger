@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <unordered_set>
+#include <functional>
 
 class BaseEvent;
 
@@ -13,8 +13,8 @@ public:
     explicit EventListener(std::function<void(Args...)> function);
     ~EventListener();
 
-    EventListener(const EventListener& other) = delete;
-    EventListener(EventListener&& other) = delete;
+    EventListener(const EventListener& other);
+    EventListener(EventListener&& other) noexcept;
     EventListener& operator=(const EventListener& other) = delete;
     EventListener& operator=(EventListener&& other) = delete;
 
@@ -46,6 +46,22 @@ EventListener<Args...>::~EventListener()
     {
         m_event->remove_listener(this);
     }
+}
+
+template <typename... Args>
+EventListener<Args...>::EventListener(const EventListener& other):
+    m_function{other.m_function},
+    m_event{other.m_event}
+{
+    m_event->add_listener(this);
+}
+
+template <typename... Args>
+EventListener<Args...>::EventListener(EventListener&& other) noexcept :
+    m_function{std::move(other.m_function)}
+{
+    other.m_event->add_listener(this);
+    other.m_event->remove_listener(&other);
 }
 
 template <typename... Args>
