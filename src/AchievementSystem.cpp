@@ -45,6 +45,5 @@ void AchievementSystem::on_score_changed(int new_score)
     {
         SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
         SteamUserStats()->StoreStats();
-        std::cout << "YIPPEEE" << '\n';
     }
 }
