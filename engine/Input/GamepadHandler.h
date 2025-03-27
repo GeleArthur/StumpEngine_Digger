@@ -2,9 +2,10 @@
 #include <memory>
 #include <SDL3/SDL_gamepad.h>
 
-#include "../Commands/Command.h"
 #include "GamePadEnums.h"
 
+
+class Command;
 
 class GamepadHandler final
 {

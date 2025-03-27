@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <glm.hpp>
-#include "Component.h"
+#include <Component/Component.h>
 
 class CharacterMovement final : public Component
 {

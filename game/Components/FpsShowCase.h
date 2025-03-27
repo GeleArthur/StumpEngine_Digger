@@ -1,7 +1,7 @@
 #pragma once
 #include <chrono>
+#include <Component/Component.h>
 
-#include "Component.h"
 
 class TextDisplay;
 

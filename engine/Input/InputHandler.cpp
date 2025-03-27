@@ -1,9 +1,6 @@
-﻿//
-// Created by a on 06/03/2025.
-//
+﻿#include "InputHandler.h"
 
-#include "InputHandler.h"
-
+#include <Command.h>
 #include <span>
 #include <tuple>
 #include <SDL3/SDL_events.h>

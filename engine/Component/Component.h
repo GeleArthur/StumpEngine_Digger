@@ -1,6 +1,5 @@
 #pragma once
 
-class Minigin;
 class GameObject;
 
 class Component

@@ -7,13 +7,12 @@
 #include <SDL3/SDL_gamepad.h>
 #include <SDL3/SDL_scancode.h>
 
-#include "../Commands/Command.h"
+#include <Command.h>
 #include "GamePadEnums.h"
 #include "GamepadHandler.h"
 
 class CommandAxis2D;
 class CommandAxis;
-class Command;
 
 struct KeyboardInputSignature
 {

@@ -33,7 +33,6 @@ private:
     bool m_is_notifying = false;
 };
 
-
 #include "EventListener.h"
 
 template <typename... Args>
@@ -64,6 +63,7 @@ void Event<Args...>::notify_listeners(Args... args)
 {
     for (EventListener<Args...>* function : m_function_pointers)
     {
+        //std::forward<Args...>(args...);
         function->call_function(std::forward<Args>(args)...);
     }
 }

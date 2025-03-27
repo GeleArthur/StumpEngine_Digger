@@ -1,14 +1,7 @@
 ﻿#pragma once
-#include <format>
-#include <isteamuserstats.h>
-
+#include <Component/TextDisplay.h>
 #include "CharacterStats.h"
-#include "Component.h"
-#include "TextDisplay.h"
-#include "../EventListener.h"
-#include "../GameObject.h"
 
-class CharacterStats;
 
 class CharacterStatsDisplay final : public Component
 {

@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "Component.h"
-#include "../GameObject.h"
-#include "Transform.h"
+#include <GameObject.h>
+#include <Component/Component.h>
+#include <Component/Transform.h>
 
 class OrbitAround final : public Component
 {

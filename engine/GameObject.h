@@ -4,7 +4,7 @@
 #include <typeindex>
 #include <unordered_map>
 #include <vector>
-#include "Components/Component.h"
+#include <Component/Component.h>
 
 class Transform;
 class Minigin;

@@ -1,8 +1,7 @@
-﻿//
-// Created by a on 16/03/2025.
-//
+﻿#include "CharacterStatsDisplay.h"
 
-#include "CharacterStatsDisplay.h"
+#include <format>
+#include <GameObject.h>
 
 CharacterStatsDisplay::CharacterStatsDisplay(GameObject& game_object, CharacterStats& health):
     Component{game_object},

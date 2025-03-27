@@ -1,10 +1,11 @@
 ﻿#include "CharacterMovement.h"
 
+#include <Command.h>
+#include <GameObject.h>
 #include <iostream>
+#include <Minigin.h>
+#include <Component/Transform.h>
 
-#include "Transform.h"
-#include "../GameObject.h"
-#include "../Minigin.h"
 
 class CommandMove final : public Command
 {

@@ -9,7 +9,7 @@
 #include <chrono>
 #include <iostream>
 
-#include "Component.h"
+#include <Component/Component.h>
 
 class ImguiTashTheCache final : public Component
 {

@@ -1,6 +1,9 @@
 #include "GameObject.h"
 
-#include "Components/Texture2D.h"
+#include <vec2.hpp>
+#include <Component/Component.h>
+#include <Component/Transform.h>
+
 
 GameObject::GameObject(Minigin& engine):
 	m_engine(engine),

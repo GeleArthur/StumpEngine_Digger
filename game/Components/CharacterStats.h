@@ -1,9 +1,7 @@
 ﻿#pragma once
+#include <Event.h>
 #include <memory>
-
-#include "Component.h"
-#include "../Event.h"
-#include "../EventListener.h"
+#include <Component/Component.h>
 
 
 class CharacterStats final : public Component

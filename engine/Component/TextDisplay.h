@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "Component.h"
+#include <Component/Component.h>
 #include "SDL3_ttf/SDL_ttf.h"
 
 class Transform;

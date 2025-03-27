@@ -6,7 +6,8 @@
 
 #pragma comment(lib, "xinput.lib")
 
-#include "../Commands/Command.h"
+#include <Command.h>
+
 #include "GamePadEnums.h"
 
 struct GamepadButtonSignature

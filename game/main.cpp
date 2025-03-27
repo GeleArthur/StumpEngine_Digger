@@ -8,20 +8,19 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-#include "Event.h"
-#include "EventListener.h"
+
 #include "GameObject.h"
 #include "Minigin.h"
 #include "Commands/AddScorePlayerCommand.h"
 #include "Commands/HurtPlayerCommand.h"
-#include "Components/CharacterStats.h"
+#include "Component/TextDisplay.h"
+#include "Component/Texture2D.h"
+#include "Component/Transform.h"
 #include "Components/CharacterMovement.h"
+#include "Components/CharacterStats.h"
 #include "Components/CharacterStatsDisplay.h"
 #include "Components/FpsShowCase.h"
 #include "Components/ImguiTashTheCache.h"
-#include "Components/TextDisplay.h"
-#include "Components/Texture2D.h"
-#include "Components/Transform.h"
 
 
 #if defined(WIN32)
@@ -54,6 +53,7 @@ static void init_game(Minigin& engine)
     GameObject& back_ground = engine.add_game_object();
     back_ground.get_transform().set_local_position(glm::vec2{0.0f, 0.0f});
     back_ground.add_component<Texture2D>("data/background.tga");
+
 
     GameObject& logo = engine.add_game_object();
     logo.get_transform().set_local_position(glm::vec2{200.0f, 225.0f});

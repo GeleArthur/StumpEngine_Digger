@@ -1,5 +1,4 @@
 ﻿#include "CharacterStats.h"
-#include "../GameObject.h"
 
 CharacterStats::CharacterStats(GameObject& game_object):
     Component{game_object},

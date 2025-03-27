@@ -6,10 +6,11 @@
 
 #include <isteamuser.h>
 #include <isteamuserstats.h>
+#include <numeric>
 
 #include "GameObject.h"
 #include "Minigin.h"
-#include "Components/CharacterStats.h"
+#include "../game/Components/CharacterStats.h" // TODO: This is bad maybe move the achievement system to the game or have the game generate achivements
 
 AchievementSystem::AchievementSystem(Minigin& engine):
     m_engine{engine}
@@ -24,7 +25,6 @@ void AchievementSystem::world_is_loaded()
     }
 
     SteamUserStats()->ClearAchievement("ACH_WIN_ONE_GAME");
-
 
     const std::vector<std::unique_ptr<GameObject>>& all_objects = m_engine.get_all_game_objects();
 
