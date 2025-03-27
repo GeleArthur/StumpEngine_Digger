@@ -2,7 +2,7 @@
 #include <exception>
 #include <numbers>
 
-#include "Minigin.h"
+#include "StumpEngine.h"
 
 #include <implot.h>
 #include <iostream>
@@ -17,12 +17,12 @@
 #include "SDL3_ttf/SDL_ttf.h"
 #include "Sleep/HighResolutionSleep.h"
 
-Minigin::Minigin(std::function<void(Minigin&)> function)
+StumpEngine::StumpEngine(const std::function<void(StumpEngine&)>& function)
 {
 	SteamErrMsg err_msg;
 	if (SteamAPI_InitEx(&err_msg) != k_ESteamAPIInitResult_OK)
 	{
-		std::cout << static_cast<char*>(err_msg) << std::endl;
+		std::cout << err_msg << std::endl;
 	}
 
 	if (!SDL_Init(SDL_INIT_VIDEO))
@@ -59,7 +59,7 @@ Minigin::Minigin(std::function<void(Minigin&)> function)
 	m_achievement_system.world_is_loaded();
 }
 
-Minigin::~Minigin()
+StumpEngine::~StumpEngine()
 {
 	ImGui_ImplSDLRenderer3_Shutdown();
 	ImGui_ImplSDL3_Shutdown();
@@ -72,33 +72,33 @@ Minigin::~Minigin()
 	SteamAPI_Shutdown();
 }
 
-GameObject& Minigin::add_game_object()
+GameObject& StumpEngine::add_game_object()
 {
 	m_game_objects.push_back(std::make_unique<GameObject>(*this));
 	return m_game_objects[m_game_objects.size() - 1].operator*();
 }
 
-SDL_Renderer* Minigin::get_renderer() const
+SDL_Renderer* StumpEngine::get_renderer() const
 {
 	return m_renderer;
 }
 
-const EngineTime& Minigin::get_time() const
+const EngineTime& StumpEngine::get_time() const
 {
 	return m_engine_time;
 }
 
-InputHandler& Minigin::get_input()
+InputHandler& StumpEngine::get_input()
 {
 	return m_input_handler;
 }
 
-AchievementSystem& Minigin::get_achievementSystem()
+AchievementSystem& StumpEngine::get_achievement_system()
 {
 	return m_achievement_system;
 }
 
-void Minigin::run()
+void StumpEngine::run()
 {
 	using namespace std::chrono;
 	auto last_time = high_resolution_clock::now();
@@ -119,7 +119,7 @@ void Minigin::run()
 	}
 }
 
-void Minigin::handle_input()
+void StumpEngine::handle_input()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -134,7 +134,7 @@ void Minigin::handle_input()
 	m_input_handler.process_input();
 }
 
-void Minigin::run_one_loop()
+void StumpEngine::run_one_loop()
 {
 	SteamAPI_RunCallbacks();
 	handle_input();
@@ -170,7 +170,7 @@ void Minigin::run_one_loop()
 	delete_marked_game_objects();
 }
 
-void Minigin::delete_marked_game_objects()
+void StumpEngine::delete_marked_game_objects()
 {
 	for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
 	{

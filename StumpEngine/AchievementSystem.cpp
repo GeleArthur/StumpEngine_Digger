@@ -9,10 +9,10 @@
 #include <numeric>
 
 #include "GameObject.h"
-#include "Minigin.h"
-#include "../game/Components/CharacterStats.h" // TODO: This is bad maybe move the achievement system to the game or have the game generate achivements
+#include "StumpEngine.h"
+#include "../Digger/Components/CharacterStats.h" // TODO: This is bad maybe move the achievement system to the game or have the game generate achivements
 
-AchievementSystem::AchievementSystem(Minigin& engine):
+AchievementSystem::AchievementSystem(StumpEngine& engine):
     m_engine{engine}
 {
 }

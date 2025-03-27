@@ -7,12 +7,12 @@
 #include <Component/Component.h>
 
 class Transform;
-class Minigin;
+class StumpEngine;
 
 class GameObject final
 {
 public:
-	explicit GameObject(Minigin& engine);
+	explicit GameObject(StumpEngine& engine);
 	~GameObject() = default;
 
 	GameObject(const GameObject& other) = delete;
@@ -59,7 +59,7 @@ public:
 
 	[[nodiscard]] Transform& get_transform() const;
 	void removed_marked_components();
-	[[nodiscard]] Minigin& get_engine() const;
+	[[nodiscard]] StumpEngine& get_engine() const;
 	[[nodiscard]] bool is_marked_for_deletion() const;
 	void mark_for_deletion();
 
@@ -70,7 +70,7 @@ public:
 private:
 	std::vector<std::unique_ptr<Component>> m_components;
 
-	Minigin& m_engine;
+	StumpEngine& m_engine;
 	Transform& m_transform;
 
 	bool m_marked_for_deletion{false};

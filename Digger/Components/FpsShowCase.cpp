@@ -1,7 +1,7 @@
 #include "FpsShowCase.h"
 
 #include <GameObject.h>
-#include <Minigin.h>
+#include <StumpEngine.h>
 #include <Component/TextDisplay.h>
 
 FpsShowcase::FpsShowcase(GameObject& attached_game_object):

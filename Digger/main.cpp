@@ -9,8 +9,8 @@
 #include <SDL3/SDL_main.h>
 
 
+#include <StumpEngine.h>
 #include "GameObject.h"
-#include "Minigin.h"
 #include "Commands/AddScorePlayerCommand.h"
 #include "Commands/HurtPlayerCommand.h"
 #include "Component/TextDisplay.h"
@@ -48,7 +48,7 @@ void AllocateConsole()
 }
 
 
-static void init_game(Minigin& engine)
+static void init_game(StumpEngine& engine)
 {
     GameObject& back_ground = engine.add_game_object();
     back_ground.get_transform().set_local_position(glm::vec2{0.0f, 0.0f});
@@ -164,7 +164,7 @@ static void init_game(Minigin& engine)
 int main(int, char*[])
 {
     AllocateConsole();
-    auto engine = Minigin{init_game};
+    auto engine = StumpEngine{init_game};
     engine.run();
 
     return 0;

@@ -5,7 +5,7 @@
 #include <Component/Transform.h>
 
 
-GameObject::GameObject(Minigin& engine):
+GameObject::GameObject(StumpEngine& engine):
 	m_engine(engine),
 	m_transform(add_component<Transform>(glm::vec2{0.0f, 0.0f}))
 {
@@ -34,7 +34,7 @@ void GameObject::removed_marked_components()
 	std::erase_if(m_components, [](auto& comp) { return comp->is_marked_for_delection(); });
 }
 
-Minigin& GameObject::get_engine() const
+StumpEngine& GameObject::get_engine() const
 {
 	return m_engine;
 }

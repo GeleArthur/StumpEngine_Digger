@@ -12,22 +12,22 @@
 
 class GameObject;
 
-class Minigin final
+class StumpEngine final
 {
 public:
-	explicit Minigin(std::function<void(Minigin&)> function);
-	~Minigin();
+	explicit StumpEngine(const std::function<void(StumpEngine&)>& function);
+	~StumpEngine();
 
-	Minigin(const Minigin&) = delete;
-	Minigin(Minigin&&) = delete;
-	Minigin operator=(const Minigin&) = delete;
-	Minigin operator=(Minigin&&) = delete;
+	StumpEngine(const StumpEngine&) = delete;
+	StumpEngine(StumpEngine&&) = delete;
+	StumpEngine operator=(const StumpEngine&) = delete;
+	StumpEngine operator=(StumpEngine&&) = delete;
 
 	GameObject& add_game_object();
 	[[nodiscard]] SDL_Renderer* get_renderer() const;
 	[[nodiscard]] const EngineTime& get_time() const;
 	[[nodiscard]] InputHandler& get_input();
-	[[nodiscard]] AchievementSystem& get_achievementSystem();
+	[[nodiscard]] AchievementSystem& get_achievement_system();
 
 	[[nodiscard]] const std::vector<std::unique_ptr<GameObject>>& get_all_game_objects()
 	{
@@ -47,7 +47,7 @@ private:
 	double m_refresh_rate_delay{};
 	SDL_Window* m_window{};
 	SDL_Renderer* m_renderer{};
-	std::vector<std::unique_ptr<GameObject>> m_game_objects;
+	std::vector<std::unique_ptr<GameObject>> m_game_objects{};
 	std::chrono::duration<float> m_time_passed{};
 	const std::chrono::duration<float, std::milli> m_fixed_update_time = std::chrono::duration<
 		float, std::milli>(45.0f);

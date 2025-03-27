@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "../GameObject.h"
-#include "../Minigin.h"
+#include "../StumpEngine.h"
 #include "Transform.h"
 #include "SDL3_image/SDL_image.h"
 
