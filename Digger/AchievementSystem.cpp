@@ -1,16 +1,11 @@
-﻿//
-// Created by a on 17/03/2025.
-//
+﻿#include "AchievementSystem.h"
 
-#include "AchievementSystem.h"
-
+#include <GameObject.h>
 #include <isteamuser.h>
 #include <isteamuserstats.h>
-#include <numeric>
+#include <StumpEngine.h>
 
-#include "GameObject.h"
-#include "StumpEngine.h"
-#include "../Digger/Components/CharacterStats.h" // TODO: This is bad maybe move the achievement system to the game or have the game generate achivements
+#include "Components/CharacterStats.h"
 
 AchievementSystem::AchievementSystem(StumpEngine& engine):
     m_engine{engine}
@@ -21,10 +16,9 @@ void AchievementSystem::world_is_loaded()
 {
     if (nullptr == SteamUserStats() || nullptr == SteamUser())
     {
-        std::cerr << "Steam is not loaded but will continue";
+        std::cerr << "Steam is not loaded\n";
+        return;
     }
-
-    SteamUserStats()->ClearAchievement("ACH_WIN_ONE_GAME");
 
     const std::vector<std::unique_ptr<GameObject>>& all_objects = m_engine.get_all_game_objects();
 
@@ -45,5 +39,6 @@ void AchievementSystem::on_score_changed(int new_score)
     {
         SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
         SteamUserStats()->StoreStats();
+        m_on_score_change.clear();
     }
 }

@@ -1,8 +1,4 @@
-﻿//
-// Created by a on 16/03/2025.
-//
-
-#include "HurtPlayerCommand.h"
+﻿#include "HurtPlayerCommand.h"
 
 HurtPlayerCommand::HurtPlayerCommand(CharacterStats& character): m_character(character)
 {

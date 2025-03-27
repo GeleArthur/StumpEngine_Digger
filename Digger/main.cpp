@@ -8,7 +8,6 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-
 #include <StumpEngine.h>
 #include "GameObject.h"
 #include "Commands/AddScorePlayerCommand.h"
@@ -68,9 +67,8 @@ static void init_game(StumpEngine& engine)
     text_display.get_transform().set_local_position(glm::vec2{200, 0});
     text_display.add_component<TextDisplay>("data/Lingua.otf", "Programming 4 Assignment", 30.0f);
 
-    GameObject& center = engine.add_game_object();
+    const GameObject& center = engine.add_game_object();
     center.get_transform().set_local_position({200, 200});
-
 
     GameObject& character1 = engine.add_game_object();
     character1.get_transform().set_local_position({100, 100});
@@ -132,33 +130,6 @@ static void init_game(StumpEngine& engine)
         SDL_GAMEPAD_BUTTON_SOUTH,
         input_pressed_type::pressed_this_frame,
         std::make_unique<AddScorePlayerCommand>(stats2, 100));
-
-
-    // stats.on_health_changed.add_listener(&display, &CharacterStatsDisplay::on_health_changed);
-
-
-    //GameObject& imgui_stuff = engine.add_game_object();
-    //imgui_stuff.add_component<ImguiTashTheCache>();
-
-    // class FACK : public Component, public EventListener
-    // {
-    // public:
-    //     FACK(GameObject& fack) : Component{fack}
-    //     {
-    //         // damm.add_listener(this, &FACK::callmebaby);
-    //         damm.notify_listeners(3, 5);
-    //     }
-    //
-    // private:
-    //     void callmebaby(int input, int)
-    //     {
-    //         std::cout << input;
-    //     }
-    //
-    //     Event<int, int> damm;
-    // };
-
-    // text_display.add_component<FACK>();
 }
 
 int main(int, char*[])

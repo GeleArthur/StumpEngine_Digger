@@ -1,8 +1,4 @@
-﻿//
-// Created by a on 16/03/2025.
-//
-
-#include "AddScorePlayerCommand.h"
+﻿#include "AddScorePlayerCommand.h"
 
 AddScorePlayerCommand::AddScorePlayerCommand(CharacterStats& character, const int amount):
     m_character(character),

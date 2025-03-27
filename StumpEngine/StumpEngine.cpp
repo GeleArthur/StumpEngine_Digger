@@ -1,6 +1,5 @@
 #include <chrono>
 #include <exception>
-#include <numbers>
 
 #include "StumpEngine.h"
 
@@ -56,7 +55,6 @@ StumpEngine::StumpEngine(const std::function<void(StumpEngine&)>& function)
 	high_resolution_sleep::init_precise_sleep();
 
 	function(*this);
-	m_achievement_system.world_is_loaded();
 }
 
 StumpEngine::~StumpEngine()
