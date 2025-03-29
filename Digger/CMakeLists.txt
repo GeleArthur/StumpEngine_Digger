@@ -23,6 +23,7 @@ endif()
 file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "*.cpp" "*.h")
 
 add_executable(${PROJECT_NAME} ${TARGET_PARAM} ${source_files})
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PUBLIC StumpEngine)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
@@ -49,7 +50,7 @@ if(WIN32)
 endif()
 
 
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 target_compile_options(${PROJECT_NAME} PRIVATE
         $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
