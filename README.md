@@ -1,15 +1,14 @@
-# Minigin SDL3
-Implention of Minigin in SDL3
+# Stump engine SDL3
 
-https://github.com/avadae/minigin
+This is a game engine made for programming 4.
+Lots of game programming patterns.
+Using beautiful c++
 
-# visual studio
-When building with visual studio cmake make sure that your git has long paths enabled
-```
-git config --system core.longpaths true
-```
+The teacher provided a example engine
+https://github.com/avadae/minigin (This "thing" is made to be bad)
 
 # Links for later
+
 https://gist.github.com/Roman-Port/8b03244e8c49abbf722b3196b4740c2c
 https://github.com/avadae/minigin/blob/feature/cmake/CMakeLists.txt
 https://cmake.org/cmake/help/latest/module/FetchContent.html
