@@ -8,7 +8,6 @@
 #include <thread>
 #include <SDL3/SDL.h>
 
-#include <steam_api.h>
 #include "GameObject.h"
 #include "imgui.h"
 #include "backends/imgui_impl_sdl3.h"
@@ -18,12 +17,6 @@
 
 StumpEngine::StumpEngine(const std::function<void(StumpEngine&)>& function)
 {
-	SteamErrMsg err_msg;
-	if (SteamAPI_InitEx(&err_msg) != k_ESteamAPIInitResult_OK)
-	{
-		std::cout << err_msg << std::endl;
-	}
-
 	if (!SDL_Init(SDL_INIT_VIDEO))
 	{
 		SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
@@ -67,7 +60,6 @@ StumpEngine::~StumpEngine()
 	SDL_DestroyWindow(m_window);
 	SDL_DestroyRenderer(m_renderer);
 	SDL_Quit();
-	SteamAPI_Shutdown();
 }
 
 GameObject& StumpEngine::add_game_object()
@@ -134,7 +126,6 @@ void StumpEngine::handle_input()
 
 void StumpEngine::run_one_loop()
 {
-	SteamAPI_RunCallbacks();
 	handle_input();
 	while (m_time_passed > m_fixed_update_time)
 	{

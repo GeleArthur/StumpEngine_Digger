@@ -31,10 +31,6 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND_EXPAND_LISTS
 )
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_SOURCE_DIR}/steam_appid.txt" "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
-)
-
 if(MSVC)
     # VLD reports memory leaks
     #target_compile_options(${PROJECT_NAME} PUBLIC /fsanitize=address)

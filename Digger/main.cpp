@@ -4,7 +4,6 @@
 #include <vld.h>
 #endif
 #endif
-#include <steam_api.h>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 

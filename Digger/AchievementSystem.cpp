@@ -1,8 +1,6 @@
 ﻿#include "AchievementSystem.h"
 
 #include <GameObject.h>
-#include <isteamuser.h>
-#include <isteamuserstats.h>
 #include <StumpEngine.h>
 
 #include "Components/CharacterStats.h"
@@ -14,11 +12,11 @@ AchievementSystem::AchievementSystem(StumpEngine& engine):
 
 void AchievementSystem::world_is_loaded()
 {
-    if (nullptr == SteamUserStats() || nullptr == SteamUser())
-    {
-        std::cerr << "Steam is not loaded\n";
-        return;
-    }
+    // if (nullptr == SteamUserStats() || nullptr == SteamUser())
+    // {
+    //     std::cerr << "Steam is not loaded\n";
+    //     return;
+    // }
 
     const std::vector<std::unique_ptr<GameObject>>& all_objects = m_engine.get_all_game_objects();
 
@@ -37,8 +35,8 @@ void AchievementSystem::on_score_changed(int new_score)
 {
     if (new_score > 500)
     {
-        SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
-        SteamUserStats()->StoreStats();
+        //     SteamUserStats()->SetAchievement("ACH_WIN_ONE_GAME");
+        //     SteamUserStats()->StoreStats();
         m_on_score_change.clear();
     }
 }

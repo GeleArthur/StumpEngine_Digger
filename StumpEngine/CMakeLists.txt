@@ -177,26 +177,27 @@ else()
     )
 endif()
 
+# Import steam
 if(NOT EMSCRIPTING)
-    set(STEAM_SDK ${CMAKE_SOURCE_DIR}/ThirdParty/SteamSDK)
-    if(WIN32)
-        add_library(SteamSDK::SteamSDK SHARED IMPORTED)
-        set_target_properties(SteamSDK::SteamSDK PROPERTIES
-                IMPORTED_LOCATION "${STEAM_SDK}/redistributable_bin/win64/steam_api64.dll"
-                IMPORTED_IMPLIB "${STEAM_SDK}/redistributable_bin/win64/steam_api64.lib"
-                INTERFACE_INCLUDE_DIRECTORIES ${STEAM_SDK}/public/steam
-        )
-        target_link_libraries(StumpEngine PUBLIC SteamSDK::SteamSDK)
-        target_compile_definitions(StumpEngine PUBLIC _CRT_SECURE_NO_WARNINGS)
-    elseif(UNIX)
-        add_library(SteamSDK::SteamSDK SHARED IMPORTED)
-        set_target_properties(SteamSDK::SteamSDK PROPERTIES
-                IMPORTED_IMPLIB "${STEAM_SDK}/redistributable_bin/linux64/libsteam_api.so"
-                IMPORTED_LOCATION "${STEAM_SDK}/redistributable_bin/linux64/libsteam_api.so"
-                INTERFACE_INCLUDE_DIRECTORIES ${STEAM_SDK}/public/steam
-        )
-        target_link_libraries(StumpEngine PUBLIC SteamSDK::SteamSDK)
-        target_compile_definitions(StumpEngine PUBLIC _CRT_SECURE_NO_WARNINGS)
-    endif()
+    #    set(STEAM_SDK ${CMAKE_SOURCE_DIR}/ThirdParty/SteamSDK)
+    #    if(WIN32)
+    #        add_library(SteamSDK::SteamSDK SHARED IMPORTED)
+    #        set_target_properties(SteamSDK::SteamSDK PROPERTIES
+    #                IMPORTED_LOCATION "${STEAM_SDK}/redistributable_bin/win64/steam_api64.dll"
+    #                IMPORTED_IMPLIB "${STEAM_SDK}/redistributable_bin/win64/steam_api64.lib"
+    #                INTERFACE_INCLUDE_DIRECTORIES ${STEAM_SDK}/public/steam
+    #        )
+    #        target_link_libraries(StumpEngine PUBLIC SteamSDK::SteamSDK)
+    #        target_compile_definitions(StumpEngine PUBLIC _CRT_SECURE_NO_WARNINGS)
+    #    elseif(UNIX)
+    #        add_library(SteamSDK::SteamSDK SHARED IMPORTED)
+    #        set_target_properties(SteamSDK::SteamSDK PROPERTIES
+    #                IMPORTED_IMPLIB "${STEAM_SDK}/redistributable_bin/linux64/libsteam_api.so"
+    #                IMPORTED_LOCATION "${STEAM_SDK}/redistributable_bin/linux64/libsteam_api.so"
+    #                INTERFACE_INCLUDE_DIRECTORIES ${STEAM_SDK}/public/steam
+    #        )
+    #        target_link_libraries(StumpEngine PUBLIC SteamSDK::SteamSDK)
+    #        target_compile_definitions(StumpEngine PUBLIC _CRT_SECURE_NO_WARNINGS)
+    #    endif()
 
 endif()
