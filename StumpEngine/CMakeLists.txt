@@ -113,6 +113,16 @@ if(WIN32) # subcheck support
     )
     target_link_libraries(StumpEngine PUBLIC SDL3_ttf::SDL3_ttf)
 
+    # Because there is no official release yet I have a local copy 
+    set(sdl3_mixer_SOURCE_DIR "${CMAKE_SOURCE_DIR}/ThirdParty/SDL3_mixer-3.0.0-windows-VC-x64")
+    add_library(SDL3_mixer::SDL3_mixer SHARED IMPORTED)
+    set_target_properties(SDL3_mixer::SDL3_mixer PROPERTIES
+            IMPORTED_LOCATION "${sdl3_mixer_SOURCE_DIR}/bin/SDL3_mixer.dll"
+            IMPORTED_IMPLIB "${sdl3_mixer_SOURCE_DIR}/lib/SDL3_mixer.lib"
+            INTERFACE_INCLUDE_DIRECTORIES ${sdl3_mixer_SOURCE_DIR}/include
+    )
+    target_link_libraries(StumpEngine PUBLIC SDL3_mixer::SDL3_mixer)
+
 else()
     FetchContent_Declare(
             SDL3
@@ -166,12 +176,11 @@ else()
             GIT_SHALLOW TRUE
             GIT_PROGRESS TRUE
     )
-    # Crashes visual studio with clang.
-    #FetchContent_MakeAvailable(SDL3_mixer)
+    FetchContent_MakeAvailable(SDL3_mixer)
 
     target_link_libraries(StumpEngine PUBLIC
             SDL3_ttf::SDL3_ttf
-            #            SDL3_mixer::SDL3_mixer
+            SDL3_mixer::SDL3_mixer
             SDL3_image::SDL3_image
             SDL3::SDL3
     )

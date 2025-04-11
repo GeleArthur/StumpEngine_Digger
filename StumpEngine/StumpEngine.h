@@ -2,6 +2,7 @@
 #include <functional>
 #include <memory>
 #include <vector>
+#include <SoundSystem/SoundSystemSDL3_Mixer.h>
 
 #include "../Digger/AchievementSystem.h"
 #include "EngineTime.h"
@@ -43,6 +44,7 @@ private:
 
 	EngineTime m_engine_time;
 	InputHandler m_input_handler;
+	SoundSystemSDL3_Mixer m_sound_system;
 	AchievementSystem m_achievement_system{*this};
 	double m_refresh_rate_delay{};
 	SDL_Window* m_window{};
