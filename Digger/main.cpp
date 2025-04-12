@@ -8,6 +8,8 @@
 #include <SDL3/SDL_main.h>
 
 #include <StumpEngine.h>
+#include <SoundSystem/SoundSystemLocator.h>
+
 #include "GameObject.h"
 #include "Commands/AddScorePlayerCommand.h"
 #include "Commands/HurtPlayerCommand.h"
@@ -129,6 +131,9 @@ static void init_game(StumpEngine& engine)
         SDL_GAMEPAD_BUTTON_SOUTH,
         input_pressed_type::pressed_this_frame,
         std::make_unique<AddScorePlayerCommand>(stats2, 100));
+
+    SoundSystemLocator::register_sound_system(std::make_unique<SoundSystemSDL3_Mixer>());
+    SoundSystemLocator::GetSound().play("data/Morioucho Radio-Yugo Kanno.mp3", 1);
 }
 
 int main(int, char*[])

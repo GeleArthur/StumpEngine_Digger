@@ -47,8 +47,6 @@ StumpEngine::StumpEngine(const std::function<void(StumpEngine&)>& function)
 
 	high_resolution_sleep::init_precise_sleep();
 
-	m_sound_system.play("data/Morioucho Radio-Yugo Kanno.mp3");
-
 	function(*this);
 }
 

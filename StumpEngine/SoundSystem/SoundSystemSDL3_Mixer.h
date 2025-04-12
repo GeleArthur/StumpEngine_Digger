@@ -2,8 +2,15 @@
 #include <memory>
 #include "SoundSystem.h"
 
+using SoundId = size_t;
 
-class SoundSystemSDL3_Mixer final : SoundSystem
+struct AudioEvent
+{
+    SoundId sound_id;
+    float volume;
+};
+
+class SoundSystemSDL3_Mixer final : public SoundSystem
 {
 public:
     SoundSystemSDL3_Mixer();
@@ -14,7 +21,7 @@ public:
     SoundSystemSDL3_Mixer& operator=(const SoundSystemSDL3_Mixer& other) = delete;
     SoundSystemSDL3_Mixer& operator=(SoundSystemSDL3_Mixer&& other) = delete;
 
-    void play(const std::string_view& song_path) override;
+    void play(const std::string_view& song_path, float volume) override;
 
 private:
     class SoundSystemSDL3_MixerImpl;
