@@ -47,9 +47,7 @@ SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::SoundSystemSDL3_MixerImpl()
 {
     if (!Mix_OpenAudio(0, nullptr))
     {
-        std::cerr << "failed loading audio " << SDL_GetError();
-        SoundSystemLocator::register_sound_system(nullptr);
-        return;
+        std::cerr << "failed loading audio " << SDL_GetError() << '\n';
     }
 
     m_audio_handler = std::jthread(&SoundSystemSDL3_MixerImpl::audio_processor, this);
