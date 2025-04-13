@@ -5,6 +5,6 @@
 #include "SoundSystemNull.h"
 
 
-void SoundSystemNull::play(const std::string_view&, float)
+void SoundSystemNull::play(const std::string&, float)
 {
 }

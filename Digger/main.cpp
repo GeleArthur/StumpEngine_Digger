@@ -9,6 +9,7 @@
 
 #include <StumpEngine.h>
 #include <SoundSystem/SoundSystemLocator.h>
+#include <SoundSystem/SoundSystemLogger.h>
 
 #include "GameObject.h"
 #include "Commands/AddScorePlayerCommand.h"
@@ -53,7 +54,7 @@ static void init_game(StumpEngine& engine)
     GameObject& back_ground = engine.add_game_object();
     back_ground.get_transform().set_local_position(glm::vec2{0.0f, 0.0f});
     back_ground.add_component<Texture2D>("data/background.tga");
-    
+
 
     GameObject& logo = engine.add_game_object();
     logo.get_transform().set_local_position(glm::vec2{200.0f, 225.0f});
@@ -132,8 +133,8 @@ static void init_game(StumpEngine& engine)
         input_pressed_type::pressed_this_frame,
         std::make_unique<AddScorePlayerCommand>(stats2, 100));
 
-    SoundSystemLocator::register_sound_system(std::make_unique<SoundSystemSDL3_Mixer>());
-    SoundSystemLocator::GetSound().play("data/Morioucho Radio-Yugo Kanno.mp3", 1);
+    SoundSystemLocator::register_sound_system(std::make_unique<SoundSystemLogger>(std::make_unique<SoundSystemSDL3_Mixer>()));
+    SoundSystemLocator::GetSound().play("data/Morioucho Radio-Yugo Kanno.mp3", 0.1f);
 }
 
 int main(int, char*[])

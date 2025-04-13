@@ -11,5 +11,5 @@ public:
     SoundSystem& operator=(const SoundSystem& other) = delete;
     SoundSystem& operator=(SoundSystem&& other) = delete;
 
-    virtual void play(const std::string_view& song_path, float volume) = 0;
+    virtual void play(const std::string& song_path, float volume) = 0;
 };

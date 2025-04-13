@@ -11,8 +11,8 @@ SoundSystemLogger::SoundSystemLogger(std::unique_ptr<SoundSystem> wrapper):
 {
 }
 
-void SoundSystemLogger::play(const std::string_view& song_path, float volume)
+void SoundSystemLogger::play(const std::string& song_path, const float volume)
 {
-    std::cout << "Playing song: " << song_path << '\n';
+    std::cout << "Playing song: " << song_path << " volume: " << volume << '\n';
     m_wrapper_around->play(song_path, volume);
 }

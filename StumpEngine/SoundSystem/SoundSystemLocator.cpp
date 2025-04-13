@@ -13,7 +13,7 @@ namespace SoundSystemLocator
 
     SoundSystem& GetSound()
     {
-        if (m_instance == nullptr)
+        if (m_instance.get() == nullptr)
         {
             return m_sound_system_null;
         }

@@ -4,5 +4,5 @@
 class SoundSystemNull final : public SoundSystem
 {
 public:
-    void play(const std::string_view& song_path, float volume) override;
+    void play(const std::string& song_path, float volume) override;
 };
