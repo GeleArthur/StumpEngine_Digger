@@ -53,7 +53,7 @@ static void init_game(StumpEngine& engine)
     GameObject& back_ground = engine.add_game_object();
     back_ground.get_transform().set_local_position(glm::vec2{0.0f, 0.0f});
     back_ground.add_component<Texture2D>("data/background.tga");
-
+    
 
     GameObject& logo = engine.add_game_object();
     logo.get_transform().set_local_position(glm::vec2{200.0f, 225.0f});

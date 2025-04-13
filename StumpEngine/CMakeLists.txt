@@ -172,7 +172,7 @@ else()
     FetchContent_Declare(
             SDL3_mixer
             GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer.git
-            GIT_TAG ebdd9cc0fe43352e33ec234f4720fd7d54a31d13
+            GIT_TAG 6509f9f2117513bd8d6677c4370194be932b1fe8
             GIT_SHALLOW TRUE
             GIT_PROGRESS TRUE
     )

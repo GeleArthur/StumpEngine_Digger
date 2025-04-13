@@ -1,42 +1,79 @@
 ﻿#include "SoundSystemSDL3_Mixer.h"
 
-#include <bitset>
-#include <forward_list>
+#include <condition_variable>
 #include <iostream>
-#include <Queue>
+#include <mutex>
+#include <queue>
 #include <string>
 #include <thread>
-#include <unordered_map>
 #include <SDL3_mixer/SDL_mixer.h>
 
-class SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl
+struct AudioEvent
+{
+    std::string sound_id; // TODO: Change with hash
+    float volume;
+};
+
+class SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl final
 {
 public:
     SoundSystemSDL3_MixerImpl();
+    ~SoundSystemSDL3_MixerImpl();
+
+    SoundSystemSDL3_MixerImpl(const SoundSystemSDL3_MixerImpl& other) = delete;
+    SoundSystemSDL3_MixerImpl(SoundSystemSDL3_MixerImpl&& other) = delete;
+    SoundSystemSDL3_MixerImpl& operator=(const SoundSystemSDL3_MixerImpl& other) = delete;
+    SoundSystemSDL3_MixerImpl& operator=(SoundSystemSDL3_MixerImpl&& other) = delete;
+
     void play(const std::string_view& song_path, float volume);
 
 private:
+    void audio_processor();
+
     std::queue<AudioEvent> m_event_queue;
+    std::jthread m_audio_handler;
+    std::mutex m_audio_mutex;
+    std::condition_variable m_any_audio_requests;
+    bool m_quiting_audio{};
 };
 
 SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::SoundSystemSDL3_MixerImpl()
 {
-    // size_t helo = std::hash<std::string>()("hello");
-
     if (!Mix_OpenAudio(0, nullptr))
     {
         std::cerr << "failed loading audio";
     }
+
+    m_audio_handler = std::jthread(&SoundSystemSDL3_MixerImpl::audio_processor, this);
 }
 
-void SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::play(const std::string_view& song_path, float)
+SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::~SoundSystemSDL3_MixerImpl()
 {
-    // m_event_queue.push()
-    std::jthread([&]()
+    std::unique_lock lock(m_audio_mutex);
+    m_quiting_audio = true;
+    m_any_audio_requests.notify_all();
+}
+
+void SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::play(const std::string_view& song_path, const float volume)
+{
+    m_event_queue.push(AudioEvent{std::string(song_path), volume});
+    m_any_audio_requests.notify_all();
+}
+
+void SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::audio_processor()
+{
+    while (!m_quiting_audio)
     {
-        Mix_Chunk* audio_clip = Mix_LoadWAV(std::string(song_path).c_str());
-        Mix_PlayChannel(-1, audio_clip, -1);
-    }).join();
+        std::unique_lock lock(m_audio_mutex);
+        m_any_audio_requests.wait(lock, [this] { return !m_event_queue.empty() || m_quiting_audio; });
+        if (m_event_queue.empty())
+            continue;
+
+        AudioEvent& event = m_event_queue.front();
+        Mix_Chunk* audio_clip = Mix_LoadWAV(event.sound_id.c_str());
+        Mix_PlayChannel(-1, audio_clip, 0);
+        m_event_queue.pop();
+    }
 }
 
 

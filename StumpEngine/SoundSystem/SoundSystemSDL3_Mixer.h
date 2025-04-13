@@ -4,12 +4,6 @@
 
 using SoundId = size_t;
 
-struct AudioEvent
-{
-    SoundId sound_id;
-    float volume;
-};
-
 class SoundSystemSDL3_Mixer final : public SoundSystem
 {
 public:
