@@ -19,7 +19,7 @@ public:
 	virtual void update();
 	virtual void render();
 
-	void mark_for_delection();
+	void mark_for_deletion();
 	[[nodiscard]] bool is_marked_for_delection() const;
 
 private:

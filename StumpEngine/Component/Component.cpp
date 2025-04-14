@@ -24,7 +24,7 @@ void Component::render()
 {
 }
 
-void Component::mark_for_delection()
+void Component::mark_for_deletion()
 {
     m_marked_for_delection = true;
 }

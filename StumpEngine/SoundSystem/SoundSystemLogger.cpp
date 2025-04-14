@@ -1,8 +1,4 @@
-﻿//
-// Created by a on 12/04/2025.
-//
-
-#include "SoundSystemLogger.h"
+﻿#include "SoundSystemLogger.h"
 
 #include <iostream>
 

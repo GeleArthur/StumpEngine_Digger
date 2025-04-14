@@ -53,7 +53,7 @@ public:
 		T* component = get_component<T>();
 		if (component != nullptr)
 		{
-			component->mark_for_delection();
+			component->mark_for_deletion();
 		}
 	}
 
