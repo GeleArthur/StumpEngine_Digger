@@ -5,12 +5,11 @@
 #include <iostream>
 #include <mutex>
 #include <queue>
+#include <ranges>
 #include <string>
 #include <thread>
 #include <unordered_map>
 #include <SDL3_mixer/SDL_mixer.h>
-
-#include "SoundSystemLocator.h"
 
 struct AudioEvent
 {
@@ -58,6 +57,11 @@ SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::~SoundSystemSDL3_MixerImpl()
     std::unique_lock lock(m_audio_mutex);
     m_quiting_audio = true;
     m_any_audio_requests.notify_all();
+
+    for (Mix_Chunk* chunk : m_loaded_audio | std::views::values)
+    {
+        Mix_FreeChunk(chunk);
+    }
 }
 
 void SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::play(const std::string& song_path, const float volume)

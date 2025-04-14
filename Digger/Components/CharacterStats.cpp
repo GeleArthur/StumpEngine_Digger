@@ -1,5 +1,7 @@
 ﻿#include "CharacterStats.h"
 
+#include <SoundSystem/SoundSystemLocator.h>
+
 CharacterStats::CharacterStats(GameObject& game_object):
     Component{game_object},
     m_health{3},
@@ -10,6 +12,7 @@ CharacterStats::CharacterStats(GameObject& game_object):
 void CharacterStats::remove_health()
 {
     --m_health;
+    SoundSystemLocator::GetSound().play("data/hitsound.wav", 0.3f);
     on_health_changed.notify_listeners(m_health);
 }
 

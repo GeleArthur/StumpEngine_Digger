@@ -10,6 +10,7 @@
 #include <StumpEngine.h>
 #include <SoundSystem/SoundSystemLocator.h>
 #include <SoundSystem/SoundSystemLogger.h>
+#include <SoundSystem/SoundSystemSDL3_Mixer.h>
 
 #include "GameObject.h"
 #include "Commands/AddScorePlayerCommand.h"
@@ -73,7 +74,7 @@ static void init_game(StumpEngine& engine)
     center.get_transform().set_local_position({200, 200});
 
     GameObject& character1 = engine.add_game_object();
-    character1.get_transform().set_local_position({100, 100});
+    character1.get_transform().set_local_position({100, 150});
     character1.add_component<Texture2D>("data/driller.png");
     character1.add_component<CharacterMovement>(true);
     CharacterStats& stats = character1.add_component<CharacterStats>();
@@ -101,6 +102,10 @@ static void init_game(StumpEngine& engine)
     GameObject& text_display_info2 = engine.add_game_object();
     text_display_info2.get_transform().set_local_position({5, 70});
     text_display_info2.add_component<TextDisplay>("data/Lingua.otf", "Use WASD to move enemy, C to inflict damage, Z and X to add score");
+
+    GameObject& text_display_info3 = engine.add_game_object();
+    text_display_info3.get_transform().set_local_position({5, 100});
+    text_display_info3.add_component<TextDisplay>("data/Lingua.otf", "Use C or X(gamepad) to hear a sound and inflict damage");
 
 
     engine.get_input().bind_keyboard(

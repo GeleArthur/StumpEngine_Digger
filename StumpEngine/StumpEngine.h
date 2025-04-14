@@ -1,14 +1,12 @@
 #pragma once
+#include <AchievementSystem.h>
 #include <functional>
 #include <memory>
 #include <vector>
-#include <SoundSystem/SoundSystemSDL3_Mixer.h>
 
-#include "../Digger/AchievementSystem.h"
 #include "EngineTime.h"
 #include "Input/InputHandler.h"
 #include "SDL3/SDL_events.h"
-#include "SDL3/SDL_init.h"
 #include "SDL3/SDL_render.h"
 
 class GameObject;

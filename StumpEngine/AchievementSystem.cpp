@@ -3,7 +3,7 @@
 #include <GameObject.h>
 #include <StumpEngine.h>
 
-#include "Components/CharacterStats.h"
+#include "../Digger/Components/CharacterStats.h"
 
 AchievementSystem::AchievementSystem(StumpEngine& engine):
     m_engine{engine}
