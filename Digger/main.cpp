@@ -139,7 +139,7 @@ static void init_game(StumpEngine& engine)
         std::make_unique<AddScorePlayerCommand>(stats2, 100));
 
     SoundSystemLocator::register_sound_system(std::make_unique<SoundSystemLogger>(std::make_unique<SoundSystemSDL3_Mixer>()));
-    SoundSystemLocator::GetSound().play("data/Morioucho Radio-Yugo Kanno.mp3", 0.1f);
+    SoundSystemLocator::get_sound().play("data/Morioucho Radio-Yugo Kanno.mp3", 0.1f);
 }
 
 int main(int, char*[])

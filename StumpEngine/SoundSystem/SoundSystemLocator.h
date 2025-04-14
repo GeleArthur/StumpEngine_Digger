@@ -7,5 +7,5 @@
 namespace SoundSystemLocator
 {
     void register_sound_system(std::unique_ptr<SoundSystem> system);
-    SoundSystem& GetSound();
+    SoundSystem& get_sound();
 }

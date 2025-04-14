@@ -2,8 +2,6 @@
 #include <memory>
 #include "SoundSystem.h"
 
-using SoundId = size_t;
-
 class SoundSystemSDL3_Mixer final : public SoundSystem
 {
 public:

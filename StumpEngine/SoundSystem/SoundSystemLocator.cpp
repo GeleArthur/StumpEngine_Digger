@@ -11,7 +11,7 @@ namespace SoundSystemLocator
         m_instance = std::move(system);
     }
 
-    SoundSystem& GetSound()
+    SoundSystem& get_sound()
     {
         if (m_instance.get() == nullptr)
         {

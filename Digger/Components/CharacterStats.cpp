@@ -12,7 +12,7 @@ CharacterStats::CharacterStats(GameObject& game_object):
 void CharacterStats::remove_health()
 {
     --m_health;
-    SoundSystemLocator::GetSound().play("data/hitsound.wav", 0.3f);
+    SoundSystemLocator::get_sound().play("data/hitsound.wav", 0.3f);
     on_health_changed.notify_listeners(m_health);
 }
 
