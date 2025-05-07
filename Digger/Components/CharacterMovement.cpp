@@ -6,6 +6,8 @@
 #include <StumpEngine.h>
 #include <Component/Transform.h>
 
+#include "BackGroundDrawer.h"
+
 
 class CommandMove final : public Command
 {
@@ -14,7 +16,7 @@ public:
     {
     }
 
-    virtual void execute() override
+    void execute() override
     {
         m_character.change_movement(m_movement);
     }
@@ -25,9 +27,9 @@ private:
 };
 
 
-CharacterMovement::CharacterMovement(GameObject& attached_game_object, const bool is_gamepad):
+CharacterMovement::CharacterMovement(GameObject& attached_game_object, const bool is_gamepad, BackGroundDrawer& drawer):
     Component{attached_game_object},
-    m_is_gamepad{is_gamepad}
+    m_is_gamepad{is_gamepad}, m_drawer{drawer}
 {
     auto& input_handler = attached_game_object.get_engine().get_input();
 
@@ -78,10 +80,17 @@ CharacterMovement::CharacterMovement(GameObject& attached_game_object, const boo
     }
 }
 
+
 void CharacterMovement::change_movement(const glm::vec2 movement) const
 {
     const float speed = m_is_gamepad ? 100.f : 50.f;
     glm::vec2 current_pos = get_game_object().get_transform().get_local_position();
     current_pos += movement * speed * get_game_object().get_engine().get_time().delta_time;
     get_game_object().get_transform().set_local_position(current_pos);
+}
+
+void CharacterMovement::update()
+{
+    glm::vec2 world_position = get_game_object().get_transform().get_world_position();
+    m_drawer.delete_on_texture(SDL_Rect{(int)world_position.x, (int)world_position.y, 30, 30});
 }

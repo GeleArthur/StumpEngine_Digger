@@ -4,8 +4,8 @@
 class SoundSystem
 {
 public:
-    virtual ~SoundSystem() = default;
     SoundSystem() = default;
+    virtual ~SoundSystem() = default;
     SoundSystem(const SoundSystem& other) = delete;
     SoundSystem(SoundSystem&& other) = delete;
     SoundSystem& operator=(const SoundSystem& other) = delete;

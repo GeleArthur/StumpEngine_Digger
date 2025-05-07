@@ -79,7 +79,9 @@ void SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::audio_processor()
         if (m_event_queue.empty())
             continue;
 
-        AudioEvent& event = m_event_queue.front();
+        AudioEvent event = m_event_queue.front();
+        m_event_queue.pop();
+        lock.unlock();
 
         if (!m_loaded_audio.contains(event.sound_path))
         {
@@ -88,8 +90,6 @@ void SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::audio_processor()
 
         Mix_VolumeChunk(m_loaded_audio[event.sound_path], static_cast<int>(event.volume * MIX_MAX_VOLUME));
         Mix_PlayChannel(-1, m_loaded_audio[event.sound_path], 0);
-
-        m_event_queue.pop();
     }
 }
 

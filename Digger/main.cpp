@@ -18,6 +18,7 @@
 #include "Component/TextDisplay.h"
 #include "Component/Texture2D.h"
 #include "Component/Transform.h"
+#include "Components/BackGroundDrawer.h"
 #include "Components/CharacterMovement.h"
 #include "Components/CharacterStats.h"
 #include "Components/CharacterStatsDisplay.h"
@@ -56,6 +57,8 @@ static void init_game(StumpEngine& engine)
     back_ground.get_transform().set_local_position(glm::vec2{0.0f, 0.0f});
     back_ground.add_component<Texture2D>("data/background.tga");
 
+    GameObject& background = engine.add_game_object();
+    BackGroundDrawer& back_ground_drawer = background.add_component<BackGroundDrawer>();
 
     GameObject& logo = engine.add_game_object();
     logo.get_transform().set_local_position(glm::vec2{200.0f, 225.0f});
@@ -76,7 +79,7 @@ static void init_game(StumpEngine& engine)
     GameObject& character1 = engine.add_game_object();
     character1.get_transform().set_local_position({100, 150});
     character1.add_component<Texture2D>("data/driller.png");
-    character1.add_component<CharacterMovement>(true);
+    character1.add_component<CharacterMovement>(true, back_ground_drawer);
     CharacterStats& stats = character1.add_component<CharacterStats>();
 
     GameObject& text_display1 = engine.add_game_object();
@@ -87,7 +90,7 @@ static void init_game(StumpEngine& engine)
     GameObject& character2 = engine.add_game_object();
     character2.get_transform().set_local_position({100, 200});
     character2.add_component<Texture2D>("data/scary.png");
-    character2.add_component<CharacterMovement>(false);
+    character2.add_component<CharacterMovement>(false, back_ground_drawer);
     CharacterStats& stats2 = character2.add_component<CharacterStats>();
 
     GameObject& text_display2 = engine.add_game_object();
@@ -138,8 +141,9 @@ static void init_game(StumpEngine& engine)
         input_pressed_type::pressed_this_frame,
         std::make_unique<AddScorePlayerCommand>(stats2, 100));
 
+
     SoundSystemLocator::register_sound_system(std::make_unique<SoundSystemLogger>(std::make_unique<SoundSystemSDL3_Mixer>()));
-    SoundSystemLocator::get_sound().play("data/Morioucho Radio-Yugo Kanno.mp3", 0.1f);
+    // SoundSystemLocator::get_sound().play("data/Morioucho Radio-Yugo Kanno.mp3", 0.1f);
 }
 
 int main(int, char*[])

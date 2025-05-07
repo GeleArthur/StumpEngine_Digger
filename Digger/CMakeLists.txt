@@ -17,7 +17,9 @@ endif()
 if(WIN32)
     set(TARGET_PARAM WIN32)
 else()
-    set(TARGET_PARAM)
+    set(TARGET_PARAM
+            Components/BackGroundDrawer.cpp
+            Components/BackGroundDrawer.h)
 endif()
 
 file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "*.cpp" "*.h")
