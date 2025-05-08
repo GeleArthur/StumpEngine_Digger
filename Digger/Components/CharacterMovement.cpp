@@ -91,6 +91,14 @@ void CharacterMovement::change_movement(const glm::vec2 movement) const
 
 void CharacterMovement::update()
 {
+    float x{};
+    float y{};
+    SDL_GetMouseState(&x, &y);
+
+    x = x / 3;
+    y = y / 3;
+
+
     glm::vec2 world_position = get_game_object().get_transform().get_world_position();
     m_drawer.delete_on_texture(SDL_Rect{(int)world_position.x, (int)world_position.y, 30, 30});
 }

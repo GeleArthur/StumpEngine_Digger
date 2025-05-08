@@ -15,7 +15,7 @@ struct colors
 BackGroundDrawer::BackGroundDrawer(GameObject& attached_game_object) : Component{attached_game_object}
 {
     //TODO: switch to SDL_PIXELFORMAT_RGB24
-    m_texture = SDL_CreateTexture(get_game_object().get_engine().get_renderer(), SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STREAMING, 960 / 3, 600 / 3); // TODO: screen size
+    m_texture = SDL_CreateTexture(get_game_object().get_engine().get_renderer(), SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STREAMING, 320, 200); // TODO: screen size
     SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
 
     colors* pixel_data{};
@@ -24,20 +24,22 @@ BackGroundDrawer::BackGroundDrawer(GameObject& attached_game_object) : Component
 
     for (int i = 0; i < m_texture->w * m_texture->h; ++i)
     {
-        float fx = 1.6f;
-        // how much to displace columns vertically
-        float fy = 1.0f;
-        float amp = 1.0f; // in pixels
+        // TODO: Wrong need to reworked as red and orange lines are not equal
+        const int x = i % m_texture->w;
+        const int y = i / m_texture->w;
+        const int period = 6;
 
-        int x = i % m_texture->w;
-        int y = i / m_texture->w;
+        const int stripe = y / period;
+        const int y_in_stripe = y % period;
 
-        float rowOffset = std::sin(x * fy) * amp;
+        const int amplutide = 3;
+        const float wave = amplutide + (std::sin(static_cast<float>(x * 0.4)) * amplutide);
 
-        float wave = std::sin((y + rowOffset) * fx);
-        float intensity = wave * 0.5f + 0.5f;
+        const bool above = y_in_stripe > wave;
 
-        colors what = intensity > 0.5f ? colors{204, 0, 0} : colors{204, 116, 0};
+        const bool use_first_color = above ^ (stripe & 1);
+
+        const colors what = use_first_color ? colors{204, 0, 0} : colors{204, 116, 0};
 
         pixel_data[i] = what;
     }
@@ -46,49 +48,26 @@ BackGroundDrawer::BackGroundDrawer(GameObject& attached_game_object) : Component
 
 void BackGroundDrawer::render()
 {
-    SDL_FRect dst{0, 0, 960, 600};
+    const SDL_FRect dst{0, 0, 960, 600};
     SDL_RenderTexture(get_game_object().get_engine().get_renderer(), m_texture, nullptr, &dst);
 }
 
 void BackGroundDrawer::update()
 {
-    // float x{};
-    // float y{};
-    // SDL_MouseButtonFlags flags = SDL_GetMouseState(&x, &y);
-
-    // x = x / 3;
-    // y = y / 3;
-
-    // if (SDL_BUTTON_LMASK == flags)
-    // {
-    //     colors* pixel_data{};
-    //     int pitch{};
-    //     SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(&pixel_data), &pitch);
-    //
-    //     pixel_data[(static_cast<int>(x) + static_cast<int>(y) * m_texture->w)].r = 0u;
-    //
-    //     SDL_UnlockTexture(m_texture);
-    // }
 }
 
-void BackGroundDrawer::delete_on_texture(const SDL_Rect& rect)
+void BackGroundDrawer::delete_on_texture(const SDL_Rect& rect) const
 {
-    SDL_Rect copy = rect;
-    copy.x = copy.x / 3;
-    copy.y = copy.y / 3;
-    copy.w = copy.w / 3;
-    copy.h = copy.h / 3;
-
     colors* pixel_data{};
     int pitch{};
-    SDL_LockTexture(m_texture, &copy, reinterpret_cast<void**>(&pixel_data), &pitch);
+    SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(&pixel_data), &pitch);
 
-    for (int i = 0; i < copy.w * copy.h; ++i)
+    const std::span mapped_data(pixel_data, m_texture->w * m_texture->h);
+    for (int i = 0; i < rect.w * rect.h; ++i)
     {
-        pixel_data[i] = colors{0, 0, 0};
+        mapped_data[rect.x / 3 + rect.y / 3 * m_texture->w + (i % rect.w) + ((i / rect.w) * m_texture->w)] = colors{0, 0, 0};
     }
 
-    // pixel_data[(static_cast<int>(x) + static_cast<int>(y) * m_texture->w)].r = 0u;
 
     SDL_UnlockTexture(m_texture);
 }
