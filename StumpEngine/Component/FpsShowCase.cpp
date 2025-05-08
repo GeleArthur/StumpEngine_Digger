@@ -12,7 +12,7 @@ FpsShowcase::FpsShowcase(GameObject& attached_game_object):
 
 void FpsShowcase::update()
 {
-	const float fps = 1.0f / get_game_object().get_engine().get_time().delta_time;
+	const float fps = 1.0f / EngineTime::instance().delta_time;
 
 	std::stringstream out;
 	out << std::fixed;

@@ -21,10 +21,10 @@ struct KeyboardInputSignature
     bool previous_performed;
 };
 
-class InputHandler
+class InputHandler final
 {
 public:
-    InputHandler();
+    explicit InputHandler();
 
     void process_input();
     void bind_keyboard(SDL_Scancode key_code, input_pressed_type input_type, std::unique_ptr<Command>&& command);

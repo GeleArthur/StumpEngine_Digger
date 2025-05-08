@@ -13,17 +13,12 @@
 #include <SoundSystem/SoundSystemSDL3_Mixer.h>
 
 #include "GameObject.h"
-#include "Commands/AddScorePlayerCommand.h"
-#include "Commands/HurtPlayerCommand.h"
 #include "Component/TextDisplay.h"
 #include "Component/Texture2D.h"
 #include "Component/Transform.h"
 #include "Components/BackGroundDrawer.h"
-#include "Components/CharacterMovement.h"
-#include "Components/CharacterStats.h"
-#include "Components/CharacterStatsDisplay.h"
-#include "Components/FpsShowCase.h"
-#include "Components/ImguiTashTheCache.h"
+#include "../StumpEngine/Component/FpsShowCase.h"
+#include "Components/Digger.h"
 
 
 #if defined(WIN32)
@@ -60,90 +55,48 @@ static void init_game(StumpEngine& engine)
     GameObject& background = engine.add_game_object();
     BackGroundDrawer& back_ground_drawer = background.add_component<BackGroundDrawer>();
 
-    GameObject& logo = engine.add_game_object();
-    logo.get_transform().set_local_position(glm::vec2{200.0f, 225.0f});
-    logo.add_component<Texture2D>("data/logo.tga");
-
     GameObject& fps_display = engine.add_game_object();
     fps_display.get_transform().set_local_position(glm::vec2{0, 0});
-    fps_display.add_component<TextDisplay>("data/Lingua.otf", "", 30.0f);
+    fps_display.add_component<TextDisplay>("data/Lingua.otf", "", 10.0f);
     fps_display.add_component<FpsShowcase>();
 
-    GameObject& text_display = engine.add_game_object();
-    text_display.get_transform().set_local_position(glm::vec2{200, 0});
-    text_display.add_component<TextDisplay>("data/Lingua.otf", "Programming 4 Assignment", 30.0f);
-
-    const GameObject& center = engine.add_game_object();
-    center.get_transform().set_local_position({200, 200});
-
-    GameObject& character1 = engine.add_game_object();
-    character1.get_transform().set_local_position({100, 150});
-    character1.add_component<Texture2D>("data/driller.png");
-    character1.add_component<CharacterMovement>(true, back_ground_drawer);
-    CharacterStats& stats = character1.add_component<CharacterStats>();
-
-    GameObject& text_display1 = engine.add_game_object();
-    text_display1.get_transform().set_local_position({0, 200});
-    text_display1.add_component<TextDisplay>("data/Lingua.otf", "#lives 3\nscore: 0", 16.0f);
-    text_display1.add_component<CharacterStatsDisplay>(stats);
-
-    GameObject& character2 = engine.add_game_object();
-    character2.get_transform().set_local_position({100, 200});
-    character2.add_component<Texture2D>("data/scary.png");
-    character2.add_component<CharacterMovement>(false, back_ground_drawer);
-    CharacterStats& stats2 = character2.add_component<CharacterStats>();
-
-    GameObject& text_display2 = engine.add_game_object();
-    text_display2.get_transform().set_local_position({0, 250});
-    text_display2.add_component<TextDisplay>("data/Lingua.otf", "#lives 3\nscore: 0", 16.0f);
-    text_display2.add_component<CharacterStatsDisplay>(stats2);
-
-    GameObject& text_display_info = engine.add_game_object();
-    text_display_info.get_transform().set_local_position({5, 50});
-    text_display_info.add_component<TextDisplay>("data/Lingua.otf", "Use the D-Pad to move Driller, X to inflict damage, A and B to add score");
-
-    GameObject& text_display_info2 = engine.add_game_object();
-    text_display_info2.get_transform().set_local_position({5, 70});
-    text_display_info2.add_component<TextDisplay>("data/Lingua.otf", "Use WASD to move enemy, C to inflict damage, Z and X to add score");
-
-    GameObject& text_display_info3 = engine.add_game_object();
-    text_display_info3.get_transform().set_local_position({5, 100});
-    text_display_info3.add_component<TextDisplay>("data/Lingua.otf", "Use C or X(gamepad) to hear a sound and inflict damage");
+    GameObject& digger = engine.add_game_object();
+    digger.add_component<Texture2D>("data/driller.png");
+    digger.add_component<Digger>();
 
 
-    engine.get_input().bind_keyboard(
-        SDL_SCANCODE_C,
-        input_pressed_type::pressed_this_frame,
-        std::make_unique<HurtPlayerCommand>(stats));
-
-    engine.get_input().bind_keyboard(
-        SDL_SCANCODE_Z,
-        input_pressed_type::pressed_this_frame,
-        std::make_unique<AddScorePlayerCommand>(stats, 10));
-
-    engine.get_input().bind_keyboard(
-        SDL_SCANCODE_X,
-        input_pressed_type::pressed_this_frame,
-        std::make_unique<AddScorePlayerCommand>(stats, 100));
-
-    engine.get_input().bind_gamepad_button(
-        SDL_GAMEPAD_BUTTON_WEST,
-        input_pressed_type::pressed_this_frame,
-        std::make_unique<HurtPlayerCommand>(stats2));
-
-    engine.get_input().bind_gamepad_button(
-        SDL_GAMEPAD_BUTTON_EAST,
-        input_pressed_type::pressed_this_frame,
-        std::make_unique<AddScorePlayerCommand>(stats2, 10));
-
-    engine.get_input().bind_gamepad_button(
-        SDL_GAMEPAD_BUTTON_SOUTH,
-        input_pressed_type::pressed_this_frame,
-        std::make_unique<AddScorePlayerCommand>(stats2, 100));
+    // engine.get_input().bind_keyboard(
+    //     SDL_SCANCODE_C,
+    //     input_pressed_type::pressed_this_frame,
+    //     std::make_unique<HurtPlayerCommand>(stats));
+    //
+    // engine.get_input().bind_keyboard(
+    //     SDL_SCANCODE_Z,
+    //     input_pressed_type::pressed_this_frame,
+    //     std::make_unique<AddScorePlayerCommand>(stats, 10));
+    //
+    // engine.get_input().bind_keyboard(
+    //     SDL_SCANCODE_X,
+    //     input_pressed_type::pressed_this_frame,
+    //     std::make_unique<AddScorePlayerCommand>(stats, 100));
+    //
+    // engine.get_input().bind_gamepad_button(
+    //     SDL_GAMEPAD_BUTTON_WEST,
+    //     input_pressed_type::pressed_this_frame,
+    //     std::make_unique<HurtPlayerCommand>(stats2));
+    //
+    // engine.get_input().bind_gamepad_button(
+    //     SDL_GAMEPAD_BUTTON_EAST,
+    //     input_pressed_type::pressed_this_frame,
+    //     std::make_unique<AddScorePlayerCommand>(stats2, 10));
+    //
+    // engine.get_input().bind_gamepad_button(
+    //     SDL_GAMEPAD_BUTTON_SOUTH,
+    //     input_pressed_type::pressed_this_frame,
+    //     std::make_unique<AddScorePlayerCommand>(stats2, 100));
 
 
     SoundSystemLocator::register_sound_system(std::make_unique<SoundSystemLogger>(std::make_unique<SoundSystemSDL3_Mixer>()));
-    // SoundSystemLocator::get_sound().play("data/Morioucho Radio-Yugo Kanno.mp3", 0.1f);
 }
 
 int main(int, char*[])

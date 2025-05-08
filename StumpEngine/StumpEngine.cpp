@@ -4,7 +4,6 @@
 #include "StumpEngine.h"
 
 #include <implot.h>
-#include <iostream>
 #include <thread>
 #include <SDL3/SDL.h>
 
@@ -65,7 +64,7 @@ StumpEngine::~StumpEngine()
 GameObject& StumpEngine::add_game_object()
 {
 	m_game_objects.push_back(std::make_unique<GameObject>(*this));
-	return m_game_objects[m_game_objects.size() - 1].operator*();
+	return *m_game_objects[m_game_objects.size() - 1];
 }
 
 SDL_Renderer* StumpEngine::get_renderer() const
@@ -73,19 +72,9 @@ SDL_Renderer* StumpEngine::get_renderer() const
 	return m_renderer;
 }
 
-const EngineTime& StumpEngine::get_time() const
-{
-	return m_engine_time;
-}
-
 InputHandler& StumpEngine::get_input()
 {
 	return m_input_handler;
-}
-
-AchievementSystem& StumpEngine::get_achievement_system()
-{
-	return m_achievement_system;
 }
 
 void StumpEngine::run()
@@ -97,15 +86,15 @@ void StumpEngine::run()
 	while (!m_is_quitting)
 	{
 		auto current = high_resolution_clock::now();
-		m_engine_time.delta_time = duration<float>(current - last_time).count();
+		EngineTime::instance().delta_time = duration<float>(current - last_time).count();
 		m_time_passed += current - last_time;
 		last_time = current;
-		m_engine_time.current_time = duration<float>(current - start_of_loop).count();
+		EngineTime::instance().current_time = duration<float>(current - start_of_loop).count();
 
 		run_one_loop();
 
-		auto time_to_sleep = current + duration<double>(m_refresh_rate_delay) - high_resolution_clock::now();
-		high_resolution_sleep::precise_sleep(time_to_sleep.count() / 1000000000.0);
+		duration<double> time_to_sleep = current + duration<double>(m_refresh_rate_delay) - high_resolution_clock::now();
+		high_resolution_sleep::precise_sleep(time_to_sleep.count());
 	}
 }
 

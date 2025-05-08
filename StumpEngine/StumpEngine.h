@@ -1,5 +1,4 @@
 #pragma once
-#include <AchievementSystem.h>
 #include <functional>
 #include <memory>
 #include <vector>
@@ -24,9 +23,7 @@ public:
 
 	GameObject& add_game_object();
 	[[nodiscard]] SDL_Renderer* get_renderer() const;
-	[[nodiscard]] const EngineTime& get_time() const;
 	[[nodiscard]] InputHandler& get_input();
-	[[nodiscard]] AchievementSystem& get_achievement_system();
 
 	[[nodiscard]] const std::vector<std::unique_ptr<GameObject>>& get_all_game_objects()
 	{
@@ -40,17 +37,13 @@ private:
 	void run_one_loop();
 	void delete_marked_game_objects();
 
-	EngineTime m_engine_time;
 	InputHandler m_input_handler;
-	AchievementSystem m_achievement_system{*this};
 	double m_refresh_rate_delay{};
 	SDL_Window* m_window{};
 	SDL_Renderer* m_renderer{};
 	std::vector<std::unique_ptr<GameObject>> m_game_objects{};
 	std::chrono::duration<float> m_time_passed{};
-	const std::chrono::duration<float, std::milli> m_fixed_update_time = std::chrono::duration<
-		float, std::milli>(45.0f);
-
+	const std::chrono::duration<float, std::milli> m_fixed_update_time = std::chrono::duration<float, std::milli>(45.0f);
 
 	bool m_is_quitting{false};
 };

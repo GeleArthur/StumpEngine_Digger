@@ -14,7 +14,6 @@ struct colors
 
 BackGroundDrawer::BackGroundDrawer(GameObject& attached_game_object) : Component{attached_game_object}
 {
-    //TODO: switch to SDL_PIXELFORMAT_RGB24
     m_texture = SDL_CreateTexture(get_game_object().get_engine().get_renderer(), SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STREAMING, 320, 200); // TODO: screen size
     SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
 
@@ -67,7 +66,6 @@ void BackGroundDrawer::delete_on_texture(const SDL_Rect& rect) const
     {
         mapped_data[rect.x / 3 + rect.y / 3 * m_texture->w + (i % rect.w) + ((i / rect.w) * m_texture->w)] = colors{0, 0, 0};
     }
-
 
     SDL_UnlockTexture(m_texture);
 }

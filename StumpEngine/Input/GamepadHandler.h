@@ -10,7 +10,7 @@ class Command;
 class GamepadHandler final
 {
 public:
-    GamepadHandler();
+    explicit GamepadHandler();
     ~GamepadHandler();
 
     GamepadHandler(const GamepadHandler& other) = delete;

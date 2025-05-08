@@ -9,7 +9,7 @@ public:
     void render() override;
     void update() override;
 
-    void delete_on_texture(const SDL_Rect& rect);
+    void delete_on_texture(const SDL_Rect& rect) const;
 
 private:
     SDL_Texture* m_texture{};
