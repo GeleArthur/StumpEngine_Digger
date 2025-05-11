@@ -1,5 +1,6 @@
 ﻿#include "DiggerMoveCommand.h"
 
+#include "../Components/GoldBag.h"
 #include "../Components/GridTransform.h"
 
 #include <EngineTime.h>
@@ -17,8 +18,14 @@ void DiggerHorizontalCommand::execute()
 {
     if (m_current_time < EngineTime::instance().current_time)
     {
-        m_digger.get_game_object().get_component<GridTransform>()->move_horizontal(m_move);
+        GridTransform* digger_transform = m_digger.get_game_object().get_component<GridTransform>();
+        digger_transform->move_horizontal(m_move);
         m_current_time = EngineTime::instance().current_time + 0.1f;
+
+        if (m_digger.gold_bag.get_grid_position() == digger_transform->get_grid_position())
+        {
+            m_digger.gold_bag.get_game_object().get_component<GoldBag>()->pushing(m_move);
+        }
     }
 }
 

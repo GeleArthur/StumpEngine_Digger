@@ -58,45 +58,15 @@ static void init_game(StumpEngine& engine)
     auto&       dirt = gird.add_component<DirtDrawer>();
     auto&       grid_handler = gird.add_component<GridWalls>();
 
+    GameObject& gold_bag = engine.add_game_object();
+    gold_bag.add_component<Texture2D>("data/money.png").draw_center(true).draw_size(3);
+    GridTransform& gold_pos = gold_bag.add_component<GridTransform>(glm::ivec2{ 3, 0 });
+    gold_bag.add_component<GoldBag>(grid_handler);
+
     GameObject& digger = engine.add_game_object();
     digger.add_component<Texture2D>("data/driller.png").draw_center(true);
     digger.add_component<GridTransform>();
-    digger.add_component<Digger>();
-
-    GameObject& money_bag = engine.add_game_object();
-    money_bag.add_component<Texture2D>("data/money.png").draw_center(true).draw_size(3);
-    money_bag.add_component<GridTransform>(glm::ivec2{ 3, 0 });
-    money_bag.add_component<GoldBag>(grid_handler);
-
-    // engine.get_input().bind_keyboard(
-    //     SDL_SCANCODE_C,
-    //     input_pressed_type::pressed_this_frame,
-    //     std::make_unique<HurtPlayerCommand>(stats));
-    //
-    // engine.get_input().bind_keyboard(
-    //     SDL_SCANCODE_Z,
-    //     input_pressed_type::pressed_this_frame,
-    //     std::make_unique<AddScorePlayerCommand>(stats, 10));
-    //
-    // engine.get_input().bind_keyboard(
-    //     SDL_SCANCODE_X,
-    //     input_pressed_type::pressed_this_frame,
-    //     std::make_unique<AddScorePlayerCommand>(stats, 100));
-    //
-    // engine.get_input().bind_gamepad_button(
-    //     SDL_GAMEPAD_BUTTON_WEST,
-    //     input_pressed_type::pressed_this_frame,
-    //     std::make_unique<HurtPlayerCommand>(stats2));
-    //
-    // engine.get_input().bind_gamepad_button(
-    //     SDL_GAMEPAD_BUTTON_EAST,
-    //     input_pressed_type::pressed_this_frame,
-    //     std::make_unique<AddScorePlayerCommand>(stats2, 10));
-    //
-    // engine.get_input().bind_gamepad_button(
-    //     SDL_GAMEPAD_BUTTON_SOUTH,
-    //     input_pressed_type::pressed_this_frame,
-    //     std::make_unique<AddScorePlayerCommand>(stats2, 100));
+    digger.add_component<Digger>(gold_pos);
 
     SoundSystemLocator::register_sound_system(
         std::make_unique<SoundSystemLogger>(std::make_unique<SoundSystemSDL3_Mixer>()));

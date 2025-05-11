@@ -1,5 +1,8 @@
 ﻿#include "GoldBag.h"
 
+#include "GridTransform.h"
+
+#include <EngineTime.h>
 #include <GameObject.h>
 #include <Component/Transform.h>
 
@@ -16,13 +19,13 @@ GoldBagPushed::GoldBagPushed(const bool going_left)
 }
 std::unique_ptr<IGoldBagState> GoldBagPushed::update(GoldBag& bag)
 {
+    m_time_until_next_move -= EngineTime::instance().delta_time;
     if (m_time_until_next_move < 0.0f)
     {
         m_time_until_next_move = 0.1f;
-        const auto new_position = bag.get_game_object().get_transform().get_local_position() + (m_going_left ? glm::vec2{ -12, 0 } : glm::vec2{ 12, 0 });
-        bag.get_game_object().get_transform().set_local_position(new_position);
+        bag.get_game_object().get_component<GridTransform>()->move_horizontal(m_going_left);
 
-        if (m_move_count++ < 0)
+        if (m_move_count-- < 0)
         {
             return std::make_unique<GoldBagIdle>();
         }
@@ -31,6 +34,7 @@ std::unique_ptr<IGoldBagState> GoldBagPushed::update(GoldBag& bag)
     return nullptr;
 }
 
+// Faling state
 std::unique_ptr<IGoldBagState> GoldBagFalling::update(GoldBag& bag)
 {
     return nullptr;

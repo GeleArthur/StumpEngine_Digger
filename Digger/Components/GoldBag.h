@@ -28,7 +28,7 @@ public:
 private:
     bool  m_going_left;
     float m_time_until_next_move{ 0 };
-    int   m_move_count{ 5 };
+    int   m_move_count{ 4 };
 };
 
 class GoldBagFalling final : public IGoldBagState
