@@ -6,5 +6,7 @@ class Digger final : public Component
 public:
     explicit Digger(GameObject& attached);
 
+    void update() override;
+
 private:
 };

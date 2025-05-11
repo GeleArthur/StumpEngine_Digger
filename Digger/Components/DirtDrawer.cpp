@@ -1,9 +1,9 @@
-﻿#include "BackGroundDrawer.h"
+﻿#include "DirtDrawer.h"
 
 #include <GameObject.h>
-#include <StumpEngine.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
+#include <StumpEngine.h>
 
 struct colors
 {
@@ -12,9 +12,11 @@ struct colors
     uint8_t b;
 };
 
-BackGroundDrawer::BackGroundDrawer(GameObject& attached_game_object) : Component{attached_game_object}
+DirtDrawer::DirtDrawer(GameObject& attached_game_object) : Component{attached_game_object}
 {
-    m_texture = SDL_CreateTexture(get_game_object().get_engine().get_renderer(), SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STREAMING, 320, 200); // TODO: screen size
+    // TODO: screen size
+    m_texture = SDL_CreateTexture(get_game_object().get_engine().get_renderer(), SDL_PIXELFORMAT_RGB24,
+                                  SDL_TEXTUREACCESS_STREAMING, 320, 200);
     SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
 
     colors* pixel_data{};
@@ -45,17 +47,15 @@ BackGroundDrawer::BackGroundDrawer(GameObject& attached_game_object) : Component
     SDL_UnlockTexture(m_texture);
 }
 
-void BackGroundDrawer::render()
+void DirtDrawer::render(SDL_Renderer* renderer)
 {
     const SDL_FRect dst{0, 0, 960, 600};
-    SDL_RenderTexture(get_game_object().get_engine().get_renderer(), m_texture, nullptr, &dst);
+    SDL_RenderTexture(renderer, m_texture, nullptr, &dst);
 }
 
-void BackGroundDrawer::update()
-{
-}
+void DirtDrawer::update() {}
 
-void BackGroundDrawer::delete_on_texture(const SDL_Rect& rect) const
+void DirtDrawer::delete_on_texture(const SDL_Rect& rect) const
 {
     colors* pixel_data{};
     int pitch{};
@@ -64,7 +64,8 @@ void BackGroundDrawer::delete_on_texture(const SDL_Rect& rect) const
     const std::span mapped_data(pixel_data, m_texture->w * m_texture->h);
     for (int i = 0; i < rect.w * rect.h; ++i)
     {
-        mapped_data[rect.x / 3 + rect.y / 3 * m_texture->w + (i % rect.w) + ((i / rect.w) * m_texture->w)] = colors{0, 0, 0};
+        mapped_data[rect.x / 3 + rect.y / 3 * m_texture->w + (i % rect.w) + ((i / rect.w) * m_texture->w)] =
+                colors{0, 0, 0};
     }
 
     SDL_UnlockTexture(m_texture);

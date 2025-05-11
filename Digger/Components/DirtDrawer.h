@@ -2,11 +2,11 @@
 #include <Component/Component.h>
 #include <SDL3/SDL_render.h>
 
-class BackGroundDrawer final : public Component
+class DirtDrawer final : public Component
 {
 public:
-    explicit BackGroundDrawer(GameObject& attached_game_object);
-    void render() override;
+    explicit DirtDrawer(GameObject& attached_game_object);
+    void render(SDL_Renderer* renderer) override;
     void update() override;
 
     void delete_on_texture(const SDL_Rect& rect) const;
@@ -14,4 +14,3 @@ public:
 private:
     SDL_Texture* m_texture{};
 };
-
