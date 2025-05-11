@@ -22,10 +22,10 @@ void GridWalls::render(SDL_Renderer* renderer)
             if (m_horizonal_walls[x][y])
             {
                 SDL_RenderLine(renderer,
-                               GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x,
-                               GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y,
-                               GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x + GridSettings::grid_tile_pixel_size.x,
-                               GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y);
+                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
+                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y),
+                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x + GridSettings::grid_tile_pixel_size.x),
+                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y));
             }
         }
     }
@@ -37,10 +37,10 @@ void GridWalls::render(SDL_Renderer* renderer)
             if (m_vertical_walls[x][y])
             {
                 SDL_RenderLine(renderer,
-                               GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x,
-                               GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y,
-                               GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x,
-                               GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y + GridSettings::grid_tile_pixel_size.y);
+                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
+                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y),
+                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
+                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y + GridSettings::grid_tile_pixel_size.y));
             }
         }
     }

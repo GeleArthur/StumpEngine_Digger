@@ -55,8 +55,8 @@ static void init_game(StumpEngine& engine)
     fps_display.add_component<FpsShowcase>();
 
     GameObject& gird = engine.add_game_object();
-    auto&       dirt = gird.add_component<DirtDrawer>();
-    auto&       grid_handler = gird.add_component<GridWalls>();
+    gird.add_component<DirtDrawer>();
+    auto& grid_handler = gird.add_component<GridWalls>();
 
     GameObject& gold_bag = engine.add_game_object();
     gold_bag.add_component<Texture2D>("data/money.png").draw_center(true).draw_size(3);

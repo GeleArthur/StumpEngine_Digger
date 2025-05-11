@@ -7,7 +7,7 @@
 #include <Component/Transform.h>
 
 // Idle state
-std::unique_ptr<IGoldBagState> GoldBagIdle::update(GoldBag& bag)
+std::unique_ptr<IGoldBagState> GoldBagIdle::update(GoldBag&)
 {
     return nullptr;
 }
@@ -35,7 +35,7 @@ std::unique_ptr<IGoldBagState> GoldBagPushed::update(GoldBag& bag)
 }
 
 // Faling state
-std::unique_ptr<IGoldBagState> GoldBagFalling::update(GoldBag& bag)
+std::unique_ptr<IGoldBagState> GoldBagFalling::update(GoldBag&)
 {
     return nullptr;
 }

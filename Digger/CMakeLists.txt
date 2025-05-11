@@ -49,8 +49,8 @@ endif()
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 target_compile_options(${PROJECT_NAME} PRIVATE
-        #        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
-        #        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
+        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
 
 if(EMSCRIPTING)
