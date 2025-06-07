@@ -2,14 +2,14 @@
 
 #include <iostream>
 
-Transform::Transform(GameObject& attached_game_object, const glm::vec2& pos):
-    Component(attached_game_object),
-    m_local_position(pos),
-    m_world_position(pos)
+stump::Transform::Transform(GameObject& attached_game_object, const glm::vec2& pos)
+    : Component(attached_game_object)
+    , m_local_position(pos)
+    , m_world_position(pos)
 {
 }
 
-Transform::~Transform()
+stump::Transform::~Transform()
 {
     if (m_parent != nullptr)
     {
@@ -21,7 +21,7 @@ Transform::~Transform()
     }
 }
 
-void Transform::set_parent(Transform& new_parent, const bool keep_world_position)
+void stump::Transform::set_parent(Transform& new_parent, const bool keep_world_position)
 {
     if (do_you_have_this_child(new_parent))
     {
@@ -42,12 +42,12 @@ void Transform::set_parent(Transform& new_parent, const bool keep_world_position
     if (keep_world_position)
     {
         const glm::vec2& new_world_position = get_world_position();
-        const glm::vec2 offset = old_world_position - new_world_position;
+        const glm::vec2  offset = old_world_position - new_world_position;
         set_local_position(get_local_position() + offset);
     }
 }
 
-void Transform::remove_parent()
+void stump::Transform::remove_parent()
 {
     if (m_parent != nullptr)
     {
@@ -57,20 +57,19 @@ void Transform::remove_parent()
     }
 }
 
-void Transform::remove_child_internal(const Transform& child)
+void stump::Transform::remove_child_internal(const Transform& child)
 {
-    std::erase_if(m_children, [&](const std::reference_wrapper<Transform>& element)
-    {
+    std::erase_if(m_children, [&](const std::reference_wrapper<Transform>& element) {
         return &element.get() == &child;
     });
 }
 
-void Transform::add_child_internal(Transform& child)
+void stump::Transform::add_child_internal(Transform& child)
 {
     m_children.emplace_back(child);
 }
 
-bool Transform::do_you_have_this_child(Transform& child) const
+bool stump::Transform::do_you_have_this_child(Transform& child) const
 {
     if (&child == this)
     {
@@ -87,7 +86,7 @@ bool Transform::do_you_have_this_child(Transform& child) const
     return false;
 }
 
-void Transform::mark_me_and_children_as_dirty()
+void stump::Transform::mark_me_and_children_as_dirty()
 {
     m_world_position_needs_updating = true;
     for (std::reference_wrapper<Transform>& child : m_children)
@@ -96,7 +95,7 @@ void Transform::mark_me_and_children_as_dirty()
     }
 }
 
-const glm::vec2& Transform::get_world_position()
+const glm::vec2& stump::Transform::get_world_position()
 {
     if (m_world_position_needs_updating)
     {
@@ -114,19 +113,18 @@ const glm::vec2& Transform::get_world_position()
     return m_world_position;
 }
 
-const glm::vec2& Transform::get_local_position() const
+const glm::vec2& stump::Transform::get_local_position() const
 {
     return m_local_position;
 }
 
-void Transform::set_local_position(const glm::vec2& new_pos)
+void stump::Transform::set_local_position(const glm::vec2& new_pos)
 {
     m_local_position = new_pos;
     mark_me_and_children_as_dirty();
 }
 
-std::ranges::subrange<std::vector<std::reference_wrapper<Transform>>::iterator> Transform::get_children()
+stump::Transform::children stump::Transform::get_children()
 {
-    return std::ranges::subrange{m_children};
+    return std::ranges::subrange{ m_children };
 }
-

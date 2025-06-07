@@ -2,10 +2,10 @@
 #include <Component/Component.h>
 
 class GridTransform;
-class Digger final : public Component
+class Digger final : public stump::Component
 {
 public:
-    explicit Digger(GameObject& attached, GridTransform& gold_bag);
+    explicit Digger(stump::GameObject& attached, GridTransform& gold_bag);
 
     void update() override;
 

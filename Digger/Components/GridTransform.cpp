@@ -5,7 +5,7 @@
 #include <GameObject.h>
 #include <cmath>
 #include <Component/Transform.h>
-GridTransform::GridTransform(GameObject& attached, glm::ivec2 grid_position)
+GridTransform::GridTransform(stump::GameObject& attached, glm::ivec2 grid_position)
     : Component(attached)
     , m_grid_position{ grid_position }
     , m_sub_position{ 0, 0 }

@@ -1,21 +1,18 @@
 ﻿#include "SoundSystemLocator.h"
-
-
-namespace SoundSystemLocator
+namespace stump::SoundSystemLocator
 {
     namespace
     {
-        std::unique_ptr<SoundSystem> instance{std::make_unique<SoundSystemNull>()};
+        std::unique_ptr<stump::SoundSystem> instance{ std::make_unique<stump::SoundSystemNull>() };
     }
 
-    void register_sound_system(std::unique_ptr<SoundSystem> system)
+    void register_sound_system(std::unique_ptr<stump::SoundSystem> system)
     {
         instance = std::move(system);
     }
 
-    SoundSystem& get_sound()
+    stump::SoundSystem& get_sound()
     {
         return *instance;
     }
-}
-
+} // namespace stump::SoundSystemLocator

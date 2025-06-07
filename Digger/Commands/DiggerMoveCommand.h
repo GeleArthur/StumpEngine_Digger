@@ -3,7 +3,7 @@
 
 #include "../Components/Digger.h"
 
-class DiggerHorizontalCommand final : public Command
+class DiggerHorizontalCommand final : public stump::Command
 {
 public:
     explicit DiggerHorizontalCommand(Digger& digger, bool left);
@@ -15,7 +15,7 @@ private:
     bool    m_move;
 };
 
-class DiggerVerticalCommand final : public Command
+class DiggerVerticalCommand final : public stump::Command
 {
 public:
     explicit DiggerVerticalCommand(Digger& digger, bool down);

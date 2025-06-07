@@ -3,17 +3,28 @@
 #include <Component/Component.h>
 #include <SDL3/SDL_render.h>
 
-Component::Component(GameObject& attached_game_object) : m_attached_game_object(attached_game_object) {}
+stump::Component::Component(GameObject& attached_game_object)
+    : m_attached_game_object(attached_game_object)
+{
+}
 
-GameObject& Component::get_game_object() const { return m_attached_game_object; }
+stump::GameObject& stump::Component::get_game_object() const
+{
+    return m_attached_game_object;
+}
 
+void stump::Component::fixed_update() {}
 
-void Component::fixed_update() {}
+void stump::Component::update() {}
 
-void Component::update() {}
+void stump::Component::render(SDL_Renderer*) {}
 
-void Component::render(SDL_Renderer*) {}
+void stump::Component::mark_for_deletion()
+{
+    m_marked_for_delection = true;
+}
 
-void Component::mark_for_deletion() { m_marked_for_delection = true; }
-
-bool Component::is_marked_for_delection() const { return m_marked_for_delection; }
+bool stump::Component::is_marked_for_delection() const
+{
+    return m_marked_for_delection;
+}

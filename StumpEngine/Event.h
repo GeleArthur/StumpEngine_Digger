@@ -4,70 +4,71 @@
 #include <iostream>
 #include <vector>
 
-// tbf idk what happened. Lets engineer. 
-
-class BaseEventListener;
-template <typename... Args>
-class EventListener;
-
-
-template <typename... Args>
-class Event final
+namespace stump
 {
-public:
-    Event() = default;
-    ~Event();
+    // tbf idk what happened. Lets engineer.
 
-    Event(const Event& other) = delete;
-    Event(Event&& other) = delete;
-    Event& operator=(const Event& other) = delete;
-    Event& operator=(Event&& other) = delete;
+    class BaseEventListener;
+    template<typename... Args>
+    class EventListener;
 
-    void add_listener(EventListener<Args...>* listener);
-    void remove_listener(EventListener<Args...>* listener);
+    template<typename... Args>
+    class Event final
+    {
+    public:
+        Event() = default;
+        ~Event();
 
-    void notify_listeners(Args... args);
+        Event(const Event& other) = delete;
+        Event(Event&& other) = delete;
+        Event& operator=(const Event& other) = delete;
+        Event& operator=(Event&& other) = delete;
 
-private:
-    std::vector<EventListener<Args...>*> m_function_pointers;
-    bool m_is_notifying = false;
-};
+        void add_listener(EventListener<Args...>* listener);
+        void remove_listener(EventListener<Args...>* listener);
+
+        void notify_listeners(Args... args);
+
+    private:
+        std::vector<EventListener<Args...>*> m_function_pointers;
+        bool                                 m_is_notifying = false;
+    };
 
 #include "EventListener.h"
 
-template <typename... Args>
-Event<Args...>::~Event()
-{
-    for (EventListener<Args...>* functions : m_function_pointers)
+    template<typename... Args>
+    Event<Args...>::~Event()
     {
-        functions->remove_from_event_internal();
+        for (EventListener<Args...>* functions : m_function_pointers)
+        {
+            functions->remove_from_event_internal();
+        }
     }
-}
 
-template <typename... Args>
-void Event<Args...>::add_listener(EventListener<Args...>* listener)
-{
-    listener->add_to_event_internal(this);
-    m_function_pointers.push_back(listener);
-}
-
-template <typename... Args>
-void Event<Args...>::remove_listener(EventListener<Args...>* listener)
-{
-    listener->remove_from_event_internal();
-    std::erase(m_function_pointers, listener);
-}
-
-template <typename... Args>
-void Event<Args...>::notify_listeners(Args... args)
-{
-    for (EventListener<Args...>* function : m_function_pointers)
+    template<typename... Args>
+    void Event<Args...>::add_listener(EventListener<Args...>* listener)
     {
-        //std::forward<Args...>(args...);
-        function->call_function(std::forward<Args>(args)...);
+        listener->add_to_event_internal(this);
+        m_function_pointers.push_back(listener);
     }
-}
 
+    template<typename... Args>
+    void Event<Args...>::remove_listener(EventListener<Args...>* listener)
+    {
+        listener->remove_from_event_internal();
+        std::erase(m_function_pointers, listener);
+    }
+
+    template<typename... Args>
+    void Event<Args...>::notify_listeners(Args... args)
+    {
+        for (EventListener<Args...>* function : m_function_pointers)
+        {
+            // std::forward<Args...>(args...);
+            function->call_function(std::forward<Args>(args)...);
+        }
+    }
+} // namespace stump
 // Past attempt. But issues came up when needing to cast that had inheriting 2 things. Which was not possible.
 // So when for a wrapper around the event listener function.
 

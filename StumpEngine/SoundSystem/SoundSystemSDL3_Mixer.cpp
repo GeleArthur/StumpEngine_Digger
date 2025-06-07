@@ -14,10 +14,10 @@
 struct AudioEvent
 {
     std::string sound_path;
-    float volume;
+    float       volume;
 };
 
-class SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl final
+class stump::SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl final
 {
 public:
     SoundSystemSDL3_MixerImpl();
@@ -35,14 +35,14 @@ private:
 
     std::unordered_map<std::string, Mix_Chunk*> m_loaded_audio;
 
-    std::queue<AudioEvent> m_event_queue;
-    std::jthread m_audio_handler;
-    std::mutex m_audio_mutex;
+    std::queue<AudioEvent>  m_event_queue;
+    std::jthread            m_audio_handler;
+    std::mutex              m_audio_mutex;
     std::condition_variable m_any_audio_requests;
-    bool m_quiting_audio{};
+    bool                    m_quiting_audio{};
 };
 
-SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::SoundSystemSDL3_MixerImpl()
+stump::SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::SoundSystemSDL3_MixerImpl()
 {
     if (!Mix_OpenAudio(0, nullptr))
     {
@@ -52,7 +52,7 @@ SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::SoundSystemSDL3_MixerImpl()
     m_audio_handler = std::jthread(&SoundSystemSDL3_MixerImpl::audio_processor, this);
 }
 
-SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::~SoundSystemSDL3_MixerImpl()
+stump::SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::~SoundSystemSDL3_MixerImpl()
 {
     std::unique_lock lock(m_audio_mutex);
     m_quiting_audio = true;
@@ -64,13 +64,13 @@ SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::~SoundSystemSDL3_MixerImpl()
     }
 }
 
-void SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::play(const std::string& song_path, const float volume)
+void stump::SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::play(const std::string& song_path, const float volume)
 {
-    m_event_queue.push(AudioEvent{song_path, volume});
+    m_event_queue.push(AudioEvent{ song_path, volume });
     m_any_audio_requests.notify_one();
 }
 
-void SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::audio_processor()
+void stump::SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::audio_processor()
 {
     while (!m_quiting_audio)
     {
@@ -93,17 +93,16 @@ void SoundSystemSDL3_Mixer::SoundSystemSDL3_MixerImpl::audio_processor()
     }
 }
 
-
 // PUBLIC INTERFACE
 
-SoundSystemSDL3_Mixer::SoundSystemSDL3_Mixer() : m_handler{std::make_unique<SoundSystemSDL3_MixerImpl>()}
+stump::SoundSystemSDL3_Mixer::SoundSystemSDL3_Mixer()
+    : m_handler{ std::make_unique<SoundSystemSDL3_MixerImpl>() }
 {
 }
 
-SoundSystemSDL3_Mixer::~SoundSystemSDL3_Mixer() = default;
+stump::SoundSystemSDL3_Mixer::~SoundSystemSDL3_Mixer() = default;
 
-void SoundSystemSDL3_Mixer::play(const std::string& song_path, float volume)
+void stump::SoundSystemSDL3_Mixer::play(const std::string& song_path, float volume)
 {
     m_handler->play(song_path, volume);
 }
-

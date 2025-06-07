@@ -1,14 +1,17 @@
 ﻿#pragma once
 #include "Command.h"
 
-class Transform;
-
-class CommandMoveTransform final : public Command
+namespace stump
 {
-public:
-    explicit CommandMoveTransform(Transform& transform);
-    virtual void execute() override;
+    class Transform;
 
-private:
-    Transform& m_transform;
-};
+    class CommandMoveTransform final : public stump::Command
+    {
+    public:
+        explicit CommandMoveTransform(Transform& transform);
+        virtual void execute() override;
+
+    private:
+        Transform& m_transform;
+    };
+} // namespace stump

@@ -47,35 +47,38 @@ void AllocateConsole()
 #endif
 }
 
-static void init_game(StumpEngine& engine)
+static void init_game(stump::StumpEngine& engine)
 {
-    GameObject& fps_display = engine.add_game_object();
-    fps_display.get_transform().set_local_position(glm::vec2{ 0, 0 });
-    fps_display.add_component<TextDisplay>("data/Lingua.otf", "", 10.0f);
-    fps_display.add_component<FpsShowcase>();
-
-    GameObject& gird = engine.add_game_object();
+    stump::GameObject& gird = engine.add_game_object();
     gird.add_component<DirtDrawer>();
     auto& grid_handler = gird.add_component<GridWalls>();
 
-    GameObject& gold_bag = engine.add_game_object();
-    gold_bag.add_component<Texture2D>("data/money.png").draw_center(true).draw_size(3);
-    GridTransform& gold_pos = gold_bag.add_component<GridTransform>(glm::ivec2{ 3, 0 });
+    stump::GameObject& gold_bag = engine.add_game_object();
+    gold_bag.add_component<stump::Texture2D>("data/money.png").draw_center(true).draw_size(3);
+    auto& gold_pos = gold_bag.add_component<GridTransform>(glm::ivec2{ 3, 0 });
     gold_bag.add_component<GoldBag>(grid_handler);
 
-    GameObject& digger = engine.add_game_object();
-    digger.add_component<Texture2D>("data/driller.png").draw_center(true);
+    stump::GameObject& digger = engine.add_game_object();
+    digger.add_component<stump::Texture2D>("data/driller.png").draw_center(true);
     digger.add_component<GridTransform>();
     digger.add_component<Digger>(gold_pos);
 
-    SoundSystemLocator::register_sound_system(
-        std::make_unique<SoundSystemLogger>(std::make_unique<SoundSystemSDL3_Mixer>()));
+    stump::GameObject& fps_display = engine.add_game_object();
+    fps_display.get_transform().set_local_position(glm::vec2{ 0, 0 });
+    fps_display.add_component<stump::TextDisplay>("data/Lingua.otf", "", 10.0f);
+    fps_display.add_component<stump::FpsShowcase>();
+
+    stump::GameObject& help_display = engine.add_game_object();
+    help_display.get_transform().set_local_position(glm::vec2{ 30, 300 });
+    help_display.add_component<stump::TextDisplay>("data/Lingua.otf", "Move with WASD. Move into the Gold bag to push it away", 20.0f);
+
+    stump::SoundSystemLocator::register_sound_system(std::make_unique<stump::SoundSystemLogger>(std::make_unique<stump::SoundSystemSDL3_Mixer>()));
 }
 
 int main(int, char*[])
 {
     AllocateConsole();
-    auto engine = StumpEngine{ init_game };
+    auto engine = stump::StumpEngine{ init_game };
     engine.run();
 
     return 0;

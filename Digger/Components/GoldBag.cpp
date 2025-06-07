@@ -19,7 +19,7 @@ GoldBagPushed::GoldBagPushed(const bool going_left)
 }
 std::unique_ptr<IGoldBagState> GoldBagPushed::update(GoldBag& bag)
 {
-    m_time_until_next_move -= EngineTime::instance().delta_time;
+    m_time_until_next_move -= stump::EngineTime::instance().delta_time;
     if (m_time_until_next_move < 0.0f)
     {
         m_time_until_next_move = 0.1f;
@@ -41,7 +41,7 @@ std::unique_ptr<IGoldBagState> GoldBagFalling::update(GoldBag&)
 }
 
 // GoldBag
-GoldBag::GoldBag(GameObject& attached, GridWalls& walls)
+GoldBag::GoldBag(stump::GameObject& attached, GridWalls& walls)
     : Component{ attached }
     , m_walls{ walls }
 {

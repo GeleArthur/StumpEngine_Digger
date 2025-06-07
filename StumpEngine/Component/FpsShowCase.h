@@ -2,23 +2,25 @@
 #include <chrono>
 #include <Component/Component.h>
 
-
-class TextDisplay;
-
-class FpsShowcase final : public Component
+namespace stump
 {
-public:
-	explicit FpsShowcase(GameObject& attached_game_object);
-	~FpsShowcase() override = default;
+    class TextDisplay;
 
-	FpsShowcase(const FpsShowcase& other) = delete;
-	FpsShowcase(FpsShowcase&& other) = delete;
-	FpsShowcase& operator=(const FpsShowcase& other) = delete;
-	FpsShowcase& operator=(FpsShowcase&& other) = delete;
+    class FpsShowcase final : public Component
+    {
+    public:
+        explicit FpsShowcase(GameObject& attached_game_object);
+        ~FpsShowcase() override = default;
 
-private:
-	void update() override;
-	TextDisplay* m_text_display;
+        FpsShowcase(const FpsShowcase& other) = delete;
+        FpsShowcase(FpsShowcase&& other) = delete;
+        FpsShowcase& operator=(const FpsShowcase& other) = delete;
+        FpsShowcase& operator=(FpsShowcase&& other) = delete;
 
-	std::chrono::time_point<std::chrono::steady_clock> m_previous;
-};
+    private:
+        void         update() override;
+        TextDisplay* m_text_display;
+
+        std::chrono::time_point<std::chrono::steady_clock> m_previous;
+    };
+} // namespace stump

@@ -3,31 +3,32 @@
 
 #include <Component/Component.h>
 #include "SDL3_ttf/SDL_ttf.h"
-
-class Transform;
-
-class TextDisplay final : public Component
+namespace stump
 {
-public:
-    explicit TextDisplay(GameObject& game_object, const std::string& font, std::string_view text = "",
-                         float size = 16.0f);
-    ~TextDisplay() override;
+    class Transform;
 
-    void update_text(std::string_view text);
+    class TextDisplay final : public Component
+    {
+    public:
+        explicit TextDisplay(GameObject& game_object, const std::string& font, std::string_view text = "", float size = 16.0f);
+        ~TextDisplay() override;
 
-    TextDisplay(const TextDisplay&) = delete;
-    TextDisplay(TextDisplay&&) = delete;
-    TextDisplay operator=(const TextDisplay&) = delete;
-    TextDisplay operator=(TextDisplay&&) = delete;
+        void update_text(std::string_view text);
 
-private:
-    void render(SDL_Renderer* renderer) override;
+        TextDisplay(const TextDisplay&) = delete;
+        TextDisplay(TextDisplay&&) = delete;
+        TextDisplay operator=(const TextDisplay&) = delete;
+        TextDisplay operator=(TextDisplay&&) = delete;
 
-    bool m_is_dirty{false};
+    private:
+        void render(SDL_Renderer* renderer) override;
 
-    TTF_Font* m_font{};
-    float m_font_size;
-    std::string m_text;
-    SDL_Texture* m_text_texture{};
-    Transform& m_transform;
-};
+        bool m_is_dirty{ false };
+
+        TTF_Font*    m_font{};
+        float        m_font_size;
+        std::string  m_text;
+        SDL_Texture* m_text_texture{};
+        Transform&   m_transform;
+    };
+} // namespace stump

@@ -1,8 +1,11 @@
 ﻿#pragma once
 
-namespace high_resolution_sleep
+namespace stump
 {
-    void init_precise_sleep();
+    namespace high_resolution_sleep
+    {
+        void init_precise_sleep();
 
-    void precise_sleep(double seconds);
-}
+        void precise_sleep(double seconds);
+    } // namespace high_resolution_sleep
+} // namespace stump

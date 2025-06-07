@@ -37,10 +37,10 @@ public:
     virtual std::unique_ptr<IGoldBagState> update(GoldBag& bag) override;
 };
 
-class GoldBag final : public Component
+class GoldBag final : public stump::Component
 {
 public:
-    explicit GoldBag(GameObject& attached, GridWalls& walls);
+    explicit GoldBag(stump::GameObject& attached, GridWalls& walls);
 
     void update() override;
     void pushing(bool going_left);

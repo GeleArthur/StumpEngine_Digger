@@ -2,12 +2,12 @@
 
 #include <Component/Transform.h>
 
-CommandMoveTransform::CommandMoveTransform(Transform& transform):
-    m_transform{transform}
+stump::CommandMoveTransform::CommandMoveTransform(Transform& transform)
+    : m_transform{ transform }
 {
 }
 
-void CommandMoveTransform::execute()
+void stump::CommandMoveTransform::execute()
 {
-    m_transform.set_local_position({0, 0});
+    m_transform.set_local_position({ 0, 0 });
 }

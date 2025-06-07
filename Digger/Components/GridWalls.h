@@ -20,10 +20,10 @@ namespace GridSettings
     constexpr static glm::ivec2 grid_tile_pixel_size{ 60, 50 };
 } // namespace GridSettings
 
-class GridWalls final : public Component
+class GridWalls final : public stump::Component
 {
 public:
-    explicit GridWalls(GameObject& game_object);
+    explicit GridWalls(stump::GameObject& game_object);
     virtual void render(SDL_Renderer* renderer) override;
 
     [[nodiscard]] Walls get_walls(int x, int y) const;

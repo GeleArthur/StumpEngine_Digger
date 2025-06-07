@@ -14,7 +14,7 @@
 #include "backends/imgui_impl_sdlrenderer3.h"
 #include "imgui.h"
 
-StumpEngine::StumpEngine(const std::function<void(StumpEngine&)>& function)
+stump::StumpEngine::StumpEngine(const std::function<void(StumpEngine&)>& function)
 {
     if (!SDL_Init(SDL_INIT_VIDEO))
     {
@@ -49,7 +49,7 @@ StumpEngine::StumpEngine(const std::function<void(StumpEngine&)>& function)
     function(*this);
 }
 
-StumpEngine::~StumpEngine()
+stump::StumpEngine::~StumpEngine()
 {
     ImGui_ImplSDLRenderer3_Shutdown();
     ImGui_ImplSDL3_Shutdown();
@@ -61,23 +61,23 @@ StumpEngine::~StumpEngine()
     SDL_Quit();
 }
 
-GameObject& StumpEngine::add_game_object()
+stump::GameObject& stump::StumpEngine::add_game_object()
 {
     m_game_objects.push_back(std::make_unique<GameObject>(*this));
     return *m_game_objects[m_game_objects.size() - 1];
 }
 
-SDL_Renderer* StumpEngine::get_renderer() const
+SDL_Renderer* stump::StumpEngine::get_renderer() const
 {
     return m_renderer;
 }
 
-InputHandler& StumpEngine::get_input()
+stump::InputHandler& stump::StumpEngine::get_input()
 {
     return m_input_handler;
 }
 
-void StumpEngine::run()
+void stump::StumpEngine::run()
 {
     using namespace std::chrono;
     auto       last_time = high_resolution_clock::now();
@@ -99,7 +99,7 @@ void StumpEngine::run()
     }
 }
 
-void StumpEngine::handle_input()
+void stump::StumpEngine::handle_input()
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -114,14 +114,14 @@ void StumpEngine::handle_input()
     m_input_handler.process_input();
 }
 
-void StumpEngine::run_one_loop()
+void stump::StumpEngine::run_one_loop()
 {
     handle_input();
     while (m_time_passed > m_fixed_update_time)
     {
         m_time_passed -= m_fixed_update_time;
 
-        for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
+        for (const std::unique_ptr<stump::GameObject>& game_object : m_game_objects)
         {
             game_object->fixed_update();
         }
@@ -149,7 +149,7 @@ void StumpEngine::run_one_loop()
     delete_marked_game_objects();
 }
 
-void StumpEngine::delete_marked_game_objects()
+void stump::StumpEngine::delete_marked_game_objects()
 {
     for (const std::unique_ptr<GameObject>& game_object : m_game_objects)
     {

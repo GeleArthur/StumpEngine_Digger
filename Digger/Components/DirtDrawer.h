@@ -2,10 +2,10 @@
 #include <Component/Component.h>
 #include <SDL3/SDL_render.h>
 
-class DirtDrawer final : public Component
+class DirtDrawer final : public stump::Component
 {
 public:
-    explicit DirtDrawer(GameObject& attached_game_object);
+    explicit DirtDrawer(stump::GameObject& attached_game_object);
     void render(SDL_Renderer* renderer) override;
     void update() override;
 

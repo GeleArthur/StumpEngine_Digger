@@ -2,10 +2,10 @@
 #include <vec2.hpp>
 #include <Component/Component.h>
 
-class GridTransform final : public Component
+class GridTransform final : public stump::Component
 {
 public:
-    explicit GridTransform(GameObject& attached, glm::ivec2 grid_position = glm::ivec2{ 0, 0 });
+    explicit GridTransform(stump::GameObject& attached, glm::ivec2 grid_position = glm::ivec2{ 0, 0 });
 
     void update() override;
 

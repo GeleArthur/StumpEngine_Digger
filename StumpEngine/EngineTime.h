@@ -1,20 +1,23 @@
 #pragma once
 #include <chrono>
 
-class EngineTime
+namespace stump
 {
-private:
-	explicit EngineTime() = default;
+    class EngineTime
+    {
+    private:
+        explicit EngineTime() = default;
 
-public:
-	static EngineTime& instance();
+    public:
+        static EngineTime& instance();
 
-	float delta_time{};
-	float current_time{};
-};
+        float delta_time{};
+        float current_time{};
+    };
 
-inline EngineTime& EngineTime::instance()
-{
-	static EngineTime instance;
-	return instance;
-}
+    inline EngineTime& EngineTime::instance()
+    {
+        static EngineTime instance;
+        return instance;
+    }
+} // namespace stump

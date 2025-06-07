@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-GridWalls::GridWalls(GameObject& game_object)
+GridWalls::GridWalls(stump::GameObject& game_object)
     : Component{ game_object }
 {
     for (auto& walls : m_horizonal_walls)
