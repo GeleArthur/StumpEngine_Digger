@@ -22,10 +22,10 @@ target_compile_features(StumpEngine PRIVATE cxx_std_20)
 file(GLOB_RECURSE header_files CONFIGURE_DEPENDS "*.h")
 target_include_directories(StumpEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_compile_options(StumpEngine PRIVATE
-        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
-        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
-)
+#target_compile_options(StumpEngine PRIVATE
+#        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+#        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
+#)
 
 # Import libarys
 
@@ -39,7 +39,10 @@ target_include_directories(StumpEngine PUBLIC ${glm_SOURCE_DIR})
 
 FetchContent_Declare(
         imgui
-        URL https://github.com/ocornut/imgui/archive/refs/tags/v1.91.8.zip
+        GIT_REPOSITORY https://github.com/ocornut/imgui.git
+        GIT_TAG docking
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(imgui)
 
@@ -73,7 +76,7 @@ if(WIN32) # subcheck support
     include(FetchContent)
     FetchContent_Declare(
             SDL3
-            URL https://github.com/libsdl-org/SDL/releases/download/release-3.2.4/SDL3-devel-3.2.4-VC.zip
+            URL https://github.com/libsdl-org/SDL/releases/download/release-3.2.16/SDL3-devel-3.2.16-VC.zip
             DOWNLOAD_NO_PROGRESS ON
     )
     FetchContent_MakeAvailable(sdl3)
@@ -84,6 +87,16 @@ if(WIN32) # subcheck support
             INTERFACE_INCLUDE_DIRECTORIES ${sdl3_SOURCE_DIR}/include
     )
     target_link_libraries(StumpEngine PUBLIC SDL3::SDL3)
+
+    #    FetchContent_Declare(
+    #            SDL3
+    #            GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+    #            GIT_SHALLOW TRUE
+    #            GIT_PROGRESS TRUE
+    #    )
+    #    FetchContent_MakeAvailable(SDL3)
+    target_link_libraries(StumpEngine PUBLIC SDL3::SDL3)
+
 
     FetchContent_Declare(
             SDL3_image

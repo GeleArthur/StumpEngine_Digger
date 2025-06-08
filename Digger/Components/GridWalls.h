@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include <Component/Component.h>
 #include <array>
 #include <vec2.hpp>
 #include <vector>
+#include <Component/Component.h>
 
 // TODO: Wall based approce
 struct Walls

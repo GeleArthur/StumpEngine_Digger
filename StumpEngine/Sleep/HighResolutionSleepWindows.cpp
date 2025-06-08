@@ -5,57 +5,61 @@
 #pragma comment(lib, "Winmm.lib") // timeGetDevCaps, timeBeginPeriod
 #include <stdio.h>
 
-HANDLE Timer;
-int    SchedulerPeriodMs;
-INT64  QpcPerSecond;
+namespace
+{
+    HANDLE timer{};
+    int    scheduler_period_ms{};
+    INT64  qpc_per_second{};
+} // namespace
 
 void stump::high_resolution_sleep::init_precise_sleep()
 {
-    Timer = CreateWaitableTimerExW(NULL, NULL, CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ALL_ACCESS);
+    timer = CreateWaitableTimerExW(NULL, NULL, CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ALL_ACCESS);
     TIMECAPS caps;
     timeGetDevCaps(&caps, sizeof caps);
     timeBeginPeriod(caps.wPeriodMin);
-    SchedulerPeriodMs = (int)caps.wPeriodMin;
+    scheduler_period_ms = static_cast<int>(caps.wPeriodMin);
     LARGE_INTEGER qpf;
     QueryPerformanceFrequency(&qpf);
-    QpcPerSecond = qpf.QuadPart;
+    qpc_per_second = qpf.QuadPart;
 }
 
 void stump::high_resolution_sleep::precise_sleep(double seconds)
 {
     LARGE_INTEGER qpc;
     QueryPerformanceCounter(&qpc);
-    INT64 targetQpc = (INT64)(qpc.QuadPart + seconds * QpcPerSecond);
+    const INT64 target_qpc = static_cast<INT64>(static_cast<double>(qpc.QuadPart) + seconds * static_cast<double>(qpc_per_second));
 
-    if (Timer) // Try using a high resolution timer first.
+    if (timer) // Try using a high resolution timer first.
     {
-        const double TOLERANCE = 0.001'02;
-        INT64        maxTicks = (INT64)SchedulerPeriodMs * 9'500;
-        for (;;) // Break sleep up into parts that are lower than scheduler period.
+        const INT64 max_ticks = static_cast<INT64>(scheduler_period_ms) * 9500;
+
+        while (true) // Break sleep up into parts that are lower than scheduler period.
         {
-            double remainingSeconds = (targetQpc - qpc.QuadPart) / (double)QpcPerSecond;
-            INT64  sleepTicks = (INT64)((remainingSeconds - TOLERANCE) * 10'000'000);
-            if (sleepTicks <= 0)
+            constexpr double tolerance = 0.00102;
+            const double     remaining_seconds = static_cast<double>(target_qpc - qpc.QuadPart) / static_cast<double>(qpc_per_second);
+            const INT64      sleep_ticks = static_cast<INT64>((remaining_seconds - tolerance) * 10'000'000);
+            if (sleep_ticks <= 0)
                 break;
 
             LARGE_INTEGER due;
-            due.QuadPart = -(sleepTicks > maxTicks ? maxTicks : sleepTicks);
-            SetWaitableTimerEx(Timer, &due, 0, NULL, NULL, NULL, 0);
-            WaitForSingleObject(Timer, INFINITE);
+            due.QuadPart = -(sleep_ticks > max_ticks ? max_ticks : sleep_ticks);
+            SetWaitableTimerEx(timer, &due, 0, NULL, NULL, NULL, 0);
+            WaitForSingleObject(timer, INFINITE);
             QueryPerformanceCounter(&qpc);
         }
     }
     else // Fallback to Sleep.
     {
-        const double TOLERANCE = 0.000'02;
-        double       sleepMs = (seconds - TOLERANCE) * 1000 - SchedulerPeriodMs; // Sleep for 1 scheduler period less than requested.
-        int          sleepSlices = (int)(sleepMs / SchedulerPeriodMs);
-        if (sleepSlices > 0)
-            Sleep((DWORD)sleepSlices * SchedulerPeriodMs);
+        const double tolerance = 0.000'02;
+        double       sleep_ms = (seconds - tolerance) * 1000 - scheduler_period_ms; // Sleep for 1 scheduler period less than requested.
+        int          sleep_slices = (int)(sleep_ms / scheduler_period_ms);
+        if (sleep_slices > 0)
+            Sleep(static_cast<DWORD>(sleep_slices) * scheduler_period_ms);
         QueryPerformanceCounter(&qpc);
     }
 
-    while (qpc.QuadPart < targetQpc) // Spin for any remaining time.
+    while (qpc.QuadPart < target_qpc) // Spin for any remaining time.
     {
         YieldProcessor();
         QueryPerformanceCounter(&qpc);

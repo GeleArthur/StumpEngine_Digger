@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <cassert>
 #include <functional>
 
 namespace stump
@@ -33,7 +34,7 @@ namespace stump
         Event<Args...>*              m_event{};
     };
 
-#include "Event.h"
+    // #include "Event.h"
 
     template<typename... Args>
     EventListener<Args...>::EventListener(std::function<void(Args...)> function)

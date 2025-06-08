@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "EngineTime.h"
-#include "Input/InputHandler.h"
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_render.h"
 
@@ -26,7 +25,6 @@ namespace stump
 
         GameObject&                 add_game_object();
         [[nodiscard]] SDL_Renderer* get_renderer() const;
-        [[nodiscard]] InputHandler& get_input();
 
         [[nodiscard]] const std::vector<std::unique_ptr<GameObject>>& get_all_game_objects()
         {
@@ -40,7 +38,6 @@ namespace stump
         void run_one_loop();
         void delete_marked_game_objects();
 
-        InputHandler                                   m_input_handler;
         double                                         m_refresh_rate_delay{};
         SDL_Window*                                    m_window{};
         SDL_Renderer*                                  m_renderer{};

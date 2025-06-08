@@ -1,61 +1,64 @@
 #include "GameObject.h"
 
 #include <StumpEngine.h>
+#include <vec2.hpp>
 #include <Component/Component.h>
 #include <Component/Transform.h>
-#include <vec2.hpp>
 
-stump::GameObject::GameObject(StumpEngine& engine)
-    : m_engine(engine)
-    , m_transform(add_component<Transform>(glm::vec2{ 0.0f, 0.0f }))
+namespace stump
 {
-}
-
-void stump::GameObject::mark_for_deletion()
-{
-    m_marked_for_deletion = true;
-}
-
-void stump::GameObject::fixed_update() const
-{
-    for (const auto& component : m_components)
+    GameObject::GameObject(StumpEngine& engine)
+        : m_engine(engine)
+        , m_transform(add_component<Transform>(glm::vec2{ 0.0f, 0.0f }))
     {
-        component->fixed_update();
     }
-}
 
-stump::Transform& stump::GameObject::get_transform() const
-{
-    return m_transform;
-}
-
-void stump::GameObject::removed_marked_components()
-{
-    std::erase_if(m_components, [](auto& comp) { return comp->is_marked_for_delection(); });
-}
-
-stump::StumpEngine& stump::GameObject::get_engine() const
-{
-    return m_engine;
-}
-
-bool stump::GameObject::is_marked_for_deletion() const
-{
-    return m_marked_for_deletion;
-}
-
-void stump::GameObject::update() const
-{
-    for (const auto& component : m_components)
+    void GameObject::mark_for_deletion()
     {
-        component->update();
+        m_marked_for_deletion = true;
     }
-}
 
-void stump::GameObject::render(SDL_Renderer* renderer) const
-{
-    for (const auto& component : m_components)
+    void GameObject::fixed_update() const
     {
-        component->render(renderer);
+        for (const auto& component : m_components)
+        {
+            component->fixed_update();
+        }
     }
-}
+
+    Transform& GameObject::get_transform() const
+    {
+        return m_transform;
+    }
+
+    void GameObject::removed_marked_components()
+    {
+        std::erase_if(m_components, [](auto& comp) { return comp->is_marked_for_delection(); });
+    }
+
+    StumpEngine& GameObject::get_engine() const
+    {
+        return m_engine;
+    }
+
+    bool GameObject::is_marked_for_deletion() const
+    {
+        return m_marked_for_deletion;
+    }
+
+    void GameObject::update() const
+    {
+        for (const auto& component : m_components)
+        {
+            component->update();
+        }
+    }
+
+    void GameObject::render(SDL_Renderer* renderer) const
+    {
+        for (const auto& component : m_components)
+        {
+            component->render(renderer);
+        }
+    }
+} // namespace stump

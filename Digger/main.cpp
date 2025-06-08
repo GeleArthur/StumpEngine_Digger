@@ -7,21 +7,21 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
+#include <StumpEngine.h>
 #include <SoundSystem/SoundSystemLocator.h>
 #include <SoundSystem/SoundSystemLogger.h>
 #include <SoundSystem/SoundSystemSDL3_Mixer.h>
-#include <StumpEngine.h>
 
-#include <Component/FpsShowCase.h>
+#include "GameObject.h"
 #include "Component/TextDisplay.h"
 #include "Component/Texture2D.h"
 #include "Component/Transform.h"
 #include "Components/Digger.h"
 #include "Components/DirtDrawer.h"
-#include "Components/GridWalls.h"
-#include "GameObject.h"
 #include "Components/GoldBag.h"
 #include "Components/GridTransform.h"
+#include "Components/GridWalls.h"
+#include <Component/FpsShowCase.h>
 
 #if defined(WIN32)
 #include <windows.h>
@@ -78,8 +78,7 @@ static void init_game(stump::StumpEngine& engine)
 int main(int, char*[])
 {
     AllocateConsole();
-    auto engine = stump::StumpEngine{ init_game };
-    engine.run();
+    stump::StumpEngine{ init_game }.run();
 
     return 0;
 }
