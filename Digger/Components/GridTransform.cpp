@@ -45,9 +45,39 @@ void GridTransform::move_vertical(bool going_down)
         m_sub_position.y = -m_sub_position.y + direction;
     }
 }
+void GridTransform::move(glm::vec2 direction)
+{
+    if (std::abs(direction.x) > std::abs(direction.y))
+    {
+        move_horizontal(direction.x > 0.0f);
+    }
+    else
+    {
+        move_vertical(direction.y > 0.0f);
+    }
+}
+bool GridTransform::can_move_direction(const glm::vec2& direction) const
+{
+    if (std::abs(direction.x) > std::abs(direction.y))
+    {
+        return can_move_horizontal();
+    }
+    else
+    {
+        return can_move_vertical();
+    }
+}
 bool GridTransform::can_move_any_direction() const
 {
     return m_sub_position.x == 0 && m_sub_position.y == 0;
+}
+bool GridTransform::can_move_horizontal() const
+{
+    return m_sub_position.y == 0;
+}
+bool GridTransform::can_move_vertical() const
+{
+    return m_sub_position.x == 0;
 }
 glm::vec2 GridTransform::get_real_position() const
 {

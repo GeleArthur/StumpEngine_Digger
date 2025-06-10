@@ -61,7 +61,7 @@ static void init_game(stump::StumpEngine& engine)
     stump::GameObject& digger = engine.add_game_object();
     digger.add_component<stump::Texture2D>("data/driller.png").draw_center(true);
     digger.add_component<GridTransform>();
-    digger.add_component<Digger>(gold_pos);
+    digger.add_component<Digger>();
 
     stump::GameObject& fps_display = engine.add_game_object();
     fps_display.get_transform().set_local_position(glm::vec2{ 0, 0 });

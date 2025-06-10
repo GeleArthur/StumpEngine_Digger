@@ -2,7 +2,6 @@
 
 namespace stump
 {
-
     bool InputBindingButton::get_current_state() const
     {
         return m_current_data;
@@ -39,30 +38,64 @@ namespace stump
     {
         return m_current_data;
     }
+    Event<float>* InputBindingAxis::on_full_press()
+    {
+        return &m_on_full_press;
+    }
+    Event<float>* InputBindingAxis::on_change()
+    {
+        return &m_on_change;
+    }
+    Event<float>* InputBindingAxis::on_full_release()
+    {
+        return &m_on_full_release;
+    }
     void InputBindingAxis::update_binding(float axis, bool full_pressed_frame, bool full_release_frame)
     {
         if (m_current_data != axis)
         {
-            on_change.notify_listeners(axis);
+            m_on_change.notify_listeners(axis);
             m_current_data = axis;
         }
 
         if (full_pressed_frame)
         {
-            on_full_press.notify_listeners(m_current_data);
+            m_on_full_press.notify_listeners(m_current_data);
         }
 
         if (full_release_frame)
         {
-            on_full_release.notify_listeners(m_current_data);
+            m_on_full_release.notify_listeners(m_current_data);
         }
     }
-    void InputBindingVector::update_binding(glm::vec2 new_direction)
+    Event<glm::vec2>* InputBindingVector::on_start()
+    {
+        return &m_on_start;
+    }
+    Event<glm::vec2>* InputBindingVector::on_pressed()
+    {
+        return &m_on_pressed;
+    }
+    Event<glm::vec2>* InputBindingVector::on_release()
+    {
+        return &m_on_release;
+    }
+    void InputBindingVector::update_binding(glm::vec2 new_direction, bool released, bool pressed)
     {
         if (m_current_data != new_direction)
         {
             m_current_data = new_direction;
-            on_change.notify_listeners(m_current_data);
+            m_on_pressed.notify_listeners(m_current_data);
+        }
+
+        if (released)
+        {
+            m_on_release.notify_listeners(new_direction);
+        }
+
+        if (pressed)
+        {
+            m_on_pressed.notify_listeners(new_direction);
         }
     }
     glm::vec2 InputBindingVector::get_current_state() const

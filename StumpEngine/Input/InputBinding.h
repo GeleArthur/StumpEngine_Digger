@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include <Event.h>
 #include <EventListener.h>
 #include <glm.hpp>
@@ -8,7 +9,7 @@ namespace stump
     class InputBindingButton final
     {
     public:
-        InputBindingButton() = default;
+        explicit InputBindingButton() = default;
         ~InputBindingButton() = default;
 
         InputBindingButton(const InputBindingButton& other) = delete;
@@ -33,7 +34,7 @@ namespace stump
     class InputBindingAxis final
     {
     public:
-        InputBindingAxis() = default;
+        explicit InputBindingAxis() = default;
         ~InputBindingAxis() = default;
 
         InputBindingAxis(const InputBindingAxis& other) = delete;
@@ -41,14 +42,18 @@ namespace stump
         InputBindingAxis& operator=(const InputBindingAxis& other) = delete;
         InputBindingAxis& operator=(InputBindingAxis&& other) = delete;
 
-        Event<float> on_full_press;
-        Event<float> on_change;
-        Event<float> on_full_release;
+        Event<float>* on_full_press();
+        Event<float>* on_change();
+        Event<float>* on_full_release();
 
         void                update_binding(float axis, bool full_pressed_frame, bool full_release_frame);
         [[nodiscard]] float get_current_state() const;
 
     private:
+        Event<float> m_on_full_press;
+        Event<float> m_on_change;
+        Event<float> m_on_full_release;
+
         bool  m_full_pressed{};
         float m_current_data{};
     };
@@ -64,12 +69,18 @@ namespace stump
         InputBindingVector& operator=(const InputBindingVector& other) = delete;
         InputBindingVector& operator=(InputBindingVector&& other) = delete;
 
-        Event<glm::vec2> on_change;
+        Event<glm::vec2>* on_start();
+        Event<glm::vec2>* on_pressed();
+        Event<glm::vec2>* on_release();
 
-        void                    update_binding(glm::vec2 new_dirction);
+        void                    update_binding(glm::vec2 new_direction, bool released, bool pressed);
         [[nodiscard]] glm::vec2 get_current_state() const;
 
     private:
+        Event<glm::vec2> m_on_start;
+        Event<glm::vec2> m_on_pressed;
+        Event<glm::vec2> m_on_release;
+
         glm::vec2 m_current_data{};
     };
 } // namespace stump

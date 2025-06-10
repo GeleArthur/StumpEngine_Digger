@@ -16,7 +16,11 @@ public:
 
     void move_horizontal(bool going_left);
     void move_vertical(bool going_down);
+    void move(glm::vec2 direction);
+    bool can_move_direction(const glm::vec2& direction) const;
     bool can_move_any_direction() const;
+    bool can_move_horizontal() const;
+    bool can_move_vertical() const;
 
     glm::vec2 get_real_position() const;
 
