@@ -7,6 +7,8 @@
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_render.h"
 
+#include <vec2.hpp>
+
 namespace stump
 {
     class IRenderable;
@@ -25,6 +27,8 @@ namespace stump
 
         GameObject&                 add_game_object();
         [[nodiscard]] SDL_Renderer* get_renderer() const;
+        void                        set_window_size(int width, int height);
+        const glm::ivec2&           get_window_size() const;
 
         [[nodiscard]] const std::vector<std::unique_ptr<GameObject>>& get_all_game_objects()
         {
@@ -43,10 +47,10 @@ namespace stump
         SDL_Renderer*                                  m_renderer{};
         std::vector<std::unique_ptr<GameObject>>       m_game_objects{};
         std::chrono::duration<float>                   m_time_passed{};
-        const std::chrono::duration<float, std::milli> m_fixed_update_time =
-            std::chrono::duration<float, std::milli>(45.0f);
+        const std::chrono::duration<float, std::milli> m_fixed_update_time = std::chrono::duration<float, std::milli>(45.0f);
 
-        bool m_is_quitting{ false };
+        bool       m_is_quitting{ false };
+        glm::ivec2 m_window_size{ 900, 600 };
     };
 
 } // namespace stump

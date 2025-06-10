@@ -29,7 +29,7 @@ namespace stump
             throw std::exception(std::format("Couldn't initialize TTF: {}", SDL_GetError()).c_str());
         }
 
-        if (m_window = SDL_CreateWindow("Programming 4 Engine", 960, 600, SDL_WINDOW_HIDDEN); m_window == nullptr)
+        if (m_window = SDL_CreateWindow("Programming 4 Engine", m_window_size.x, m_window_size.y, SDL_WINDOW_HIDDEN); m_window == nullptr)
         {
             throw std::exception(std::format("Couldn't initialize window: {}", SDL_GetError()).c_str());
         }
@@ -38,7 +38,6 @@ namespace stump
         {
             throw std::exception(std::format("Couldn't initialize renderer: {}", SDL_GetError()).c_str());
         }
-        SDL_ShowWindow(m_window);
 
         SDL_DisplayMode** display_info = SDL_GetFullscreenDisplayModes(SDL_GetPrimaryDisplay(), nullptr);
         m_refresh_rate_delay = 1.0 / display_info[0]->refresh_rate;
@@ -60,6 +59,8 @@ namespace stump
         InputManager::instance().fetch_devices();
 
         function(*this);
+
+        SDL_ShowWindow(m_window);
     }
 
     StumpEngine::~StumpEngine()
@@ -83,6 +84,17 @@ namespace stump
     SDL_Renderer* StumpEngine::get_renderer() const
     {
         return m_renderer;
+    }
+    void StumpEngine::set_window_size(int width, int height)
+    {
+        m_window_size.x = width;
+        m_window_size.y = height;
+
+        SDL_SetWindowSize(m_window, width, height);
+    }
+    const glm::ivec2& StumpEngine::get_window_size() const
+    {
+        return m_window_size;
     }
 
     void StumpEngine::run()

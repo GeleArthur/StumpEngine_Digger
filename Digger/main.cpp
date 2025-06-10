@@ -49,6 +49,8 @@ void AllocateConsole()
 
 static void init_game(stump::StumpEngine& engine)
 {
+    engine.set_window_size(900, 600);
+
     stump::GameObject& gird = engine.add_game_object();
     gird.add_component<DirtDrawer>();
     auto& grid_handler = gird.add_component<GridWalls>();

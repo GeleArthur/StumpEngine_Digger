@@ -50,7 +50,8 @@ DirtDrawer::DirtDrawer(stump::GameObject& attached_game_object)
 
 void DirtDrawer::render(SDL_Renderer* renderer)
 {
-    const SDL_FRect dst{ 0, 0, 960, 600 };
+    const glm::ivec2& window_size = get_game_object().get_engine().get_window_size();
+    const SDL_FRect   dst{ 0, 0, static_cast<float>(window_size.x), static_cast<float>(window_size.y) };
     SDL_RenderTexture(renderer, m_texture, nullptr, &dst);
 }
 
