@@ -48,10 +48,10 @@ endif()
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
-#target_compile_options(${PROJECT_NAME} PRIVATE
-#        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
-#        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
-#)
+target_compile_options(${PROJECT_NAME} PRIVATE
+        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
+)
 
 if(EMSCRIPTING)
     # TODO: Import all of the data folder

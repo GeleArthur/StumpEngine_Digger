@@ -11,9 +11,14 @@ public:
 
     void update() override;
 
-    glm::ivec2 get_grid_position() const
+    [[nodiscard]] glm::ivec2 get_grid_position() const
     {
         return m_grid_position;
+    };
+
+    [[nodiscard]] glm::ivec2 get_sub_position() const
+    {
+        return m_sub_position;
     };
 
     void move_horizontal(bool going_left);

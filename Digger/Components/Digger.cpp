@@ -48,9 +48,6 @@ void Digger::update()
         }
     }
 }
-void Digger::render(SDL_Renderer* renderer)
-{
-}
 void Digger::player_moved(const glm::ivec2& direction)
 {
     if (std::abs(direction.x) > std::abs(direction.y))

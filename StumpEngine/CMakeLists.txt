@@ -40,7 +40,7 @@ target_include_directories(StumpEngine PUBLIC ${glm_SOURCE_DIR})
 FetchContent_Declare(
         imgui
         GIT_REPOSITORY https://github.com/ocornut/imgui.git
-        GIT_TAG docking
+        GIT_TAG v1.91.9b-docking
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE
 )
@@ -185,7 +185,7 @@ else()
     FetchContent_Declare(
             SDL3_mixer
             GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer.git
-            GIT_TAG 6509f9f2117513bd8d6677c4370194be932b1fe8
+            GIT_TAG 30c1301055a35ee87b8679279b6fc88e10d28fa3
             GIT_SHALLOW TRUE
             GIT_PROGRESS TRUE
     )

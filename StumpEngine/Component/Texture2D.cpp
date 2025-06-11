@@ -11,9 +11,9 @@ namespace stump
 {
     Texture2D::Texture2D(GameObject& attached_game_object, const std::string& path)
         : Component(attached_game_object)
+        , m_texture(ResourceManager::instance().get_texture(path))
         , m_transform(get_game_object().get_component<Transform>())
     {
-        m_texture = ResourceManager::instance().get_texture(path);
         SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
     }
 

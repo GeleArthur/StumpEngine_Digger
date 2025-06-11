@@ -62,6 +62,7 @@ void DirtGrid::render(SDL_Renderer* renderer)
     const SDL_FRect   dst{ 0, 0, static_cast<float>(window_size.x), static_cast<float>(window_size.y) };
     SDL_RenderTexture(renderer, m_texture, nullptr, &dst);
 
+    SDL_SetRenderDrawColor(renderer, 0, 255u, 0, 255);
     for (int x = 0; x < m_horizonal_walls.size(); ++x)
     {
         for (int y = 0; y < m_horizonal_walls[y].size(); ++y)
@@ -108,4 +109,24 @@ void DirtGrid::delete_on_texture(const SDL_Rect& rect) const
     }
 
     SDL_UnlockTexture(m_texture);
+}
+bool DirtGrid::get_horizontal_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
+{
+    assert(from.x != to.x && "Use veritcal wall");
+
+    return m_horizonal_walls.at(from.x).at(std::max(from.y, to.y));
+}
+bool DirtGrid::get_vertical_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
+{
+    assert(from.y != to.y && "Use horizontal");
+
+    return m_vertical_walls.at(from.y).at(std::max(from.x, to.x));
+}
+void DirtGrid::clear_horizontal_wall_between(const glm::ivec2& from, const glm::ivec2& to)
+{
+    m_horizonal_walls.at(from.x).at(std::max(from.y, to.y)) = false;
+}
+void DirtGrid::clear_vertical_wall_between(const glm::ivec2& from, const glm::ivec2& to)
+{
+    m_vertical_walls.at(std::max(from.x, to.x)).at(from.y) = false;
 }
