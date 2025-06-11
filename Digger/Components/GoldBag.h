@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "GridWalls.h"
 
 #include <Component/Component.h>
 #include <memory>

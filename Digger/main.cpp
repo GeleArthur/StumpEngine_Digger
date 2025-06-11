@@ -20,7 +20,6 @@
 #include "Components/DirtGrid.h"
 #include "Components/GoldBag.h"
 #include "Components/GridTransform.h"
-#include "Components/GridWalls.h"
 #include <Component/FpsShowCase.h>
 
 #if defined(WIN32)
