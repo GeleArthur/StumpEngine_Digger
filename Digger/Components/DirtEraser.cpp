@@ -9,7 +9,7 @@ DirtEraser::DirtEraser(stump::GameObject& owner, DirtGrid& dirt_eraser)
     : Component{ owner }
     , m_grid_transform{ owner.get_component<GridTransform>() }
     , m_dirt_grid{ &dirt_eraser }
-    , m_grid_moved{ std::bind(&DirtEraser::erase_grid, this) }
+    , m_grid_moved{ [this](const glm::ivec2&) { erase_grid(); } }
 {
     m_grid_transform->get_moved_event().add_listener(&m_grid_moved);
 }

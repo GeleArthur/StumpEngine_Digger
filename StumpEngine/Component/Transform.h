@@ -8,7 +8,7 @@ namespace stump
     class Transform final : public Component
     {
     public:
-        explicit Transform(GameObject& attached_game_object, const glm::vec2& pos);
+        explicit Transform(GameObject& attached_game_object, const glm::vec2& pos = {});
         ~Transform() override;
 
         Transform(const Transform& other) = delete;

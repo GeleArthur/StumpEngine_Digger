@@ -16,8 +16,8 @@ public:
     }
 
 private:
-    GridTransform*         m_grid_transform;
-    DirtGrid*              m_dirt_grid;
-    stump::EventListener<> m_grid_moved;
-    glm::ivec2             m_erase_size{ 17 * 3, 16 * 3 };
+    GridTransform*                   m_grid_transform;
+    DirtGrid*                        m_dirt_grid;
+    stump::EventListener<glm::ivec2> m_grid_moved;
+    glm::ivec2                       m_erase_size{ 17 * 3, 16 * 3 };
 };

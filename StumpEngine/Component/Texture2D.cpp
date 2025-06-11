@@ -40,6 +40,6 @@ namespace stump
         {
             dest_location = SDL_FRect{ pos.x, pos.y, (m_texture->w * m_size_mulitplire), (m_texture->h * m_size_mulitplire) };
         }
-        SDL_RenderTexture(renderer, m_texture, nullptr, &dest_location);
+        SDL_RenderTextureRotated(renderer, m_texture, nullptr, &dest_location, 0, nullptr, SDL_FLIP_NONE);
     }
 } // namespace stump

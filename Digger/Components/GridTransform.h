@@ -26,10 +26,10 @@ public:
 
     glm::vec2 get_real_position() const;
 
-    stump::Event<>& get_moved_event();
+    stump::Event<glm::ivec2>& get_moved_event();
 
 private:
-    glm::ivec2     m_grid_position;
-    glm::ivec2     m_sub_position;
-    stump::Event<> m_moved;
+    glm::ivec2               m_grid_position;
+    glm::ivec2               m_sub_position;
+    stump::Event<glm::ivec2> m_moved;
 };

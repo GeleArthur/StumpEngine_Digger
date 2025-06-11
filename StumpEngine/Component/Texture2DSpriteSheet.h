@@ -26,11 +26,25 @@ namespace stump
             return *this;
         }
 
+        Texture2DSpriteSheet& set_flip_mode(const SDL_FlipMode mode)
+        {
+            m_flip_mode = mode;
+            return *this;
+        }
+
+        Texture2DSpriteSheet& set_rotation(const float rotation)
+        {
+            m_rotation = rotation;
+            return *this;
+        }
+
     private:
         glm::ivec2   m_sprite_index{};
         glm::ivec2   m_sprite_size{};
         SDL_Texture* m_texture;
         Transform*   m_transform;
         float        m_size_multiplier{ 1 };
+        float        m_rotation{ 0 };
+        SDL_FlipMode m_flip_mode{ SDL_FLIP_NONE };
     };
 } // namespace stump

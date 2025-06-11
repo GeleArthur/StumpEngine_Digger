@@ -28,7 +28,8 @@ void stump::Texture2DSpriteSheet::render(SDL_Renderer* renderer)
         static_cast<float>(m_sprite_size.y) * m_size_multiplier
     };
 
-    SDL_RenderTexture(renderer, m_texture, &src_location, &dest_location);
+    // SDL_RenderTexture(renderer, m_texture, &src_location, &dest_location);
+    SDL_RenderTextureRotated(renderer, m_texture, &src_location, &dest_location, m_rotation, nullptr, m_flip_mode);
 
     SDL_RenderRect(renderer, &dest_location);
 }
