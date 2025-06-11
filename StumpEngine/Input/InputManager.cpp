@@ -2,11 +2,6 @@
 
 namespace stump
 {
-    InputManager& InputManager::instance()
-    {
-        static InputManager input;
-        return input;
-    }
     void InputManager::fetch_devices()
     {
         m_gamepads.clear();

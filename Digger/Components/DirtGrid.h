@@ -8,13 +8,13 @@ namespace GridSettings
 {
     constexpr static glm::ivec2 grid_tile_count{ 15, 10 };
     constexpr static glm::ivec2 grid_offset{ 16, 32 };
-    constexpr static glm::ivec2 grid_tile_pixel_size{ 60, 50 };
+    constexpr static glm::ivec2 grid_tile_pixel_size{ 60, 52 };
 } // namespace GridSettings
 
 class DirtGrid final : public stump::Component
 {
 public:
-    explicit DirtGrid(stump::GameObject& attached_game_object);
+    explicit DirtGrid(stump::GameObject& attached_game_object, SDL_Renderer* renderer);
     void render(SDL_Renderer* renderer) override;
     void update() override;
 

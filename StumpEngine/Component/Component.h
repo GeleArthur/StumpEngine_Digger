@@ -11,12 +11,12 @@ namespace stump
         explicit Component(GameObject& attached_game_object);
         virtual ~Component() = default;
 
-        [[nodiscard]] GameObject& get_game_object() const;
-
         Component(const Component& other) = delete;
         Component(Component&& other) = delete;
         Component& operator=(const Component& other) = delete;
         Component& operator=(Component&& other) = delete;
+
+        [[nodiscard]] GameObject& get_game_object() const;
 
         virtual void fixed_update();
         virtual void update();

@@ -1,13 +1,13 @@
 #pragma once
+#include <Singleton.h>
 #include <chrono>
 
 namespace stump
 {
-    class EngineTime
+    class EngineTime : public Singleton<EngineTime>
     {
     public:
-        static EngineTime& instance();
-
+        friend Singleton;
         float delta_time{};
         float current_time{};
 

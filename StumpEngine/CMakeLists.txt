@@ -22,10 +22,10 @@ target_compile_features(StumpEngine PRIVATE cxx_std_20)
 file(GLOB_RECURSE header_files CONFIGURE_DEPENDS "*.h")
 target_include_directories(StumpEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-#target_compile_options(StumpEngine PRIVATE
-#        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
-#        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
-#)
+target_compile_options(StumpEngine PRIVATE
+        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
+)
 
 # Import libarys
 

@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <Event.h>
+#include <EventListener.h>
 #include <vec2.hpp>
 #include <Component/Component.h>
 
@@ -24,9 +26,10 @@ public:
 
     glm::vec2 get_real_position() const;
 
-private:
-    constexpr static glm::ivec2 what{ 10, 10 };
+    stump::Event<>& get_moved_event();
 
-    glm::ivec2 m_grid_position;
-    glm::ivec2 m_sub_position;
+private:
+    glm::ivec2     m_grid_position;
+    glm::ivec2     m_sub_position;
+    stump::Event<> m_moved;
 };

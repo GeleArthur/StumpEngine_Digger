@@ -24,12 +24,17 @@ void GridTransform::move_horizontal(bool going_left)
 
     const int direction = going_left ? 1 : -1;
 
+    if ((m_grid_position.x <= 0 && m_sub_position.x + direction < 0) ||
+        (m_grid_position.x >= GridSettings::grid_tile_count.x - 1 && m_sub_position.x + direction > 0))
+        return;
+
     m_sub_position.x += direction;
     if (std::abs(m_sub_position.x) > 2)
     {
         m_grid_position.x += direction;
         m_sub_position.x = -m_sub_position.x + direction;
     }
+    m_moved.notify_listeners();
 }
 void GridTransform::move_vertical(bool going_down)
 {
@@ -38,12 +43,17 @@ void GridTransform::move_vertical(bool going_down)
 
     const int direction = going_down ? 1 : -1;
 
+    if ((m_grid_position.y <= 0 && m_sub_position.y + direction < 0) ||
+        (m_grid_position.y >= GridSettings::grid_tile_count.y - 1 && m_sub_position.y + direction > 0))
+        return;
+
     m_sub_position.y += direction;
     if (std::abs(m_sub_position.y) > 2)
     {
         m_grid_position.y += direction;
         m_sub_position.y = -m_sub_position.y + direction;
     }
+    m_moved.notify_listeners();
 }
 void GridTransform::move(glm::vec2 direction)
 {
@@ -85,4 +95,8 @@ glm::vec2 GridTransform::get_real_position() const
         GridSettings::grid_offset.x + m_grid_position.x * GridSettings::grid_tile_pixel_size.x + GridSettings::grid_tile_pixel_size.y / 2 + m_sub_position.x * GridSettings::grid_tile_pixel_size.x / 5,
         GridSettings::grid_offset.y + m_grid_position.y * GridSettings::grid_tile_pixel_size.y + GridSettings::grid_tile_pixel_size.x / 2 + m_sub_position.y * GridSettings::grid_tile_pixel_size.y / 5,
     };
+}
+stump::Event<>& GridTransform::get_moved_event()
+{
+    return m_moved;
 }

@@ -13,11 +13,11 @@ struct colors
     uint8_t b;
 };
 
-DirtGrid::DirtGrid(stump::GameObject& attached_game_object)
+DirtGrid::DirtGrid(stump::GameObject& attached_game_object, SDL_Renderer* renderer)
     : Component{ attached_game_object }
 {
-    // TODO: screen size
-    m_texture = SDL_CreateTexture(get_game_object().get_engine().get_renderer(), SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STREAMING, 320, 200);
+    const glm::ivec2 window_size = get_game_object().get_engine().get_window_size();
+    m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STREAMING, window_size.x, window_size.y);
     SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
 
     colors* pixel_data{};
@@ -26,7 +26,7 @@ DirtGrid::DirtGrid(stump::GameObject& attached_game_object)
 
     for (int i = 0; i < m_texture->w * m_texture->h; ++i)
     {
-        // TODO: Wrong need to reworked as red and orange lines are not equal
+        // // TODO: Wrong need to reworked as red and orange lines are not equal
         const int x = i % m_texture->w;
         const int y = i / m_texture->w;
         const int period = 6;
@@ -41,9 +41,9 @@ DirtGrid::DirtGrid(stump::GameObject& attached_game_object)
 
         const bool use_first_color = above ^ (stripe & 1);
 
-        const colors what = use_first_color ? colors{ 204, 0, 0 } : colors{ 204, 116, 0 };
+        pixel_data[i] = use_first_color ? colors{ 204, 0, 0 } : colors{ 204, 116, 0 };
 
-        pixel_data[i] = what;
+        // pixel_data[i] = colors{ 204, 116, 0 };
     }
     SDL_UnlockTexture(m_texture);
 
@@ -104,8 +104,7 @@ void DirtGrid::delete_on_texture(const SDL_Rect& rect) const
     const std::span mapped_data(pixel_data, m_texture->w * m_texture->h);
     for (int i = 0; i < rect.w * rect.h; ++i)
     {
-        mapped_data[rect.x / 3 + rect.y / 3 * m_texture->w + (i % rect.w) + ((i / rect.w) * m_texture->w)] =
-            colors{ 0, 0, 0 };
+        mapped_data[rect.x + rect.y * m_texture->w + (i % rect.w) + ((i / rect.w) * m_texture->w)] = colors{ 0, 0, 0 };
     }
 
     SDL_UnlockTexture(m_texture);

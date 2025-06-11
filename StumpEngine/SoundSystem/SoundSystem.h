@@ -3,7 +3,6 @@
 
 namespace stump
 {
-
     class SoundSystem
     {
     public:

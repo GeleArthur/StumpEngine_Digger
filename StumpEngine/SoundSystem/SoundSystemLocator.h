@@ -2,7 +2,6 @@
 #include <memory>
 
 #include "SoundSystem.h"
-#include "SoundSystemNull.h"
 
 namespace stump
 {

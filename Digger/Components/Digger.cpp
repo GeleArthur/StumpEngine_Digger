@@ -28,7 +28,7 @@ Digger::Digger(stump::GameObject& attached)
 }
 void Digger::update()
 {
-    glm::vec2 out = m_movement.get_current_state();
+    const glm::vec2 out = m_movement.get_current_state();
 
     if (glm::dot(out, out) > 0.1f)
     {
@@ -50,13 +50,5 @@ void Digger::update()
 }
 void Digger::render(SDL_Renderer* renderer)
 {
-    ImGui::ShowDemoWindow();
+}
 
-    ImGui::Begin("Digger Information", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    ImGui::Text("Digger Status Window");
-    ImGui::End();
-}
-void Digger::press_button()
-{
-    std::cout << "HOLY FACK";
-}

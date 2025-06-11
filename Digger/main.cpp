@@ -17,10 +17,12 @@
 #include "Component/Texture2D.h"
 #include "Component/Transform.h"
 #include "Components/Digger.h"
+#include "Components/DirtEraser.h"
 #include "Components/DirtGrid.h"
 #include "Components/GoldBag.h"
 #include "Components/GridTransform.h"
 #include <Component/FpsShowCase.h>
+#include <Component/Texture2DSpriteSheet.h>
 
 #if defined(WIN32)
 #include <windows.h>
@@ -51,7 +53,7 @@ static void init_game(stump::StumpEngine& engine)
     engine.set_window_size(900, 600);
 
     stump::GameObject& gird = engine.add_game_object();
-    gird.add_component<DirtGrid>();
+    auto&              dirt = gird.add_component<DirtGrid>(engine.get_renderer());
 
     stump::GameObject& gold_bag = engine.add_game_object();
     gold_bag.add_component<stump::Texture2D>("data/money.png").draw_center(true).draw_size(3);
@@ -59,9 +61,10 @@ static void init_game(stump::StumpEngine& engine)
     gold_bag.add_component<GoldBag>();
 
     stump::GameObject& digger = engine.add_game_object();
-    digger.add_component<stump::Texture2D>("data/driller.png").draw_center(true);
+    digger.add_component<stump::Texture2DSpriteSheet>("data/SpritesPlayers.png").set_sprite_size({ 16, 16 }).set_size_multiplier(3);
     digger.add_component<GridTransform>();
     digger.add_component<Digger>();
+    digger.add_component<DirtEraser>(dirt);
 
     stump::GameObject& fps_display = engine.add_game_object();
     fps_display.get_transform().set_local_position(glm::vec2{ 0, 0 });

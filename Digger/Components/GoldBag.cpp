@@ -4,6 +4,7 @@
 
 #include <EngineTime.h>
 #include <GameObject.h>
+#include <Singleton.h>
 #include <Component/Transform.h>
 
 // Idle state
