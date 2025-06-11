@@ -1,4 +1,4 @@
-﻿#include "DirtDrawer.h"
+﻿#include "DirtGrid.h"
 
 #include <GameObject.h>
 #include <SDL3/SDL_render.h>
@@ -13,7 +13,7 @@ struct colors
     uint8_t b;
 };
 
-DirtDrawer::DirtDrawer(stump::GameObject& attached_game_object)
+DirtGrid::DirtGrid(stump::GameObject& attached_game_object)
     : Component{ attached_game_object }
 {
     // TODO: screen size
@@ -46,18 +46,56 @@ DirtDrawer::DirtDrawer(stump::GameObject& attached_game_object)
         pixel_data[i] = what;
     }
     SDL_UnlockTexture(m_texture);
+
+    for (auto& walls : m_horizonal_walls)
+        for (bool& wall : walls)
+            wall = true;
+
+    for (auto& walls : m_vertical_walls)
+        for (bool& wall : walls)
+            wall = true;
 }
 
-void DirtDrawer::render(SDL_Renderer* renderer)
+void DirtGrid::render(SDL_Renderer* renderer)
 {
     const glm::ivec2& window_size = get_game_object().get_engine().get_window_size();
     const SDL_FRect   dst{ 0, 0, static_cast<float>(window_size.x), static_cast<float>(window_size.y) };
     SDL_RenderTexture(renderer, m_texture, nullptr, &dst);
+
+    for (int x = 0; x < m_horizonal_walls.size(); ++x)
+    {
+        for (int y = 0; y < m_horizonal_walls[y].size(); ++y)
+        {
+            if (m_horizonal_walls[x][y])
+            {
+                SDL_RenderLine(renderer,
+                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
+                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y),
+                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x + GridSettings::grid_tile_pixel_size.x),
+                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y));
+            }
+        }
+    }
+
+    for (int x = 0; x < m_vertical_walls.size(); ++x)
+    {
+        for (int y = 0; y < m_vertical_walls[y].size(); ++y)
+        {
+            if (m_vertical_walls[x][y])
+            {
+                SDL_RenderLine(renderer,
+                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
+                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y),
+                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
+                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y + GridSettings::grid_tile_pixel_size.y));
+            }
+        }
+    }
 }
 
-void DirtDrawer::update() {}
+void DirtGrid::update() {}
 
-void DirtDrawer::delete_on_texture(const SDL_Rect& rect) const
+void DirtGrid::delete_on_texture(const SDL_Rect& rect) const
 {
     colors* pixel_data{};
     int     pitch{};

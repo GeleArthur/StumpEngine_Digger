@@ -17,7 +17,7 @@
 #include "Component/Texture2D.h"
 #include "Component/Transform.h"
 #include "Components/Digger.h"
-#include "Components/DirtDrawer.h"
+#include "Components/DirtGrid.h"
 #include "Components/GoldBag.h"
 #include "Components/GridTransform.h"
 #include "Components/GridWalls.h"
@@ -52,13 +52,12 @@ static void init_game(stump::StumpEngine& engine)
     engine.set_window_size(900, 600);
 
     stump::GameObject& gird = engine.add_game_object();
-    gird.add_component<DirtDrawer>();
-    auto& grid_handler = gird.add_component<GridWalls>();
+    gird.add_component<DirtGrid>();
 
     stump::GameObject& gold_bag = engine.add_game_object();
     gold_bag.add_component<stump::Texture2D>("data/money.png").draw_center(true).draw_size(3);
     auto& gold_pos = gold_bag.add_component<GridTransform>(glm::ivec2{ 3, 0 });
-    gold_bag.add_component<GoldBag>(grid_handler);
+    gold_bag.add_component<GoldBag>();
 
     stump::GameObject& digger = engine.add_game_object();
     digger.add_component<stump::Texture2D>("data/driller.png").draw_center(true);

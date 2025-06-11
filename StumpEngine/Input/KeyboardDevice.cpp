@@ -34,10 +34,11 @@ void stump::KeyboardDevice::process_device()
     for (auto [y_up, y_down, x_left, x_right, vector_last, binding] : m_inputs_vector)
     {
         glm::vec2 out{};
-        out.x += 1.0f * m_sdl_keyboard[x_left];
-        out.x += -1.0f * m_sdl_keyboard[x_right];
-        out.y += 1.0f * m_sdl_keyboard[y_up];
-        out.y += -1.0f * m_sdl_keyboard[y_down];
+        out.x += -1.0f * m_sdl_keyboard[x_left];
+        out.x += 1.0f * m_sdl_keyboard[x_right];
+
+        out.y += -1.0f * m_sdl_keyboard[y_up];
+        out.y += 1.0f * m_sdl_keyboard[y_down];
 
         bool release{};
         bool pressed{};
@@ -55,7 +56,7 @@ void stump::KeyboardDevice::process_device()
         binding->update_binding(out, release, pressed);
     }
 }
-void stump::KeyboardDevice::add_button_binding(InputBindingButton& binding, SDL_Keycode key)
+void stump::KeyboardDevice::add_button_binding(InputBindingButton& binding, SDL_Scancode key)
 {
     m_inputs_button.emplace_back(key, false, &binding);
 }
@@ -65,7 +66,7 @@ void stump::KeyboardDevice::remove_button_binding(InputBindingButton& binding)
         return e.binding == &binding;
     }));
 }
-void stump::KeyboardDevice::add_axis_binding(InputBindingAxis& binding, SDL_Keycode key)
+void stump::KeyboardDevice::add_axis_binding(InputBindingAxis& binding, SDL_Scancode key)
 {
     m_inputs_axis.emplace_back(key, false, &binding);
 }
@@ -75,7 +76,7 @@ void stump::KeyboardDevice::remove_axis_binding(InputBindingAxis& binding)
         return e.binding == &binding;
     }));
 }
-void stump::KeyboardDevice::add_vector_binding(InputBindingVector& binding, SDL_Keycode y_up, SDL_Keycode y_down, SDL_Keycode x_left, SDL_Keycode x_right)
+void stump::KeyboardDevice::add_vector_binding(InputBindingVector& binding, SDL_Scancode y_up, SDL_Scancode y_down, SDL_Scancode x_left, SDL_Scancode x_right)
 {
     m_inputs_vector.emplace_back(y_up, y_down, x_left, x_right, glm::vec2{}, &binding);
 }

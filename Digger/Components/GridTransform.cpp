@@ -1,6 +1,6 @@
 ﻿#include "GridTransform.h"
 
-#include "GridWalls.h"
+#include "DirtGrid.h"
 
 #include <GameObject.h>
 #include <cmath>

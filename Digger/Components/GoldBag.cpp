@@ -41,9 +41,8 @@ std::unique_ptr<IGoldBagState> GoldBagFalling::update(GoldBag&)
 }
 
 // GoldBag
-GoldBag::GoldBag(stump::GameObject& attached, GridWalls& walls)
+GoldBag::GoldBag(stump::GameObject& attached)
     : Component{ attached }
-    , m_walls{ walls }
 {
     m_current_state = std::make_unique<GoldBagIdle>();
 }
@@ -64,8 +63,4 @@ void GoldBag::pushing(bool going_left)
     {
         m_current_state = std::make_unique<GoldBagPushed>(going_left);
     }
-}
-Walls GoldBag::get_current_walls() const
-{
-    return m_walls.get_walls(0, 0);
 }

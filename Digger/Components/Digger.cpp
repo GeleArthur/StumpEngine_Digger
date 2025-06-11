@@ -9,18 +9,20 @@
 Digger::Digger(stump::GameObject& attached)
     : Component{ attached }
     , m_button_pressed{ [&] { press_button(); } }
+    , m_grid_transform{ get_game_object().get_component<GridTransform>() }
 {
     m_button.get_on_pressed()->add_listener(&m_button_pressed);
-
     stump::InputManager::instance().get_keyboard().add_button_binding(m_button, SDL_SCANCODE_W);
+
+    stump::InputManager::instance().get_keyboard().add_vector_binding(m_movement, SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D);
     for (stump::GamepadDevice& gamepad : stump::InputManager::instance().get_gamepads())
     {
         gamepad.add_button_binding(m_button, SDL_GAMEPAD_BUTTON_SOUTH);
-        gamepad.add_vector_sides_binding(m_movement,
-                                         SDL_GAMEPAD_BUTTON_DPAD_UP,
-                                         SDL_GAMEPAD_BUTTON_DPAD_DOWN,
-                                         SDL_GAMEPAD_BUTTON_DPAD_LEFT,
-                                         SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
+        // gamepad.add_vector_sides_binding(m_movement,
+        //                                  SDL_GAMEPAD_BUTTON_DPAD_UP,
+        //                                  SDL_GAMEPAD_BUTTON_DPAD_DOWN,
+        //                                  SDL_GAMEPAD_BUTTON_DPAD_LEFT,
+        //                                  SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
     }
 }
 void Digger::update()
@@ -33,16 +35,14 @@ void Digger::update()
         {
             m_move_delay = stump::EngineTime::instance().current_time + 0.1f;
 
-            GridTransform* digger_transform = get_game_object().get_component<GridTransform>();
-
-            if (digger_transform->can_move_direction(out))
+            if (m_grid_transform->can_move_direction(out))
             {
-                digger_transform->move(out);
+                m_grid_transform->move(out);
                 m_last_move_direction = out;
             }
             else
             {
-                digger_transform->move(m_last_move_direction);
+                m_grid_transform->move(m_last_move_direction);
             }
         }
     }

@@ -40,14 +40,14 @@ public:
 class GoldBag final : public stump::Component
 {
 public:
-    explicit GoldBag(stump::GameObject& attached, GridWalls& walls);
+    explicit GoldBag(stump::GameObject& attached);
 
     void update() override;
     void pushing(bool going_left);
 
-    Walls get_current_walls() const;
+    // Walls get_current_walls() const;
 
 private:
     std::unique_ptr<IGoldBagState> m_current_state{};
-    GridWalls&                     m_walls;
+    // GridWalls&                     m_walls;
 };

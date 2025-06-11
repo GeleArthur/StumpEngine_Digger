@@ -10,24 +10,24 @@ namespace stump
 {
     struct ButtonBindingKeyboard
     {
-        SDL_Keycode         key;
+        SDL_Scancode        key;
         bool                pressed_last_frame;
         InputBindingButton* binding;
     };
 
     struct AxisBindingKeyboard
     {
-        SDL_Keycode       axis;
+        SDL_Scancode      axis;
         bool              pressed_last_frame;
         InputBindingAxis* binding;
     };
 
     struct VectorBindingKeyboard
     {
-        SDL_Keycode         y_up;
-        SDL_Keycode         y_down;
-        SDL_Keycode         x_left;
-        SDL_Keycode         x_right;
+        SDL_Scancode        y_up;
+        SDL_Scancode        y_down;
+        SDL_Scancode        x_left;
+        SDL_Scancode        x_right;
         glm::vec2           vector_last_frame;
         InputBindingVector* binding;
     };
@@ -37,11 +37,11 @@ namespace stump
     public:
         explicit KeyboardDevice();
         void process_device();
-        void add_button_binding(InputBindingButton& binding, SDL_Keycode key);
+        void add_button_binding(InputBindingButton& binding, SDL_Scancode key);
         void remove_button_binding(InputBindingButton& binding);
-        void add_axis_binding(InputBindingAxis& binding, SDL_Keycode key);
+        void add_axis_binding(InputBindingAxis& binding, SDL_Scancode key);
         void remove_axis_binding(InputBindingAxis& binding);
-        void add_vector_binding(InputBindingVector& binding, SDL_Keycode y_up, SDL_Keycode y_down, SDL_Keycode x_left, SDL_Keycode x_right);
+        void add_vector_binding(InputBindingVector& binding, SDL_Scancode y_up, SDL_Scancode y_down, SDL_Scancode x_left, SDL_Scancode x_right);
         void remove_vector_binding(InputBindingVector& binding);
 
     private:
