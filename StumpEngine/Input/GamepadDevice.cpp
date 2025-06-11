@@ -58,6 +58,12 @@ namespace stump
             bool      released{};
             bool      pressed{};
 
+            if (glm::dot(new_direction, new_direction) < 0.1f)
+            {
+                new_direction.x = 0.0f;
+                new_direction.y = 0.0f;
+            }
+
             if (glm::dot(new_direction, new_direction) > 0.1f && glm::dot(axis_last_frame, axis_last_frame) < 0.1f)
             {
                 pressed = true;
@@ -83,15 +89,17 @@ namespace stump
             bool release{};
             bool pressed{};
 
-            if ((out.x == 0.0f && out.y == 0.0f) && (vector_last.x != 0.0f && vector_last.y != 0.0f))
+            if ((out.x == 0.0f && out.y == 0.0f) && (vector_last.x != 0.0f || vector_last.y != 0.0f))
             {
                 release = true;
             }
 
-            if ((out.x != 0.0f && out.y != 0.0f) && (vector_last.x == 0.0f && vector_last.y == 0.0f))
+            if ((out.x != 0.0f && out.y != 0.0f) && (vector_last.x == 0.0f || vector_last.y == 0.0f))
             {
                 pressed = true;
             }
+
+            vector_last = out;
 
             binding->update_binding(out, release, pressed);
         }

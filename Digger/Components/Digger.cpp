@@ -18,11 +18,12 @@ Digger::Digger(stump::GameObject& attached)
     for (stump::GamepadDevice& gamepad : stump::InputManager::instance().get_gamepads())
     {
         gamepad.add_button_binding(m_button, SDL_GAMEPAD_BUTTON_SOUTH);
-        // gamepad.add_vector_sides_binding(m_movement,
-        //                                  SDL_GAMEPAD_BUTTON_DPAD_UP,
-        //                                  SDL_GAMEPAD_BUTTON_DPAD_DOWN,
-        //                                  SDL_GAMEPAD_BUTTON_DPAD_LEFT,
-        //                                  SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
+        gamepad.add_vector_binding(m_movement, SDL_GAMEPAD_AXIS_LEFTX, SDL_GAMEPAD_AXIS_LEFTY);
+        gamepad.add_vector_sides_binding(m_movement,
+                                         SDL_GAMEPAD_BUTTON_DPAD_UP,
+                                         SDL_GAMEPAD_BUTTON_DPAD_DOWN,
+                                         SDL_GAMEPAD_BUTTON_DPAD_LEFT,
+                                         SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
     }
 }
 void Digger::update()

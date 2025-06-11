@@ -82,12 +82,15 @@ namespace stump
     }
     void InputBindingVector::update_binding(glm::vec2 new_direction, bool released, bool pressed)
     {
-        m_current_data = glm::normalize(m_current_data);
-
-        if (m_current_data != new_direction)
+        if ((new_direction.x != 0.0f || new_direction.y != 0.0f) || released)
         {
-            m_current_data = new_direction;
-            m_on_pressed.notify_listeners(m_current_data);
+            new_direction = glm::normalize(new_direction);
+
+            if (m_current_data != new_direction)
+            {
+                m_current_data = new_direction;
+                m_on_pressed.notify_listeners(m_current_data);
+            }
         }
 
         if (released)

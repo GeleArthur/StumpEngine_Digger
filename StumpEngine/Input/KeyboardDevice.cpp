@@ -31,7 +31,7 @@ void stump::KeyboardDevice::process_device()
         binding->update_binding(held_down ? 0.0f : 1.0f, pressed_this_frame, released_this_frame);
     }
 
-    for (auto [y_up, y_down, x_left, x_right, vector_last, binding] : m_inputs_vector)
+    for (auto& [y_up, y_down, x_left, x_right, vector_last, binding] : m_inputs_vector)
     {
         glm::vec2 out{};
         out.x += -1.0f * m_sdl_keyboard[x_left];
@@ -43,15 +43,17 @@ void stump::KeyboardDevice::process_device()
         bool release{};
         bool pressed{};
 
-        if ((out.x == 0.0f && out.y == 0.0f) && (vector_last.x != 0.0f && vector_last.y != 0.0f))
+        if ((out.x == 0.0f && out.y == 0.0f) && (vector_last.x != 0.0f || vector_last.y != 0.0f))
         {
             release = true;
         }
 
-        if ((out.x != 0.0f && out.y != 0.0f) && (vector_last.x == 0.0f && vector_last.y == 0.0f))
+        if ((out.x != 0.0f && out.y != 0.0f) && (vector_last.x == 0.0f || vector_last.y == 0.0f))
         {
             pressed = true;
         }
+
+        vector_last = out;
 
         binding->update_binding(out, release, pressed);
     }
