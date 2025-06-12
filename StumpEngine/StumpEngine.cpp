@@ -69,6 +69,12 @@ namespace stump
 
     StumpEngine::~StumpEngine()
     {
+        for (std::unique_ptr<GameObject>& game_object : m_game_objects)
+        {
+            game_object->mark_for_deletion();
+        }
+        delete_marked_game_objects();
+
         ImGui_ImplSDLRenderer3_Shutdown();
         ImGui_ImplSDL3_Shutdown();
         ImGui::DestroyContext();

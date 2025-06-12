@@ -54,30 +54,34 @@ static void init_game(stump::StumpEngine& engine)
 {
     engine.set_window_size(900, 600);
 
+    auto& level_holder = engine.add_game_object();
+
     stump::GameObject& gird = engine.add_game_object();
     auto&              dirt = gird.add_component<DirtGrid>(engine.get_renderer());
-
-    // stump::GameObject& gold_bag = engine.add_game_object();
-    // gold_bag.add_component<stump::Texture2D>("data/money.png").draw_center(true).draw_size(3);
-    // auto& gold_pos = gold_bag.add_component<GridTransform>(glm::ivec2{ 3, 0 });
-    // gold_bag.add_component<GoldBag>();
+    gird.get_transform().set_parent(level_holder.get_transform());
 
     stump::GameObject& digger = engine.add_game_object();
     digger.add_component<stump::Texture2DSpriteSheet>("data/SpritesPlayers.png").set_sprite_size({ 16, 16 }).set_size_multiplier(3);
     digger.add_component<GridTransform>();
     digger.add_component<Digger>();
     digger.add_component<DirtEraser>(dirt);
+    digger.get_transform().set_parent(level_holder.get_transform());
 
     stump::GameObject& nobbin = engine.add_game_object();
     auto&              sprite_sheet = nobbin.add_component<stump::Texture2DSpriteSheet>("data/SpritesEnemies.png").set_sprite_size({ 16, 15 }).set_size_multiplier(3);
     auto&              transform = nobbin.add_component<GridTransform>();
     nobbin.add_component<Nobbin>(transform, dirt, sprite_sheet);
     nobbin.add_component<DirtEraser>(dirt);
+    nobbin.get_transform().set_parent(level_holder.get_transform());
 
     stump::GameObject& fps_display = engine.add_game_object();
     fps_display.get_transform().set_local_position(glm::vec2{ 0, 0 });
     fps_display.add_component<stump::TextDisplay>("data/Lingua.otf", "", 10.0f);
     fps_display.add_component<stump::FpsShowcase>();
+
+    fps_display.get_transform().set_parent(level_holder.get_transform());
+
+    level_holder.mark_for_deletion();
 
     stump::SoundSystemLocator::register_sound_system(std::make_unique<stump::SoundSystemLogger>(std::make_unique<stump::SoundSystemSDL3_Mixer>()));
 }

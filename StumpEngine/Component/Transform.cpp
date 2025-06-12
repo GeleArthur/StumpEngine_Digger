@@ -15,10 +15,13 @@ stump::Transform::~Transform()
     {
         m_parent->remove_child_internal(*this);
     }
-    for (auto child : m_children)
+
+    for (auto& child : m_children)
     {
-        child.get().remove_parent();
+        child.get().remove_parent_internal();
     }
+
+    m_children.clear();
 }
 
 void stump::Transform::set_parent(Transform& new_parent, const bool keep_world_position)
@@ -52,7 +55,7 @@ void stump::Transform::remove_parent()
     if (m_parent != nullptr)
     {
         m_parent->remove_child_internal(*this);
-        m_parent = nullptr;
+        remove_parent_internal();
         mark_me_and_children_as_dirty();
     }
 }
@@ -62,6 +65,11 @@ void stump::Transform::remove_child_internal(const Transform& child)
     std::erase_if(m_children, [&](const std::reference_wrapper<Transform>& element) {
         return &element.get() == &child;
     });
+}
+void stump::Transform::remove_parent_internal()
+{
+    m_parent = nullptr;
+    mark_me_and_children_as_dirty();
 }
 
 void stump::Transform::add_child_internal(Transform& child)

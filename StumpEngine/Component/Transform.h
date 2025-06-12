@@ -27,6 +27,7 @@ namespace stump
 
     private:
         void remove_child_internal(const Transform& child);
+        void remove_parent_internal();
         void add_child_internal(Transform& child);
         bool do_you_have_this_child(Transform& child) const;
         void mark_me_and_children_as_dirty();
@@ -37,5 +38,6 @@ namespace stump
         glm::vec2 m_local_position;
         glm::vec2 m_world_position;
         bool      m_world_position_needs_updating{};
+        bool      m_parent_should_remove_me{};
     };
 } // namespace stump
