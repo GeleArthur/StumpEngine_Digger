@@ -80,7 +80,7 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
 
         auto& gold_bag = scene->add_game_object();
         gold_bag.add_component<GoldBag>();
-        gold_bag.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 15 }).set_sprite_index({ 0, 0 }).set_size_multiplier(3);
+        gold_bag.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 16 }).set_sprite_index({ 0, 0 }).set_size_multiplier(3);
         gold_bag.add_component<GridTransform>(glm::ivec2{ x, y });
     }
 
@@ -90,7 +90,7 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
         int y = gems["y"].get<int>();
 
         auto& gem = scene->add_game_object();
-        gem.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 15 }).set_sprite_index({ 0, 2 }).set_size_multiplier(3);
+        gem.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 16 }).set_sprite_index({ 0, 2 }).set_size_multiplier(3);
         gem.add_component<GridTransform>(glm::ivec2{ x, y });
     }
 
