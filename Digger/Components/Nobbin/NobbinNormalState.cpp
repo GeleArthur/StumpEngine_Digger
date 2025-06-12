@@ -15,6 +15,11 @@ NobbinNormalState::NobbinNormalState(Nobbin& nobbin)
 
 std::unique_ptr<INobbinState> NobbinNormalState::update()
 {
+    if (m_time_before_transform < stump::EngineTime::instance().current_time)
+    {
+        return std::make_unique<NobbinDrillerState>(*m_nobbin);
+    }
+
     m_nobbin->get_sprite_sheet().set_sprite_index({ 0, 0 });
 
     const glm::vec2 direction = m_nobbin->get_movement().get_current_state();
@@ -45,5 +50,5 @@ std::unique_ptr<INobbinState> NobbinNormalState::update()
         m_nobbin->get_grid_transform().move(m_last_move_direction);
     }
 
-    return std::make_unique<NobbinDrillerState>(*m_nobbin);
+    return nullptr;
 }
