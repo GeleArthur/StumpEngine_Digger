@@ -63,35 +63,35 @@ void DirtGrid::render(SDL_Renderer* renderer)
     SDL_RenderTexture(renderer, m_texture, nullptr, &dst);
 
     SDL_SetRenderDrawColor(renderer, 0, 255u, 0, 255);
-    for (int x = 0; x < m_horizonal_walls.size(); ++x)
-    {
-        for (int y = 0; y < m_horizonal_walls[y].size(); ++y)
-        {
-            if (m_horizonal_walls[x][y])
-            {
-                SDL_RenderLine(renderer,
-                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
-                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y),
-                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x + GridSettings::grid_tile_pixel_size.x),
-                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y));
-            }
-        }
-    }
-
-    for (int x = 0; x < m_vertical_walls.size(); ++x)
-    {
-        for (int y = 0; y < m_vertical_walls[y].size(); ++y)
-        {
-            if (m_vertical_walls[x][y])
-            {
-                SDL_RenderLine(renderer,
-                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
-                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y),
-                               static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
-                               static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y + GridSettings::grid_tile_pixel_size.y));
-            }
-        }
-    }
+    // for (int x = 0; x < m_horizonal_walls.size(); ++x)
+    // {
+    //     for (int y = 0; y < m_horizonal_walls[y].size(); ++y)
+    //     {
+    //         if (m_horizonal_walls[x][y])
+    //         {
+    //             SDL_RenderLine(renderer,
+    //                            static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
+    //                            static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y),
+    //                            static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x + GridSettings::grid_tile_pixel_size.x),
+    //                            static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y));
+    //         }
+    //     }
+    // }
+    //
+    // for (int x = 0; x < m_vertical_walls.size(); ++x)
+    // {
+    //     for (int y = 0; y < m_vertical_walls[y].size(); ++y)
+    //     {
+    //         if (m_vertical_walls[x][y])
+    //         {
+    //             SDL_RenderLine(renderer,
+    //                            static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
+    //                            static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y),
+    //                            static_cast<float>(GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x),
+    //                            static_cast<float>(GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y + GridSettings::grid_tile_pixel_size.y));
+    //         }
+    //     }
+    // }
 }
 
 void DirtGrid::update() {}
@@ -110,18 +110,6 @@ void DirtGrid::delete_on_texture(const SDL_Rect& rect) const
 
     SDL_UnlockTexture(m_texture);
 }
-// bool DirtGrid::get_horizontal_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
-// {
-//     assert(from.x != to.x && "Use veritcal wall");
-//
-//     return m_horizonal_walls.at(from.x).at(std::max(from.y, to.y));
-// }
-// bool DirtGrid::get_vertical_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
-// {
-//     assert(from.y != to.y && "Use horizontal");
-//
-//     return m_vertical_walls.at(from.y).at(std::max(from.x, to.x));
-// }
 bool DirtGrid::get_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
 {
     if (from.x == to.x)

@@ -45,8 +45,10 @@ if(WIN32)
     set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
 endif()
 
-
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
+target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/ThirdParty/")
+
 
 #target_compile_options(${PROJECT_NAME} PRIVATE
 #        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>

@@ -7,7 +7,7 @@
 namespace GridSettings
 {
     constexpr static glm::ivec2 grid_tile_count{ 15, 10 };
-    constexpr static glm::ivec2 grid_offset{ 16, 32 };
+    constexpr static glm::ivec2 grid_offset{ 16, 64 };
     constexpr static glm::ivec2 grid_tile_pixel_size{ 57, 52 };
 } // namespace GridSettings
 

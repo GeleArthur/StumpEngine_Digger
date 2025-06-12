@@ -16,6 +16,9 @@
 #include "LevelScene.h"
 #include "Components/GridTransform.h"
 
+#include <fstream>
+#include <nlohmann/json.hpp>
+
 #if defined(WIN32)
 #include <windows.h>
 #endif
@@ -52,6 +55,7 @@ static void init_game(stump::StumpEngine& engine)
 int main(int, char*[])
 {
     AllocateConsole();
+
     stump::StumpEngine{ init_game }.run();
 
     return 0;
