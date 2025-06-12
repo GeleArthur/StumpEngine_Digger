@@ -20,7 +20,7 @@ GoldBagPushed::GoldBagPushed(const bool going_left)
 }
 std::unique_ptr<IGoldBagState> GoldBagPushed::update(GoldBag& bag)
 {
-    m_time_until_next_move -= stump::EngineTime::instance().delta_time;
+    m_time_until_next_move -= stump::EngineTime::instance().get_delta_time();
     if (m_time_until_next_move < 0.0f)
     {
         m_time_until_next_move = 0.1f;

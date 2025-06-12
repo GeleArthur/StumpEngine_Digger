@@ -13,6 +13,7 @@ class Digger final : public stump::Component
 {
 public:
     explicit Digger(stump::GameObject& attached);
+    ~Digger();
 
     void update() override;
     void player_moved(const glm::ivec2& direction);

@@ -17,6 +17,7 @@ class Nobbin final : public stump::Component
 {
 public:
     explicit Nobbin(stump::GameObject& attached, GridTransform& grid_transform, DirtGrid& dirt_grid, stump::Texture2DSpriteSheet& sprite_sheet);
+    ~Nobbin();
     virtual void update() override;
 
     const stump::InputBindingVector& get_movement() const

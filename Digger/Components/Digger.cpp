@@ -26,15 +26,19 @@ Digger::Digger(stump::GameObject& attached)
     //                                      SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
     // }
 }
+Digger::~Digger()
+{
+    stump::InputManager::instance().get_keyboard().remove_vector_binding(m_movement);
+}
 void Digger::update()
 {
     const glm::vec2 free_direction = m_movement.get_current_state();
 
     if (glm::dot(free_direction, free_direction) > 0.1f)
     {
-        if (m_move_delay < stump::EngineTime::instance().current_time)
+        if (m_move_delay < stump::EngineTime::instance().get_current_time())
         {
-            m_move_delay = stump::EngineTime::instance().current_time + 0.1f;
+            m_move_delay = stump::EngineTime::instance().get_current_time() + 0.1f;
 
             glm::ivec2 direction = GridTransform::free_direction_to_grid_direction(free_direction);
 

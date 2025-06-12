@@ -1,12 +1,12 @@
 #pragma once
 #include <functional>
 #include <memory>
-#include <vector>
 
 #include "EngineTime.h"
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_render.h"
 
+#include <Scene.h>
 #include <vec2.hpp>
 
 namespace stump
@@ -25,27 +25,22 @@ namespace stump
         StumpEngine operator=(const StumpEngine&) = delete;
         StumpEngine operator=(StumpEngine&&) = delete;
 
-        GameObject&                 add_game_object();
         [[nodiscard]] SDL_Renderer* get_renderer() const;
         void                        set_window_size(int width, int height);
         const glm::ivec2&           get_window_size() const;
-
-        [[nodiscard]] const std::vector<std::unique_ptr<GameObject>>& get_all_game_objects()
-        {
-            return m_game_objects;
-        }
+        void                        set_active_scene(std::unique_ptr<Scene>&& scene);
 
         void run();
 
     private:
         void handle_input();
         void run_one_loop();
-        void delete_marked_game_objects();
 
-        double                                         m_refresh_rate_delay{};
-        SDL_Window*                                    m_window{};
-        SDL_Renderer*                                  m_renderer{};
-        std::vector<std::unique_ptr<GameObject>>       m_game_objects{};
+        double                 m_refresh_rate_delay{};
+        SDL_Window*            m_window{};
+        SDL_Renderer*          m_renderer{};
+        std::unique_ptr<Scene> m_scene{};
+
         std::chrono::duration<float>                   m_time_passed{};
         const std::chrono::duration<float, std::milli> m_fixed_update_time = std::chrono::duration<float, std::milli>(45.0f);
 

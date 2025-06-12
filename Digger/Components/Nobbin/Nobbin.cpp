@@ -21,6 +21,14 @@ Nobbin::Nobbin(stump::GameObject& attached, GridTransform& grid_transform, DirtG
                                          SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
     }
 }
+Nobbin::~Nobbin()
+{
+    for (stump::GamepadDevice& gamepad : stump::InputManager::instance().get_gamepads())
+    {
+        gamepad.remove_vector_binding(m_movement);
+        gamepad.remove_vector_sides_binding(m_movement);
+    }
+}
 void Nobbin::update()
 {
     std::unique_ptr<INobbinState> new_state = m_state->update();

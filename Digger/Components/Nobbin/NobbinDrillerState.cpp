@@ -13,7 +13,7 @@ NobbinDrillerState::NobbinDrillerState(Nobbin& nobbin)
 }
 std::unique_ptr<INobbinState> NobbinDrillerState::update()
 {
-    if (m_time_before_transform < stump::EngineTime::instance().current_time)
+    if (m_time_before_transform < stump::EngineTime::instance().get_current_time())
     {
         return std::make_unique<NobbinNormalState>(*m_nobbin);
     }
@@ -25,10 +25,10 @@ std::unique_ptr<INobbinState> NobbinDrillerState::update()
     if (glm::dot(direction, direction) < 0.1f)
         return nullptr;
 
-    if (m_move_delay >= stump::EngineTime::instance().current_time)
+    if (m_move_delay >= stump::EngineTime::instance().get_current_time())
         return nullptr;
 
-    m_move_delay = stump::EngineTime::instance().current_time + 0.1f;
+    m_move_delay = stump::EngineTime::instance().get_current_time() + 0.1f;
 
     glm::ivec2 direction_grid = GridTransform::free_direction_to_grid_direction(direction);
 

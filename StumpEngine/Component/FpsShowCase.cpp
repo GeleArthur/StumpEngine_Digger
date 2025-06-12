@@ -12,7 +12,7 @@ stump::FpsShowcase::FpsShowcase(GameObject& attached_game_object)
 
 void stump::FpsShowcase::update()
 {
-    const float fps = 1.0f / EngineTime::instance().delta_time;
+    const float fps = 1.0f / EngineTime::instance().get_delta_time();
 
     std::stringstream out;
     out << std::fixed;
