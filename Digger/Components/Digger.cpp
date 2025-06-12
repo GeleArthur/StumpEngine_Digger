@@ -16,30 +16,32 @@ Digger::Digger(stump::GameObject& attached)
 {
     m_grid_transform->get_moved_event().add_listener(&m_player_moved);
     stump::InputManager::instance().get_keyboard().add_vector_binding(m_movement, SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D);
-    for (stump::GamepadDevice& gamepad : stump::InputManager::instance().get_gamepads())
-    {
-        gamepad.add_vector_binding(m_movement, SDL_GAMEPAD_AXIS_LEFTX, SDL_GAMEPAD_AXIS_LEFTY);
-        gamepad.add_vector_sides_binding(m_movement,
-                                         SDL_GAMEPAD_BUTTON_DPAD_UP,
-                                         SDL_GAMEPAD_BUTTON_DPAD_DOWN,
-                                         SDL_GAMEPAD_BUTTON_DPAD_LEFT,
-                                         SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
-    }
+    // for (stump::GamepadDevice& gamepad : stump::InputManager::instance().get_gamepads())
+    // {
+    //     gamepad.add_vector_binding(m_movement, SDL_GAMEPAD_AXIS_LEFTX, SDL_GAMEPAD_AXIS_LEFTY);
+    //     gamepad.add_vector_sides_binding(m_movement,
+    //                                      SDL_GAMEPAD_BUTTON_DPAD_UP,
+    //                                      SDL_GAMEPAD_BUTTON_DPAD_DOWN,
+    //                                      SDL_GAMEPAD_BUTTON_DPAD_LEFT,
+    //                                      SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
+    // }
 }
 void Digger::update()
 {
-    const glm::vec2 out = m_movement.get_current_state();
+    const glm::vec2 free_direction = m_movement.get_current_state();
 
-    if (glm::dot(out, out) > 0.1f)
+    if (glm::dot(free_direction, free_direction) > 0.1f)
     {
         if (m_move_delay < stump::EngineTime::instance().current_time)
         {
             m_move_delay = stump::EngineTime::instance().current_time + 0.1f;
 
-            if (m_grid_transform->can_move_direction(out))
+            glm::ivec2 direction = GridTransform::free_direction_to_grid_direction(free_direction);
+
+            if (m_grid_transform->can_move_direction(direction))
             {
-                m_grid_transform->move(out);
-                m_last_move_direction = out;
+                m_grid_transform->move(direction);
+                m_last_move_direction = direction;
             }
             else
             {

@@ -110,23 +110,43 @@ void DirtGrid::delete_on_texture(const SDL_Rect& rect) const
 
     SDL_UnlockTexture(m_texture);
 }
-bool DirtGrid::get_horizontal_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
+// bool DirtGrid::get_horizontal_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
+// {
+//     assert(from.x != to.x && "Use veritcal wall");
+//
+//     return m_horizonal_walls.at(from.x).at(std::max(from.y, to.y));
+// }
+// bool DirtGrid::get_vertical_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
+// {
+//     assert(from.y != to.y && "Use horizontal");
+//
+//     return m_vertical_walls.at(from.y).at(std::max(from.x, to.x));
+// }
+bool DirtGrid::get_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
 {
-    assert(from.x != to.x && "Use veritcal wall");
+    if (from.x == to.x)
+    {
+        return m_horizonal_walls.at(from.x).at(std::max(from.y, to.y));
+    }
+    else if (from.y == to.y)
+    {
+        return m_vertical_walls.at(std::max(from.x, to.x)).at(from.y);
+    }
 
-    return m_horizonal_walls.at(from.x).at(std::max(from.y, to.y));
-}
-bool DirtGrid::get_vertical_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
-{
-    assert(from.y != to.y && "Use horizontal");
+    assert("Can't go diagonal");
 
-    return m_vertical_walls.at(from.y).at(std::max(from.x, to.x));
+    return false;
 }
-void DirtGrid::clear_horizontal_wall_between(const glm::ivec2& from, const glm::ivec2& to)
+void DirtGrid::clear_wall_between(const glm::ivec2& from, const glm::ivec2& to)
 {
-    m_horizonal_walls.at(from.x).at(std::max(from.y, to.y)) = false;
-}
-void DirtGrid::clear_vertical_wall_between(const glm::ivec2& from, const glm::ivec2& to)
-{
-    m_vertical_walls.at(std::max(from.x, to.x)).at(from.y) = false;
+    if (from.x == to.x)
+    {
+        m_horizonal_walls.at(from.x).at(std::max(from.y, to.y)) = false;
+    }
+    else if (from.y == to.y)
+    {
+        m_vertical_walls.at(std::max(from.x, to.x)).at(from.y) = false;
+    }
+
+    assert("Can't go diagonal");
 }

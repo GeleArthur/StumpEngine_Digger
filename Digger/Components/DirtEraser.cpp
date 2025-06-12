@@ -29,14 +29,14 @@ void DirtEraser::erase_grid(const glm::ivec2& direction) const
     {
         if (sub_pos.x - direction.x == 0)
         {
-            m_dirt_grid->clear_vertical_wall_between(m_grid_transform->get_grid_position(), m_grid_transform->get_grid_position() + direction);
+            m_dirt_grid->clear_wall_between(m_grid_transform->get_grid_position(), m_grid_transform->get_grid_position() + direction);
         }
     }
     else
     {
         if (sub_pos.y - direction.y == 0)
         {
-            m_dirt_grid->clear_horizontal_wall_between(m_grid_transform->get_grid_position(), m_grid_transform->get_grid_position() + direction);
+            m_dirt_grid->clear_wall_between(m_grid_transform->get_grid_position(), m_grid_transform->get_grid_position() + direction);
         }
     }
 }

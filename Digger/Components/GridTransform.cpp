@@ -55,7 +55,7 @@ void GridTransform::move_vertical(bool going_down)
     }
     m_moved.notify_listeners({ 0, direction });
 }
-void GridTransform::move(glm::vec2 direction)
+void GridTransform::move(const glm::ivec2& direction)
 {
     if (std::abs(direction.x) > std::abs(direction.y))
     {
@@ -66,7 +66,7 @@ void GridTransform::move(glm::vec2 direction)
         move_vertical(direction.y > 0.0f);
     }
 }
-bool GridTransform::can_move_direction(const glm::vec2& direction) const
+bool GridTransform::can_move_direction(const glm::ivec2& direction) const
 {
     if (std::abs(direction.x) > std::abs(direction.y))
     {
@@ -95,6 +95,12 @@ glm::vec2 GridTransform::get_real_position() const
         GridSettings::grid_offset.x + m_grid_position.x * GridSettings::grid_tile_pixel_size.x + GridSettings::grid_tile_pixel_size.y / 2 + m_sub_position.x * GridSettings::grid_tile_pixel_size.x / 5,
         GridSettings::grid_offset.y + m_grid_position.y * GridSettings::grid_tile_pixel_size.y + GridSettings::grid_tile_pixel_size.x / 2 + m_sub_position.y * GridSettings::grid_tile_pixel_size.y / 5,
     };
+}
+glm::ivec2 GridTransform::free_direction_to_grid_direction(const glm::vec2& direction)
+{
+    return std::abs(direction.x) > std::abs(direction.y) ?
+        glm::ivec2{ -(std::signbit(direction.x) * 2 - 1), 0 } :
+        glm::ivec2{ 0, -(std::signbit(direction.y) * 2 - 1) };
 }
 stump::Event<glm::ivec2>& GridTransform::get_moved_event()
 {

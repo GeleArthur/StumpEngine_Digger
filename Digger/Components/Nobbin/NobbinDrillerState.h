@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "INobelState.h"
+#include "INobbinState.h"
 
-class NobbinDrillerState : public INobelState
+class NobbinDrillerState final : public INobbinState
 {
 public:
-    virtual std::unique_ptr<INobelState> update(Nobbin& nobbin) override;
+    virtual std::unique_ptr<INobbinState> update() override;
 };

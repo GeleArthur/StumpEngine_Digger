@@ -21,7 +21,7 @@ private:
     stump::InputBindingVector        m_movement;
     stump::EventListener<glm::ivec2> m_player_moved;
     float                            m_move_delay{};
-    glm::vec2                        m_last_move_direction{};
+    glm::ivec2                       m_last_move_direction{};
     GridTransform*                   m_grid_transform{};
     stump::Texture2DSpriteSheet*     m_sprite_sheet{};
 };

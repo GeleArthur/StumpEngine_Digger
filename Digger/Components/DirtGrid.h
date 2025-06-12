@@ -19,10 +19,10 @@ public:
     void update() override;
 
     void delete_on_texture(const SDL_Rect& rect) const;
-    bool get_horizontal_wall_between(const glm::ivec2& from, const glm::ivec2& to) const;
-    bool get_vertical_wall_between(const glm::ivec2& from, const glm::ivec2& to) const;
-    void clear_horizontal_wall_between(const glm::ivec2& from, const glm::ivec2& to);
-    void clear_vertical_wall_between(const glm::ivec2& from, const glm::ivec2& to);
+    // bool get_horizontal_wall_between(const glm::ivec2& from, const glm::ivec2& to) const;
+    // bool get_vertical_wall_between(const glm::ivec2& from, const glm::ivec2& to) const;
+    bool get_wall_between(const glm::ivec2& from, const glm::ivec2& to) const;
+    void clear_wall_between(const glm::ivec2& from, const glm::ivec2& to);
 
 private:
     SDL_Texture* m_texture{};

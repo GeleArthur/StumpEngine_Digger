@@ -1,13 +1,18 @@
 ﻿#pragma once
-#include "INobelState.h"
+#include "INobbinState.h"
 
-class NobbinNormalState : public INobelState
+#include <vec2.hpp>
+
+class NobbinNormalState final : public INobbinState
 {
 public:
-    virtual std::unique_ptr<INobelState> update(Nobbin& nobbin) override;
+    explicit NobbinNormalState(Nobbin& nobbin);
+    virtual std::unique_ptr<INobbinState> update() override;
 
 private:
-    float m_move_delay{};
+    bool    check_wall(glm::ivec2 direction) const;
+    float   m_move_delay{};
+    Nobbin* m_nobbin;
     // GridTransform* m_grid_transform;
-    glm::vec2 m_last_move_direction{};
+    glm::ivec2 m_last_move_direction{};
 };

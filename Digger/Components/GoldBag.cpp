@@ -24,7 +24,7 @@ std::unique_ptr<IGoldBagState> GoldBagPushed::update(GoldBag& bag)
     if (m_time_until_next_move < 0.0f)
     {
         m_time_until_next_move = 0.1f;
-        bag.get_game_object().get_component<GridTransform>()->move_horizontal(m_going_left);
+        // bag.get_game_object().get_component<GridTransform>()->move_horizontal(m_going_left);
 
         if (m_move_count-- < 0)
         {

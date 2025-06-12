@@ -21,6 +21,8 @@
 #include "Components/DirtGrid.h"
 #include "Components/GoldBag.h"
 #include "Components/GridTransform.h"
+#include "Components/Nobbin/Nobbin.h"
+
 #include <Component/FpsShowCase.h>
 #include <Component/Texture2DSpriteSheet.h>
 
@@ -55,10 +57,10 @@ static void init_game(stump::StumpEngine& engine)
     stump::GameObject& gird = engine.add_game_object();
     auto&              dirt = gird.add_component<DirtGrid>(engine.get_renderer());
 
-    stump::GameObject& gold_bag = engine.add_game_object();
-    gold_bag.add_component<stump::Texture2D>("data/money.png").draw_center(true).draw_size(3);
-    auto& gold_pos = gold_bag.add_component<GridTransform>(glm::ivec2{ 3, 0 });
-    gold_bag.add_component<GoldBag>();
+    // stump::GameObject& gold_bag = engine.add_game_object();
+    // gold_bag.add_component<stump::Texture2D>("data/money.png").draw_center(true).draw_size(3);
+    // auto& gold_pos = gold_bag.add_component<GridTransform>(glm::ivec2{ 3, 0 });
+    // gold_bag.add_component<GoldBag>();
 
     stump::GameObject& digger = engine.add_game_object();
     digger.add_component<stump::Texture2DSpriteSheet>("data/SpritesPlayers.png").set_sprite_size({ 16, 16 }).set_size_multiplier(3);
@@ -66,14 +68,16 @@ static void init_game(stump::StumpEngine& engine)
     digger.add_component<Digger>();
     digger.add_component<DirtEraser>(dirt);
 
+    stump::GameObject& nobbin = engine.add_game_object();
+    nobbin.add_component<stump::Texture2DSpriteSheet>("data/SpritesEnemies.png").set_sprite_size({ 16, 15 }).set_size_multiplier(3);
+    auto& transform = nobbin.add_component<GridTransform>();
+    nobbin.add_component<Nobbin>(transform, dirt);
+    nobbin.add_component<DirtEraser>(dirt);
+
     stump::GameObject& fps_display = engine.add_game_object();
     fps_display.get_transform().set_local_position(glm::vec2{ 0, 0 });
     fps_display.add_component<stump::TextDisplay>("data/Lingua.otf", "", 10.0f);
     fps_display.add_component<stump::FpsShowcase>();
-
-    stump::GameObject& help_display = engine.add_game_object();
-    help_display.get_transform().set_local_position(glm::vec2{ 30, 300 });
-    help_display.add_component<stump::TextDisplay>("data/Lingua.otf", "Move with WASD. Move into the Gold bag to push it away", 20.0f);
 
     stump::SoundSystemLocator::register_sound_system(std::make_unique<stump::SoundSystemLogger>(std::make_unique<stump::SoundSystemSDL3_Mixer>()));
 }
