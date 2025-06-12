@@ -19,7 +19,7 @@ void stump::Component::update() {}
 
 void stump::Component::render(SDL_Renderer*) {}
 
-void stump::Component::mark_for_deletion()
+void stump::Component::remove_component()
 {
     m_marked_for_delection = true;
 }

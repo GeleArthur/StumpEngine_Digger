@@ -22,32 +22,20 @@ namespace stump
         GameObject& operator=(GameObject&& other) = delete;
 
         template<typename T, typename... Args>
-            requires std::derived_from<T, stump::Component>
+            requires std::derived_from<T, Component>
         T& add_component(Args&&... arguments)
         {
-            T* component = get_component<T>();
-            if (component == nullptr)
-            {
-                auto new_component = std::make_unique<T>(*this, std::forward<Args>(arguments)...);
-                m_components.push_back(std::move(new_component));
+            std::unique_ptr<T> new_component = std::make_unique<T>(*this, std::forward<Args>(arguments)...);
+            m_components.push_back(std::move(new_component));
 
-                // TODO: idea???
-                // if constexpr (is_renderable<T>())
-                // {
-                //     get_engine().add_renderable(static_cast<IRenderable*>(component));
-                // }
-
-                component = static_cast<T*>(m_components[m_components.size() - 1].get());
-            }
-
-            return *component;
+            return *static_cast<T*>(m_components[m_components.size() - 1].get());
         }
 
         template<typename T>
-            requires std::derived_from<T, stump::Component>
+            requires std::derived_from<T, Component>
         [[nodiscard]] T* get_component()
         {
-            for (const std::unique_ptr<stump::Component>& component : m_components)
+            for (const std::unique_ptr<Component>& component : m_components)
             {
                 if (T* component_casted = dynamic_cast<T*>(component.get()); component_casted != nullptr)
                 {
@@ -58,13 +46,26 @@ namespace stump
         }
 
         template<typename T>
-            requires std::derived_from<T, stump::Component>
-        void remove_component()
+            requires std::derived_from<T, Component>
+        [[nodiscard]] std::vector<T*> get_components()
         {
-            T* component = get_component<T>();
-            if (component != nullptr)
+            std::vector<T*> result;
+            for (const std::unique_ptr<Component>& component : m_components)
             {
-                component->mark_for_deletion();
+                if (T* component_casted = dynamic_cast<T*>(component.get()); component_casted != nullptr)
+                {
+                    result.push_back(component_casted);
+                }
+            }
+
+            return result;
+        }
+
+        void remove_all_components() const
+        {
+            for (const std::unique_ptr<Component>& component : m_components)
+            {
+                component->remove_component();
             }
         }
 
@@ -79,7 +80,7 @@ namespace stump
         void render(SDL_Renderer* renderer) const;
 
     private:
-        std::vector<std::unique_ptr<stump::Component>> m_components;
+        std::vector<std::unique_ptr<Component>> m_components;
 
         StumpEngine& m_engine;
         Transform&   m_transform;

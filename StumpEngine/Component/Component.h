@@ -22,7 +22,7 @@ namespace stump
         virtual void update();
         virtual void render(SDL_Renderer* renderer);
 
-        void               mark_for_deletion();
+        void               remove_component();
         [[nodiscard]] bool is_marked_for_delection() const;
 
     private:
