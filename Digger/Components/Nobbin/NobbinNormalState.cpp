@@ -1,6 +1,7 @@
 ﻿#include "NobbinNormalState.h"
 
 #include "Nobbin.h"
+#include "NobbinDrillerState.h"
 #include "../DirtGrid.h"
 #include "../GridTransform.h"
 
@@ -33,7 +34,8 @@ std::unique_ptr<INobbinState> NobbinNormalState::update()
 
     if (m_nobbin->get_grid_transform().can_move_any_direction())
     {
-        if (!check_wall(m_last_move_direction))
+        glm::ivec2 grid_pos = m_nobbin->get_grid_transform().get_grid_position();
+        if (!m_nobbin->get_dirt_grid().get_wall_between(grid_pos, grid_pos + m_last_move_direction))
         {
             m_nobbin->get_grid_transform().move(m_last_move_direction);
         }
@@ -43,14 +45,5 @@ std::unique_ptr<INobbinState> NobbinNormalState::update()
         m_nobbin->get_grid_transform().move(m_last_move_direction);
     }
 
-    return nullptr;
-}
-
-bool NobbinNormalState::check_wall(glm::ivec2 direction) const
-{
-    DirtGrid& dirt_grid = m_nobbin->get_dirt_grid();
-
-    bool wall = dirt_grid.get_wall_between(m_nobbin->get_grid_transform().get_grid_position(), m_nobbin->get_grid_transform().get_grid_position() + direction);
-
-    return wall;
+    return std::make_unique<NobbinDrillerState>(*m_nobbin);
 }

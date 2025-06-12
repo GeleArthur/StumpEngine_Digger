@@ -17,8 +17,8 @@ void stump::Texture2DSpriteSheet::render(SDL_Renderer* renderer)
     SDL_FRect src_location{
         static_cast<float>(m_sprite_index.x * m_sprite_size.x),
         static_cast<float>(m_sprite_index.y * m_sprite_size.y),
-        static_cast<float>(m_sprite_index.x * m_sprite_size.x + m_sprite_size.x),
-        static_cast<float>(m_sprite_index.y * m_sprite_size.y + m_sprite_size.y),
+        static_cast<float>(m_sprite_size.x),
+        static_cast<float>(m_sprite_size.y),
     };
 
     SDL_FRect dest_location{
