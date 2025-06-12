@@ -22,7 +22,7 @@ namespace stump
         GameObject& operator=(GameObject&& other) = delete;
 
         template<typename T, typename... Args>
-            requires std::derived_from<T, Component>
+            requires(std::derived_from<T, Component> && !std::same_as<T, Transform>)
         T& add_component(Args&&... arguments)
         {
             std::unique_ptr<T> new_component = std::make_unique<T>(*this, std::forward<Args>(arguments)...);
@@ -83,7 +83,7 @@ namespace stump
         std::vector<std::unique_ptr<Component>> m_components;
 
         StumpEngine& m_engine;
-        Transform&   m_transform;
+        Transform*   m_transform{};
 
         bool m_marked_for_deletion{ false };
     };

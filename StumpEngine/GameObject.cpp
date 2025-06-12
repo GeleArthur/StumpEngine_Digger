@@ -9,8 +9,9 @@ namespace stump
 {
     GameObject::GameObject(StumpEngine& engine)
         : m_engine(engine)
-        , m_transform(add_component<Transform>(glm::vec2{ 0.0f, 0.0f }))
     {
+        m_components.push_back(std::make_unique<Transform>(*this, glm::vec2{ 0.0f, 0.0f }));
+        m_transform = static_cast<Transform*>(m_components[m_components.size() - 1].get());
     }
 
     void GameObject::mark_for_deletion()
@@ -28,7 +29,7 @@ namespace stump
 
     Transform& GameObject::get_transform() const
     {
-        return m_transform;
+        return *m_transform;
     }
 
     void GameObject::removed_marked_components()
