@@ -5,6 +5,7 @@
 #include "../GridTransform.h"
 
 #include <EngineTime.h>
+#include <Component/Texture2DSpriteSheet.h>
 
 NobbinNormalState::NobbinNormalState(Nobbin& nobbin)
     : m_nobbin{ &nobbin }
@@ -13,6 +14,8 @@ NobbinNormalState::NobbinNormalState(Nobbin& nobbin)
 
 std::unique_ptr<INobbinState> NobbinNormalState::update()
 {
+    m_nobbin->get_sprite_sheet().set_sprite_index({ 0, 0 });
+
     const glm::vec2 direction = m_nobbin->get_movement().get_current_state();
 
     if (glm::dot(direction, direction) < 0.1f)

@@ -69,9 +69,9 @@ static void init_game(stump::StumpEngine& engine)
     digger.add_component<DirtEraser>(dirt);
 
     stump::GameObject& nobbin = engine.add_game_object();
-    nobbin.add_component<stump::Texture2DSpriteSheet>("data/SpritesEnemies.png").set_sprite_size({ 16, 15 }).set_size_multiplier(3);
-    auto& transform = nobbin.add_component<GridTransform>();
-    nobbin.add_component<Nobbin>(transform, dirt);
+    auto&              sprite_sheet = nobbin.add_component<stump::Texture2DSpriteSheet>("data/SpritesEnemies.png").set_sprite_size({ 16, 15 }).set_size_multiplier(3);
+    auto&              transform = nobbin.add_component<GridTransform>();
+    nobbin.add_component<Nobbin>(transform, dirt, sprite_sheet);
     nobbin.add_component<DirtEraser>(dirt);
 
     stump::GameObject& fps_display = engine.add_game_object();

@@ -10,9 +10,8 @@ public:
     virtual std::unique_ptr<INobbinState> update() override;
 
 private:
-    bool    check_wall(glm::ivec2 direction) const;
-    float   m_move_delay{};
-    Nobbin* m_nobbin;
-    // GridTransform* m_grid_transform;
+    bool       check_wall(glm::ivec2 direction) const;
+    float      m_move_delay{};
+    Nobbin*    m_nobbin;
     glm::ivec2 m_last_move_direction{};
 };
