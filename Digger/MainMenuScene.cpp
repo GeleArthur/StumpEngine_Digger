@@ -1,5 +1,6 @@
 ﻿#include "Scenes.h"
 #include "Components/HighScoreDisplay.h"
+#include "Components/ModeSelectUI.h"
 
 #include <Scene.h>
 #include <Component/TextDisplay.h>
@@ -29,10 +30,13 @@ std::unique_ptr<stump::Scene> Scenes::ui_scene(stump::StumpEngine& engine)
     high_score.get_transform().set_local_position({ 100, 200 });
     high_score.add_component<HighScoreDisplay>(*scene.get());
 
+    auto& mode_select_ui = scene->add_game_object();
+    mode_select_ui.add_component<ModeSelectUi>(*scene.get());
+
     // stump::GameObject& highscore = scene->add_game_object();
     // highscore.get_transform().set_local_position({ 600, 100 });
     // highscore.add_component<stump::TextDisplay>("data/DiggerFont.ttf", "One Player", 32.0f, SDL_Color{ 204, 116, 0 });
-    //
+
     // stump::GameObject& highscore = scene->add_game_object();
     // highscore.get_transform().set_local_position({ 600, 100 });
     // highscore.add_component<stump::TextDisplay>("data/DiggerFont.ttf", "One Player", 32.0f, SDL_Color{ 204, 116, 0 });

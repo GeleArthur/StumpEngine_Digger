@@ -90,7 +90,6 @@ namespace stump
             if (m_current_data != new_direction)
             {
                 m_current_data = new_direction;
-                m_on_pressed.notify_listeners(m_current_data);
             }
         }
 

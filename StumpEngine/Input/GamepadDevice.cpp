@@ -81,10 +81,10 @@ namespace stump
         for (auto& [y_up, y_down, x_left, x_right, vector_last, binding] : m_inputs_vector_sides)
         {
             glm::vec2 out{};
-            out.x += -1.0f * SDL_GetGamepadButton(m_gamepad, x_left);
-            out.x += 1.0f * SDL_GetGamepadButton(m_gamepad, x_right);
-            out.y += -1.0f * SDL_GetGamepadButton(m_gamepad, y_up);
-            out.y += 1.0f * SDL_GetGamepadButton(m_gamepad, y_down);
+            out.x += -1.0f * static_cast<float>(SDL_GetGamepadButton(m_gamepad, x_left));
+            out.x += 1.0f * static_cast<float>(SDL_GetGamepadButton(m_gamepad, x_right));
+            out.y += -1.0f * static_cast<float>(SDL_GetGamepadButton(m_gamepad, y_up));
+            out.y += 1.0f * static_cast<float>(SDL_GetGamepadButton(m_gamepad, y_down));
 
             bool release{};
             bool pressed{};
@@ -94,7 +94,7 @@ namespace stump
                 release = true;
             }
 
-            if ((out.x != 0.0f && out.y != 0.0f) && (vector_last.x == 0.0f || vector_last.y == 0.0f))
+            if ((out.x != 0.0f || out.y != 0.0f) && (vector_last.x == 0.0f && vector_last.y == 0.0f))
             {
                 pressed = true;
             }

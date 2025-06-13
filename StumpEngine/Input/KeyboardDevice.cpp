@@ -48,7 +48,7 @@ void stump::KeyboardDevice::process_device()
             release = true;
         }
 
-        if ((out.x != 0.0f && out.y != 0.0f) && (vector_last.x == 0.0f || vector_last.y == 0.0f))
+        if ((out.x != 0.0f || out.y != 0.0f) && (vector_last.x == 0.0f && vector_last.y == 0.0f))
         {
             pressed = true;
         }
