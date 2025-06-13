@@ -1,13 +1,25 @@
 ﻿#include "ResourceManager.h"
 
+#include <ranges>
 #include <SDL3_image/SDL_image.h>
 ResourceManager::~ResourceManager()
 {
-    for (const std::pair<const std::string, SDL_Texture*>& texture : m_cached_textures)
+    for (const auto& texture : m_cached_textures | std::views::values)
     {
-        SDL_DestroyTexture(texture.second);
+        SDL_DestroyTexture(texture);
+    }
+
+    for (const auto& font : m_cached_font | std::views::values)
+    {
+        TTF_CloseFont(font);
+    }
+
+    for (const auto& texture : m_cached_text | std::views::values)
+    {
+        SDL_DestroyTexture(texture);
     }
 }
+
 SDL_Texture* ResourceManager::get_texture(const std::string& texture_path)
 {
     if (m_cached_textures.contains(texture_path))
@@ -27,7 +39,7 @@ SDL_Texture* ResourceManager::get_text(const std::string& font, const std::strin
         m_cached_font[font_key] = TTF_OpenFont(font.c_str(), size);
     }
 
-    auto text_key = std::pair{ text, color };
+    const auto text_key = std::pair{ text, color };
 
     if (!m_cached_text.contains(text_key))
     {

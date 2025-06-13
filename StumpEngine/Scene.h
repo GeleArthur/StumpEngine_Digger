@@ -31,7 +31,6 @@ namespace stump
 
     private:
         std::vector<std::unique_ptr<GameObject>> m_game_objects{};
-
         StumpEngine* m_engine;
     };
 } // namespace stump

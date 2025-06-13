@@ -17,10 +17,6 @@ stump::TextDisplay::TextDisplay(GameObject& game_object, const std::string& font
     update_text(text);
 }
 
-stump::TextDisplay::~TextDisplay()
-{
-}
-
 void stump::TextDisplay::update_text(const std::string_view text)
 {
     m_text = text;

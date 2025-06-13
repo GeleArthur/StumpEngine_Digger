@@ -11,9 +11,9 @@ namespace stump
     {
     public:
         explicit TextDisplay(GameObject& game_object, const std::string& font, std::string_view text = "", float size = 16.0f, SDL_Color color = { 255, 255, 255, 255 });
-        ~TextDisplay() override;
 
         void update_text(std::string_view text);
+        void render(SDL_Renderer* renderer) override;
 
         TextDisplay(const TextDisplay&) = delete;
         TextDisplay(TextDisplay&&) = delete;
@@ -21,10 +21,6 @@ namespace stump
         TextDisplay operator=(TextDisplay&&) = delete;
 
     private:
-        void render(SDL_Renderer* renderer) override;
-
-        bool m_is_dirty{ false };
-
         std::string  m_font;
         float        m_font_size;
         std::string  m_text;

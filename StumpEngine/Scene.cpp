@@ -5,7 +5,6 @@
 
 namespace stump
 {
-
     Scene::Scene(StumpEngine& engine)
         : m_engine{ &engine }
     {
