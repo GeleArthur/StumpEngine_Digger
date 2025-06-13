@@ -118,7 +118,7 @@ bool DirtGrid::get_wall_between(const glm::ivec2& from, const glm::ivec2& to) co
     }
     else if (from.y == to.y)
     {
-        return m_vertical_walls.at(std::max(from.x, to.x)).at(from.y);
+        return m_vertical_walls.at(std::max(from.x, to.x)).at(std::min(from.y, GridSettings::grid_tile_count.y - 1));
     }
 
     assert("Can't go diagonal");

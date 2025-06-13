@@ -8,7 +8,7 @@
 #include "Components/DirtEraser.h"
 #include "Components/DirtGrid.h"
 #include "Components/Gem.h"
-#include "Components/GoldBag.h"
+#include "Components/GoldBag/GoldBag.h"
 #include "Components/GridTransform.h"
 #include "Components/Nobbin/Nobbin.h"
 
@@ -87,10 +87,11 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
         int y = gold_location["y"].get<int>();
 
         auto& gold_bag = scene->add_game_object();
-        gold_bag.add_component<GoldBag>();
-        gold_bag.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 16 }).set_sprite_index({ 0, 0 }).set_size_multiplier(3);
+        auto& texture = gold_bag.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 16 }).set_sprite_index({ 0, 0 }).set_size_multiplier(3);
         auto& bag_transform = gold_bag.add_component<GridTransform>(glm::ivec2{ x, y });
+        gold_bag.add_component<GoldBag>(bag_transform, dirt, texture);
         gold_bag.add_component<ColliderGrid>(bag_transform, collider_holder, 2);
+        gold_bag.add_component<DirtEraser>(dirt);
     }
 
     for (auto gems : level_json["Gems"])
