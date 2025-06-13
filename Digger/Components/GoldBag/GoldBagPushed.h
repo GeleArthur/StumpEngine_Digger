@@ -11,4 +11,7 @@ public:
     virtual void collided(uint64_t tag, glm::ivec2 direction) override;
 
 private:
+    glm::ivec2 m_direction;
+    float      m_time_until_next_move{};
+    int        m_move_count{ 3 };
 };

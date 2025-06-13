@@ -10,7 +10,7 @@ class ColliderGrid final : public stump::Component
 {
 public:
     explicit ColliderGrid(stump::GameObject& attached, GridTransform& grid_transform, CollisionHolder& holder, uint64_t tag);
-    ~ColliderGrid();
+    ~ColliderGrid() override;
 
     void fixed_update() override;
     void disconnect_holder();
@@ -21,6 +21,7 @@ public:
     };
 
 private:
+    int              get_sign(int x);
     CollisionHolder* m_holder;
     GridTransform*   m_grid_transform;
     uint64_t         m_tag;

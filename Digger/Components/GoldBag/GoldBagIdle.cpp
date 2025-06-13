@@ -6,9 +6,13 @@
 #include "../DirtGrid.h"
 #include "../GridTransform.h"
 
+#include <Component/Texture2DSpriteSheet.h>
+
 // Idle state
 std::unique_ptr<IGoldBagState> GoldBagIdle::update(GoldBag& gold_bag)
 {
+    gold_bag.get_sprite_sheet().set_sprite_index({ 0, 0 });
+
     if (m_swap_to_pushed)
     {
         return std::make_unique<GoldBagPushed>(m_direction);
@@ -27,6 +31,8 @@ std::unique_ptr<IGoldBagState> GoldBagIdle::update(GoldBag& gold_bag)
 }
 void GoldBagIdle::collided(uint64_t tag, glm::ivec2 direction)
 {
+    if (direction.x == 0)
+        return;
     m_direction = direction;
     m_swap_to_pushed = true;
 }

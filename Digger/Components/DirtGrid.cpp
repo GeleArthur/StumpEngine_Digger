@@ -112,13 +112,22 @@ void DirtGrid::delete_on_texture(const SDL_Rect& rect) const
 }
 bool DirtGrid::get_wall_between(const glm::ivec2& from, const glm::ivec2& to) const
 {
+    if (
+        from.x >= GridSettings::grid_tile_count.x || from.x < 0 ||
+        from.y >= GridSettings::grid_tile_count.y || from.y < 0 ||
+        to.x >= GridSettings::grid_tile_count.x || to.x < 0 ||
+        to.y >= GridSettings::grid_tile_count.y || to.y < 0)
+    {
+        return true;
+    }
+
     if (from.x == to.x)
     {
         return m_horizonal_walls.at(from.x).at(std::max(from.y, to.y));
     }
     else if (from.y == to.y)
     {
-        return m_vertical_walls.at(std::max(from.x, to.x)).at(std::min(from.y, GridSettings::grid_tile_count.y - 1));
+        return m_vertical_walls.at(std::max(from.x, to.x)).at(from.y);
     }
 
     assert("Can't go diagonal");

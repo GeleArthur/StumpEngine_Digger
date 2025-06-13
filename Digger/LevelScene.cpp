@@ -86,12 +86,12 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
         int x = gold_location["x"].get<int>();
         int y = gold_location["y"].get<int>();
 
-        auto& gold_bag = scene->add_game_object();
-        auto& texture = gold_bag.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 16 }).set_sprite_index({ 0, 0 }).set_size_multiplier(3);
-        auto& bag_transform = gold_bag.add_component<GridTransform>(glm::ivec2{ x, y });
-        gold_bag.add_component<GoldBag>(bag_transform, dirt, texture);
-        gold_bag.add_component<ColliderGrid>(bag_transform, collider_holder, 2);
-        gold_bag.add_component<DirtEraser>(dirt);
+        auto& gold_bag_gm = scene->add_game_object();
+        auto& texture = gold_bag_gm.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 16 }).set_sprite_index({ 0, 0 }).set_size_multiplier(3);
+        auto& bag_transform = gold_bag_gm.add_component<GridTransform>(glm::ivec2{ x, y });
+        auto& collider = gold_bag_gm.add_component<ColliderGrid>(bag_transform, collider_holder, 2);
+        gold_bag_gm.add_component<DirtEraser>(dirt);
+        gold_bag_gm.add_component<GoldBag>(bag_transform, dirt, texture, collider);
     }
 
     for (auto gems : level_json["Gems"])

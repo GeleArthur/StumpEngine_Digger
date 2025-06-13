@@ -7,6 +7,7 @@
 #include <vec2.hpp>
 #include <Component/Component.h>
 
+class ColliderGrid;
 namespace stump
 {
     class Texture2DSpriteSheet;
@@ -16,7 +17,7 @@ class GridTransform;
 class GoldBag final : public stump::Component
 {
 public:
-    explicit GoldBag(stump::GameObject& attached, GridTransform& grid_transform, DirtGrid& dirt_grid, stump::Texture2DSpriteSheet& sheet);
+    explicit GoldBag(stump::GameObject& attached, GridTransform& grid_transform, DirtGrid& dirt_grid, stump::Texture2DSpriteSheet& sheet, ColliderGrid& collider);
     void update() override;
 
     GridTransform& get_grid_transform() const
