@@ -10,7 +10,7 @@ namespace stump
     class TextDisplay final : public Component
     {
     public:
-        explicit TextDisplay(GameObject& game_object, const std::string& font, std::string_view text = "", float size = 16.0f);
+        explicit TextDisplay(GameObject& game_object, const std::string& font, std::string_view text = "", float size = 16.0f, SDL_Color color = { 255, 255, 255, 255 });
         ~TextDisplay() override;
 
         void update_text(std::string_view text);
@@ -25,10 +25,11 @@ namespace stump
 
         bool m_is_dirty{ false };
 
-        TTF_Font*    m_font{};
+        std::string  m_font;
         float        m_font_size;
         std::string  m_text;
         SDL_Texture* m_text_texture{};
         Transform&   m_transform;
+        SDL_Color    m_color;
     };
 } // namespace stump

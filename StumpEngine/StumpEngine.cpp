@@ -40,7 +40,7 @@ namespace stump
             throw std::exception(std::format("Couldn't initialize renderer: {}", SDL_GetError()).c_str());
         }
 
-        ResourceManager::instance().set_rendererer(m_renderer);
+        ResourceManager::instance().set_renderer(m_renderer);
 
         SDL_DisplayMode** display_info = SDL_GetFullscreenDisplayModes(SDL_GetPrimaryDisplay(), nullptr);
         m_refresh_rate_delay = 1.0 / display_info[0]->refresh_rate;

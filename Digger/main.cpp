@@ -13,10 +13,7 @@
 #include <SoundSystem/SoundSystemLogger.h>
 #include <SoundSystem/SoundSystemSDL3_Mixer.h>
 
-#include "LevelScene.h"
-#include "Components/GridTransform.h"
-
-#include <fstream>
+#include "Scenes.h"
 #include <nlohmann/json.hpp>
 
 #if defined(WIN32)
@@ -49,7 +46,8 @@ static void init_game(stump::StumpEngine& engine)
     stump::SoundSystemLocator::register_sound_system(std::make_unique<stump::SoundSystemLogger>(std::make_unique<stump::SoundSystemSDL3_Mixer>()));
 
     engine.set_active_scene(Scenes::level_scene(engine));
-    engine.set_active_scene(Scenes::level_scene(engine));
+    // engine.set_active_scene(Scenes::level_scene(engine));
+    engine.set_active_scene(Scenes::ui_scene(engine));
 }
 
 int main(int, char*[])
