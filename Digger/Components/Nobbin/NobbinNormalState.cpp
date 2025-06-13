@@ -52,3 +52,7 @@ std::unique_ptr<INobbinState> NobbinNormalState::update()
 
     return nullptr;
 }
+bool NobbinNormalState::can_mine()
+{
+    return false;
+}

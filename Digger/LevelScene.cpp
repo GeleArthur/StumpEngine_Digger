@@ -11,6 +11,7 @@
 #include "Components/GoldBag/GoldBag.h"
 #include "Components/GridTransform.h"
 #include "Components/Nobbin/Nobbin.h"
+#include "Components/Nobbin/NobbinAI.h"
 
 #include <GameObject.h>
 #include <StumpEngine.h>
@@ -28,12 +29,14 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
 
     std::vector<int> grid_array = level_json["grid"].get<std::vector<int>>();
 
-    auto& collider_gm = scene->add_game_object();
-    auto& collider_holder = collider_gm.add_component<CollisionHolder>();
+    auto& game_things = scene->add_game_object();
+    auto& collider_holder = game_things.add_component<CollisionHolder>();
 
     stump::GameObject& gird = scene->add_game_object();
     auto&              dirt = gird.add_component<DirtGrid>(engine.get_renderer());
     gird.get_transform().set_parent(level_holder.get_transform());
+
+    auto& game_data_tracker = game_things.add_component<GameDataTracker>(dirt);
 
     for (int i = 0; i < grid_array.size(); ++i)
     {
@@ -73,13 +76,17 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
     digger.add_component<ColliderGrid>(grid_transform, collider_holder, 0);
     digger.get_transform().set_parent(level_holder.get_transform());
 
+    game_data_tracker.add_player(grid_transform);
+
     stump::GameObject& nobbin = scene->add_game_object();
     auto&              sprite_sheet = nobbin.add_component<stump::Texture2DSpriteSheet>("data/SpritesEnemies.png").set_sprite_size({ 16, 15 }).set_size_multiplier(3);
     auto&              transform = nobbin.add_component<GridTransform>(glm::ivec2{ level_json["EnemySpawnLocation"]["x"].get<int>(), level_json["EnemySpawnLocation"]["y"].get<int>() });
-    nobbin.add_component<Nobbin>(transform, dirt, sprite_sheet);
+    auto&              nobbin_comp = nobbin.add_component<Nobbin>(transform, dirt, sprite_sheet);
     nobbin.add_component<DirtEraser>(dirt);
     nobbin.add_component<ColliderGrid>(transform, collider_holder, 1);
-    nobbin.get_transform().set_parent(level_holder.get_transform());
+    nobbin.add_component<NobbinAI>(nobbin_comp, game_data_tracker);
+    nobbin.get_transform()
+        .set_parent(level_holder.get_transform());
 
     for (auto gold_location : level_json["GoldBags"])
     {

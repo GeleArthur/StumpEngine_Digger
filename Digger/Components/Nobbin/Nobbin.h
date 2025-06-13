@@ -2,6 +2,7 @@
 
 #include "INobbinState.h"
 
+#include <EngineTime.h>
 #include <Component/Component.h>
 #include <Input/InputManager.h>
 #include <memory>
@@ -17,31 +18,37 @@ class Nobbin final : public stump::Component
 {
 public:
     explicit Nobbin(stump::GameObject& attached, GridTransform& grid_transform, DirtGrid& dirt_grid, stump::Texture2DSpriteSheet& sprite_sheet);
-    ~Nobbin();
-    virtual void update() override;
+    ~Nobbin() override;
+    void update() override;
 
-    const stump::InputBindingVector& get_movement() const
+    [[nodiscard]] stump::InputBindingVector& get_movement()
     {
         return m_movement;
     };
 
-    GridTransform& get_grid_transform() const
+    [[nodiscard]] GridTransform& get_grid_transform() const
     {
         return *m_grid_transform;
     }
 
-    DirtGrid& get_dirt_grid() const
+    [[nodiscard]] DirtGrid& get_dirt_grid() const
     {
         return *m_dirt_grid;
     }
 
-    stump::Texture2DSpriteSheet& get_sprite_sheet() const
+    [[nodiscard]] stump::Texture2DSpriteSheet& get_sprite_sheet() const
     {
         return *m_sprite_sheet;
     }
 
+    [[nodiscard]] INobbinState& get_current_state() const
+    {
+        return *m_state.get();
+    }
+
 private:
     stump::InputBindingVector    m_movement;
+    stump::InputBindingButton    m_transform;
     float                        m_move_delay{};
     GridTransform*               m_grid_transform;
     glm::vec2                    m_last_move_direction{};

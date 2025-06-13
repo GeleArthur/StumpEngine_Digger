@@ -8,7 +8,8 @@ class NobbinNormalState final : public INobbinState
 {
 public:
     explicit NobbinNormalState(Nobbin& nobbin);
-    virtual std::unique_ptr<INobbinState> update() override;
+    std::unique_ptr<INobbinState> update() override;
+    bool                          can_mine() override;
 
 private:
     float      m_move_delay{};

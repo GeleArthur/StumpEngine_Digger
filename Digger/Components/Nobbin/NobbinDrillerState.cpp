@@ -48,6 +48,10 @@ std::unique_ptr<INobbinState> NobbinDrillerState::update()
 
     return nullptr;
 }
+bool NobbinDrillerState::can_mine()
+{
+    return true;
+}
 void NobbinDrillerState::look_direction(glm::ivec2 direction)
 {
     if (std::abs(direction.x) > std::abs(direction.y))

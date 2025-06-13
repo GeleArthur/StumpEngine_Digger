@@ -14,4 +14,5 @@ public:
     INobbinState& operator=(INobbinState&& other) = delete;
 
     virtual std::unique_ptr<INobbinState> update() = 0;
+    virtual bool                          can_mine() = 0;
 };
