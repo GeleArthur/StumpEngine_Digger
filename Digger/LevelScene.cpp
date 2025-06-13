@@ -1,8 +1,13 @@
 ﻿#include "LevelScene.h"
+
+#include "Components/ColliderGrid.h"
+
 #include <memory>
 
+#include "Components/CollisionHolder.h"
 #include "Components/DirtEraser.h"
 #include "Components/DirtGrid.h"
+#include "Components/Gem.h"
 #include "Components/GoldBag.h"
 #include "Components/GridTransform.h"
 #include "Components/Nobbin/Nobbin.h"
@@ -10,8 +15,6 @@
 #include <GameObject.h>
 #include <StumpEngine.h>
 #include <fstream>
-#include <Component/FpsShowCase.h>
-#include <Component/TextDisplay.h>
 #include <Component/Texture2DSpriteSheet.h>
 #include <nlohmann/json.hpp>
 
@@ -24,6 +27,9 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
     nlohmann::json level_json = nlohmann::json::parse(f);
 
     std::vector<int> grid_array = level_json["grid"].get<std::vector<int>>();
+
+    auto& collider_gm = scene->add_game_object();
+    auto& collider_holder = collider_gm.add_component<CollisionHolder>();
 
     stump::GameObject& gird = scene->add_game_object();
     auto&              dirt = gird.add_component<DirtGrid>(engine.get_renderer());
@@ -61,9 +67,10 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
 
     stump::GameObject& digger = scene->add_game_object();
     digger.add_component<stump::Texture2DSpriteSheet>("data/SpritesPlayers.png").set_sprite_size({ 16, 16 }).set_size_multiplier(3);
-    digger.add_component<GridTransform>(glm::ivec2{ level_json["PlayerSpawnLocation1"]["x"].get<int>(), level_json["PlayerSpawnLocation1"]["y"].get<int>() });
+    auto& grid_transform = digger.add_component<GridTransform>(glm::ivec2{ level_json["PlayerSpawnLocation1"]["x"].get<int>(), level_json["PlayerSpawnLocation1"]["y"].get<int>() });
     digger.add_component<Digger>();
     digger.add_component<DirtEraser>(dirt);
+    digger.add_component<ColliderGrid>(grid_transform, collider_holder, 0);
     digger.get_transform().set_parent(level_holder.get_transform());
 
     stump::GameObject& nobbin = scene->add_game_object();
@@ -71,6 +78,7 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
     auto&              transform = nobbin.add_component<GridTransform>(glm::ivec2{ level_json["EnemySpawnLocation"]["x"].get<int>(), level_json["EnemySpawnLocation"]["y"].get<int>() });
     nobbin.add_component<Nobbin>(transform, dirt, sprite_sheet);
     nobbin.add_component<DirtEraser>(dirt);
+    nobbin.add_component<ColliderGrid>(transform, collider_holder, 1);
     nobbin.get_transform().set_parent(level_holder.get_transform());
 
     for (auto gold_location : level_json["GoldBags"])
@@ -81,7 +89,8 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
         auto& gold_bag = scene->add_game_object();
         gold_bag.add_component<GoldBag>();
         gold_bag.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 16 }).set_sprite_index({ 0, 0 }).set_size_multiplier(3);
-        gold_bag.add_component<GridTransform>(glm::ivec2{ x, y });
+        auto& bag_transform = gold_bag.add_component<GridTransform>(glm::ivec2{ x, y });
+        gold_bag.add_component<ColliderGrid>(bag_transform, collider_holder, 2);
     }
 
     for (auto gems : level_json["Gems"])
@@ -91,7 +100,9 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
 
         auto& gem = scene->add_game_object();
         gem.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 16 }).set_sprite_index({ 0, 2 }).set_size_multiplier(3);
-        gem.add_component<GridTransform>(glm::ivec2{ x, y });
+        auto& gem_transform = gem.add_component<GridTransform>(glm::ivec2{ x, y });
+        auto& collider = gem.add_component<ColliderGrid>(gem_transform, collider_holder, 3);
+        gem.add_component<Gem>(collider);
     }
 
     return std::move(scene);

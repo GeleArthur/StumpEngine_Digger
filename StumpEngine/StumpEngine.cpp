@@ -159,6 +159,8 @@ namespace stump
         }
 
         SDL_RenderPresent(m_renderer);
+
+        m_scene->delete_marked_game_objects();
     }
 
 } // namespace stump

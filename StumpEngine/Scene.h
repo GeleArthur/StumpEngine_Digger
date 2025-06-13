@@ -20,6 +20,7 @@ namespace stump
         void fixed_update() const;
         void update() const;
         void render() const;
+        void delete_marked_game_objects();
 
         GameObject& add_game_object();
 
@@ -32,6 +33,5 @@ namespace stump
         std::vector<std::unique_ptr<GameObject>> m_game_objects{};
 
         StumpEngine* m_engine;
-        void         delete_marked_game_objects();
     };
 } // namespace stump
