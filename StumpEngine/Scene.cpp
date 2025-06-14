@@ -2,6 +2,7 @@
 
 #include <GameObject.h>
 #include <StumpEngine.h>
+#include <iostream>
 
 namespace stump
 {
@@ -16,6 +17,15 @@ namespace stump
             game_object->mark_for_deletion();
         }
         delete_marked_game_objects();
+    }
+    void Scene::cleanup()
+    {
+        for (std::unique_ptr<GameObject>& object : m_game_objects_to_be_added)
+        {
+            m_game_objects.push_back(std::move(object));
+        }
+
+        m_game_objects_to_be_added.clear();
     }
     void Scene::fixed_update() const
     {
@@ -40,8 +50,8 @@ namespace stump
     }
     GameObject& Scene::add_game_object()
     {
-        m_game_objects.push_back(std::make_unique<GameObject>(*m_engine));
-        return *m_game_objects[m_game_objects.size() - 1];
+        m_game_objects_to_be_added.push_back(std::make_unique<GameObject>(*m_engine));
+        return *m_game_objects_to_be_added[m_game_objects_to_be_added.size() - 1];
     }
     StumpEngine& Scene::get_engine() const
     {

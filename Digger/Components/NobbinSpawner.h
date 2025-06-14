@@ -8,6 +8,7 @@
 #include <vec2.hpp>
 #include <Component/Component.h>
 
+class Nobbin;
 namespace stump
 {
     class Scene;
@@ -35,4 +36,6 @@ private:
     DirtGrid*        m_dirt;
     CollisionHolder* m_collision;
     GameDataTracker* m_tracker;
+
+    Nobbin* m_controlling_player{};
 };

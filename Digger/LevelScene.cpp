@@ -73,7 +73,7 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine, Ga
     // Spawn players
 
     int spawn_count = 1;
-    if (mode == GameModes::coop || mode == GameModes::versus)
+    if (mode == GameModes::coop)
         spawn_count = 2;
 
     for (int i = 0; i < spawn_count; ++i)
@@ -117,7 +117,7 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine, Ga
                                             game_data_tracker,
                                             glm::ivec2{ level_json["EnemySpawnLocation"]["x"].get<int>(), level_json["EnemySpawnLocation"]["y"].get<int>() },
                                             mode,
-                                            UseInput::keyboard_and_gamepad);
+                                            stump::InputManager::instance().get_gamepads().size() >= 2 ? UseInput::gamepad2 : UseInput::gamepad1);
 
     // Spawn gold bags
     for (auto gold_location : level_json["GoldBags"])

@@ -41,6 +41,22 @@ void NobbinSpawner::update()
         auto&              nobbin_comp = nobbin.add_component<Nobbin>(transform, *m_dirt, sprite_sheet);
         nobbin.add_component<DirtEraser>(*m_dirt);
         nobbin.add_component<ColliderGrid>(transform, *m_collision, 1);
-        nobbin.add_component<NobbinAI>(nobbin_comp, *m_tracker);
+
+        if (m_mode == GameModes::versus && m_controlling_player == nullptr)
+        {
+            stump::GamepadDevice& gamepad = stump::InputManager::instance().get_gamepads()[m_input == UseInput::gamepad1 ? 0 : 1];
+            gamepad.add_vector_binding(nobbin_comp.get_movement(), SDL_GAMEPAD_AXIS_LEFTX, SDL_GAMEPAD_AXIS_LEFTY);
+            gamepad.add_vector_sides_binding(nobbin_comp.get_movement(),
+                                             SDL_GAMEPAD_BUTTON_DPAD_UP,
+                                             SDL_GAMEPAD_BUTTON_DPAD_DOWN,
+                                             SDL_GAMEPAD_BUTTON_DPAD_LEFT,
+                                             SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
+
+            m_controlling_player = &nobbin_comp;
+        }
+        else
+        {
+            nobbin.add_component<NobbinAI>(nobbin_comp, *m_tracker);
+        }
     }
 }

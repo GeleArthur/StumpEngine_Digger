@@ -40,6 +40,7 @@ namespace stump
         SDL_Window*            m_window{};
         SDL_Renderer*          m_renderer{};
         std::unique_ptr<Scene> m_scene{};
+        std::unique_ptr<Scene> m_new_scene{};
 
         std::chrono::duration<float>                   m_time_passed{};
         const std::chrono::duration<float, std::milli> m_fixed_update_time = std::chrono::duration<float, std::milli>(45.0f);

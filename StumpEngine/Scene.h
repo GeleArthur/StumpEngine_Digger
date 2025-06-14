@@ -17,6 +17,7 @@ namespace stump
         Scene operator=(const Scene&) = delete;
         Scene operator=(Scene&&) = delete;
 
+        void cleanup();
         void fixed_update() const;
         void update() const;
         void render() const;
@@ -32,6 +33,7 @@ namespace stump
 
     private:
         std::vector<std::unique_ptr<GameObject>> m_game_objects{};
+        std::vector<std::unique_ptr<GameObject>> m_game_objects_to_be_added{};
         StumpEngine*                             m_engine;
     };
 } // namespace stump

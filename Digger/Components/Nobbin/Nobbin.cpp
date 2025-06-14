@@ -11,28 +11,14 @@ Nobbin::Nobbin(stump::GameObject& attached, GridTransform& grid_transform, DirtG
     , m_state{ std::make_unique<NobbinNormalState>(*this) }
     , m_sprite_sheet(&sprite_sheet)
 {
-    for (stump::GamepadDevice& gamepad : stump::InputManager::instance().get_gamepads())
-    {
-        gamepad.add_vector_binding(m_movement, SDL_GAMEPAD_AXIS_LEFTX, SDL_GAMEPAD_AXIS_LEFTY);
-        gamepad.add_vector_sides_binding(m_movement,
-                                         SDL_GAMEPAD_BUTTON_DPAD_UP,
-                                         SDL_GAMEPAD_BUTTON_DPAD_DOWN,
-                                         SDL_GAMEPAD_BUTTON_DPAD_LEFT,
-                                         SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
-    }
 }
 Nobbin::~Nobbin()
 {
-    for (stump::GamepadDevice& gamepad : stump::InputManager::instance().get_gamepads())
-    {
-        gamepad.remove_vector_binding(m_movement);
-        gamepad.remove_vector_sides_binding(m_movement);
-    }
 }
 void Nobbin::update()
 {
     std::unique_ptr<INobbinState> new_state = m_state->update();
-    if (new_state.get() != nullptr)
+    if (new_state != nullptr)
     {
         m_state = std::move(new_state);
     }

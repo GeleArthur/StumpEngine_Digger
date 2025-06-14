@@ -97,7 +97,7 @@ namespace stump
     }
     void StumpEngine::set_active_scene(std::unique_ptr<Scene>&& scene)
     {
-        m_scene = std::move(scene);
+        m_new_scene = std::move(scene);
     }
 
     void StumpEngine::run()
@@ -106,6 +106,11 @@ namespace stump
 
         while (!m_is_quitting)
         {
+            if (m_new_scene.get() != nullptr)
+            {
+                m_scene = std::move(m_new_scene);
+            }
+
             EngineTime::instance().update();
             run_one_loop();
 
@@ -131,6 +136,7 @@ namespace stump
 
     void StumpEngine::run_one_loop()
     {
+        m_scene->cleanup();
         handle_input();
         m_time_passed += std::chrono::duration<double>(EngineTime::instance().get_delta_time());
 
