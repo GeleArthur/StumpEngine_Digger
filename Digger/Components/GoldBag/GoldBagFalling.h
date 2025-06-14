@@ -8,7 +8,7 @@ class GoldBagFalling final : public IGoldBagState
 {
 public:
     virtual std::unique_ptr<IGoldBagState> update(GoldBag& bag) override;
-    void                                   collided(uint64_t tag, glm::ivec2 direction) override;
+    void                                   collided(ColliderGrid& tag, glm::ivec2 direction) override;
 
 private:
     float m_move_delay{ stump::EngineTime::instance().get_current_time() };

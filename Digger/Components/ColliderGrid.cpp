@@ -21,7 +21,7 @@ ColliderGrid::~ColliderGrid()
 }
 void ColliderGrid::fixed_update()
 {
-    for (const ColliderGrid* transform : m_holder->get_colliders())
+    for (ColliderGrid* transform : m_holder->get_colliders())
     {
         if (transform == this)
             continue;
@@ -30,7 +30,7 @@ void ColliderGrid::fixed_update()
         {
             const glm::ivec2 from_sub = m_grid_transform->get_sub_position();
             const glm::ivec2 to_sub = transform->m_grid_transform->get_sub_position();
-            m_collided.notify_listeners(transform->m_tag,
+            m_collided.notify_listeners(*transform,
                                         glm::ivec2{
                                             get_sign(from_sub.x - to_sub.x),
                                             get_sign(from_sub.y - to_sub.y),

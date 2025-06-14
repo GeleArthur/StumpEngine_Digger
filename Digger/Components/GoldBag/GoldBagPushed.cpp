@@ -27,6 +27,6 @@ std::unique_ptr<IGoldBagState> GoldBagPushed::update(GoldBag& gold_bag)
     return nullptr;
 }
 
-void GoldBagPushed::collided(uint64_t tag, glm::ivec2 direction)
+void GoldBagPushed::collided(ColliderGrid& tag, glm::ivec2 direction)
 {
 }

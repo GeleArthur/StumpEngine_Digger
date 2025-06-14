@@ -36,9 +36,9 @@ public:
     }
 
 private:
-    std::unique_ptr<IGoldBagState>             m_current_state{};
-    stump::EventListener<uint64_t, glm::ivec2> m_collided;
-    GridTransform*                             m_grid_transform;
-    DirtGrid*                                  m_dirt_grid;
-    stump::Texture2DSpriteSheet*               m_sprite_sheet;
+    std::unique_ptr<IGoldBagState>                  m_current_state{};
+    stump::EventListener<ColliderGrid&, glm::ivec2> m_collided;
+    GridTransform*                                  m_grid_transform;
+    DirtGrid*                                       m_dirt_grid;
+    stump::Texture2DSpriteSheet*                    m_sprite_sheet;
 };

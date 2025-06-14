@@ -15,10 +15,15 @@ public:
     void fixed_update() override;
     void disconnect_holder();
 
-    stump::Event<uint64_t, glm::ivec2>& get_collided()
+    stump::Event<ColliderGrid&, glm::ivec2>& get_collided()
     {
         return m_collided;
     };
+
+    uint64_t get_tag() const
+    {
+        return m_tag;
+    }
 
 private:
     int              get_sign(int x);
@@ -26,7 +31,7 @@ private:
     GridTransform*   m_grid_transform;
     uint64_t         m_tag;
 
-    stump::Event<uint64_t, glm::ivec2> m_collided;
+    stump::Event<ColliderGrid&, glm::ivec2> m_collided;
 
     // static std::hash<std::string> m_hasher;
 };

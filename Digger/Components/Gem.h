@@ -8,8 +8,8 @@ class Gem final : public stump::Component
 {
 public:
     explicit Gem(stump::GameObject& attached_game_object, ColliderGrid& collider);
-    void collided(uint64_t tag, glm::ivec2 direction) const;
+    void collided(const ColliderGrid& tag, glm::ivec2 direction) const;
 
 private:
-    stump::EventListener<uint64_t, glm::ivec2> m_collided{ [this](uint64_t tag, glm::ivec2 direction) { collided(tag, direction); } };
+    stump::EventListener<ColliderGrid&, glm::ivec2> m_collided{ [this](ColliderGrid& tag, glm::ivec2 direction) { collided(tag, direction); } };
 };

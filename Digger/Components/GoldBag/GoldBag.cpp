@@ -6,7 +6,7 @@
 
 GoldBag::GoldBag(stump::GameObject& attached, GridTransform& grid_transform, DirtGrid& dirt_grid, stump::Texture2DSpriteSheet& sheet, ColliderGrid& collider)
     : Component{ attached }
-    , m_collided{ [this](const uint64_t tag, const glm::ivec2 direction) { m_current_state->collided(tag, direction); } }
+    , m_collided{ [this](ColliderGrid& tag, const glm::ivec2 direction) { m_current_state->collided(tag, direction); } }
     , m_grid_transform{ &grid_transform }
     , m_dirt_grid{ &dirt_grid }
     , m_sprite_sheet{ &sheet }

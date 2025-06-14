@@ -1,6 +1,7 @@
 ﻿#include "GoldBagCollectable.h"
 
 #include "GoldBag.h"
+#include "../ColliderGrid.h"
 
 #include <EngineTime.h>
 #include <GameObject.h>
@@ -27,13 +28,13 @@ std::unique_ptr<IGoldBagState> GoldBagCollectable::update(GoldBag& bag)
     return nullptr;
 }
 
-void GoldBagCollectable::collided(uint64_t tag, glm::ivec2 direction)
+void GoldBagCollectable::collided(ColliderGrid& tag, glm::ivec2 direction)
 {
-    if (tag == 0)
+    if (tag.get_tag() == 0)
     {
         m_colleted = 1;
     }
-    if (tag == 1)
+    if (tag.get_tag() == 1)
     {
         m_colleted = 2;
     }
