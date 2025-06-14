@@ -1,6 +1,5 @@
 # Stump engine SDL3
 
-
 This is a game made for programming 4 to show game programming patterns.
 Using beautiful c++
 
@@ -17,6 +16,7 @@ Using beautiful c++
 - Service Locator
 
 ### Features
+
 - Scene loading
 - GameObjects
 - Sounds
@@ -27,5 +27,4 @@ Using beautiful c++
 - Texture sprite sheets
 - Components
 
-
-2DAE10_Programming4_00_vandenBarselaar_Arthur.zip
+https://github.com/GeleArthur/StumpEngine_Digger
