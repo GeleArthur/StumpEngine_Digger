@@ -28,7 +28,7 @@ std::unique_ptr<IGoldBagState> GoldBagCollectable::update(GoldBag& bag)
     return nullptr;
 }
 
-void GoldBagCollectable::collided(ColliderGrid& tag, glm::ivec2 direction)
+void GoldBagCollectable::collided(ColliderGrid& tag, glm::ivec2)
 {
     if (tag.get_tag() == 0)
     {

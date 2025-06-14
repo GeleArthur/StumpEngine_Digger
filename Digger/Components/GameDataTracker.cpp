@@ -36,7 +36,7 @@ void GameDataTracker::update_flow_field()
     std::queue<glm::ivec2> queue;
     for (Cell& cel : m_flow_field)
     {
-        cel.cost = std::numeric_limits<int>::max();
+        cel.cost = std::numeric_limits<float>::max();
     }
 
     for (GridTransform* player : m_players)
@@ -50,7 +50,7 @@ void GameDataTracker::update_flow_field()
         glm::ivec2 pos = queue.front();
         queue.pop();
 
-        int curr_cost = m_flow_field[pos.x + pos.y * GridSettings::grid_tile_count.x].cost;
+        float curr_cost = m_flow_field[pos.x + pos.y * GridSettings::grid_tile_count.x].cost;
 
         for (glm::ivec2 dir : directions)
         {
@@ -70,7 +70,7 @@ void GameDataTracker::update_flow_field()
     {
         glm::ivec2 location = { i % GridSettings::grid_tile_count.x, i / GridSettings::grid_tile_count.x };
 
-        int        lowest_cost = std::numeric_limits<int>::max();
+        float      lowest_cost = std::numeric_limits<float>::max();
         glm::ivec2 best_dir{};
 
         for (glm::ivec2 direction : directions)

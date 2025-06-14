@@ -54,7 +54,7 @@ std::unique_ptr<IGoldBagState> GoldBagFalling::update(GoldBag& gold_bag)
 
     return nullptr;
 }
-void GoldBagFalling::collided(ColliderGrid& tag, glm::ivec2 direction)
+void GoldBagFalling::collided(ColliderGrid& tag, glm::ivec2)
 {
     if (GetHit* thing = tag.get_game_object().get_component<GetHit>())
         thing->die();

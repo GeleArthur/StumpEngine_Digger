@@ -46,7 +46,7 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine, Ga
             continue;
 
         int x = i % GridSettings::grid_tile_count.x;
-        int y = i / static_cast<float>(GridSettings::grid_tile_count.x);
+        int y = i / GridSettings::grid_tile_count.x;
         dirt.delete_on_texture(SDL_Rect{
             GridSettings::grid_offset.x + x * GridSettings::grid_tile_pixel_size.x,
             GridSettings::grid_offset.y + y * GridSettings::grid_tile_pixel_size.y,

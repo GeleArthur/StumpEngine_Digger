@@ -29,7 +29,7 @@ std::unique_ptr<IGoldBagState> GoldBagIdle::update(GoldBag& gold_bag)
 
     return nullptr;
 }
-void GoldBagIdle::collided(ColliderGrid& tag, glm::ivec2 direction)
+void GoldBagIdle::collided(ColliderGrid&, glm::ivec2 direction)
 {
     if (direction.x == 0)
         return;

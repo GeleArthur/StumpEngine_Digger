@@ -12,7 +12,7 @@ Gem::Gem(stump::GameObject& attached_game_object, ColliderGrid& collider, GameDa
     tacker.add_score(m_scores);
     collider.get_collided().add_listener(&m_collided);
 }
-void Gem::collided(const ColliderGrid& tag, glm::ivec2 direction)
+void Gem::collided(const ColliderGrid& tag, glm::ivec2)
 {
     if (tag.get_tag() == 0)
     {
