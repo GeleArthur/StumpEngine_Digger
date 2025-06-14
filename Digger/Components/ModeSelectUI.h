@@ -1,4 +1,7 @@
 ﻿#pragma once
+#include "../GameModes.h"
+
+#include <StumpEngine.h>
 #include <vector>
 #include <Component/Component.h>
 #include <Input/InputBinding.h>
@@ -9,18 +12,11 @@ namespace stump
     class Scene;
 } // namespace stump
 
-enum class GameModes
-{
-    singleplayer = 0,
-    coop = 1,
-    versus = 2,
-    count = 3
-};
-
 class ModeSelectUi final : public stump::Component
 {
 public:
     explicit ModeSelectUi(stump::GameObject& attached, stump::Scene& scene);
+    ~ModeSelectUi() override;
     void pressed(glm::vec2 direction);
     void start_game();
 
@@ -31,4 +27,5 @@ private:
     stump::InputBindingButton       m_game_start;
     stump::Transform*               m_arrow_transform;
     GameModes                       m_selected_game_mode{};
+    stump::StumpEngine*             m_engine;
 };

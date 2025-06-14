@@ -43,6 +43,10 @@ namespace stump
         m_game_objects.push_back(std::make_unique<GameObject>(*m_engine));
         return *m_game_objects[m_game_objects.size() - 1];
     }
+    StumpEngine& Scene::get_engine() const
+    {
+        return *m_engine;
+    }
     void Scene::delete_marked_game_objects()
     {
         for (const std::unique_ptr<GameObject>& game_object : m_game_objects)

@@ -22,7 +22,8 @@ namespace stump
         void render() const;
         void delete_marked_game_objects();
 
-        GameObject& add_game_object();
+        GameObject&  add_game_object();
+        StumpEngine& get_engine() const;
 
         [[nodiscard]] const std::vector<std::unique_ptr<GameObject>>& get_all_game_objects()
         {
@@ -31,6 +32,6 @@ namespace stump
 
     private:
         std::vector<std::unique_ptr<GameObject>> m_game_objects{};
-        StumpEngine* m_engine;
+        StumpEngine*                             m_engine;
     };
 } // namespace stump

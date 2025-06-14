@@ -12,11 +12,15 @@ ModeSelectUi::ModeSelectUi(stump::GameObject& attached, stump::Scene& scene)
     : Component{ attached }
     , m_move{ [this](const glm::vec2 direction) { pressed(direction); } }
     , m_press_start{ [this] { start_game(); } }
+    , m_engine{ &scene.get_engine() }
 {
     auto& game_object = scene.add_game_object();
     m_arrow_transform = &game_object.get_transform();
     m_arrow_transform->set_local_position({ 500, 210 });
     game_object.add_component<stump::Texture2D>("data/arrow.png");
+
+    m_game_start.get_on_pressed()->add_listener(&m_press_start);
+    m_move_cursor.on_pressed()->add_listener(&m_move);
 
     stump::InputManager::instance().get_keyboard().add_vector_binding(m_move_cursor, SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D);
     stump::InputManager::instance().get_keyboard().add_button_binding(m_game_start, SDL_SCANCODE_SPACE);
@@ -26,10 +30,17 @@ ModeSelectUi::ModeSelectUi(stump::GameObject& attached, stump::Scene& scene)
         gamepad.add_vector_sides_binding(m_move_cursor, SDL_GAMEPAD_BUTTON_DPAD_UP, SDL_GAMEPAD_BUTTON_DPAD_DOWN, SDL_GAMEPAD_BUTTON_DPAD_LEFT, SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
         gamepad.add_button_binding(m_game_start, SDL_GAMEPAD_BUTTON_SOUTH);
     }
-
-    m_game_start.get_on_pressed()->add_listener(&m_press_start);
-
-    m_move_cursor.on_pressed()->add_listener(&m_move);
+}
+ModeSelectUi::~ModeSelectUi()
+{
+    stump::InputManager::instance().get_keyboard().remove_vector_binding(m_move_cursor);
+    stump::InputManager::instance().get_keyboard().remove_button_binding(m_game_start);
+    for (stump::GamepadDevice& gamepad : stump::InputManager::instance().get_gamepads())
+    {
+        gamepad.remove_vector_binding(m_move_cursor);
+        gamepad.remove_vector_sides_binding(m_move_cursor);
+        gamepad.remove_button_binding(m_game_start);
+    }
 }
 void ModeSelectUi::pressed(const glm::vec2 direction)
 {
@@ -53,5 +64,5 @@ void ModeSelectUi::pressed(const glm::vec2 direction)
 }
 void ModeSelectUi::start_game()
 {
-    get_game_object().get_engine().set_active_scene(Scenes::level_scene(get_game_object().get_engine()));
+    m_engine->set_active_scene(Scenes::level_scene(*m_engine, m_selected_game_mode, "data/level1.json"));
 }

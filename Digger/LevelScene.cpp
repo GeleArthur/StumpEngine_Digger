@@ -10,6 +10,7 @@
 #include "Components/Gem.h"
 #include "Components/GoldBag/GoldBag.h"
 #include "Components/GridTransform.h"
+#include "Components/NobbinSpawner.h"
 #include "Components/Nobbin/Nobbin.h"
 #include "Components/Nobbin/NobbinAI.h"
 
@@ -19,25 +20,26 @@
 #include <Component/Texture2DSpriteSheet.h>
 #include <nlohmann/json.hpp>
 
-std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
+std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine, GameModes mode, const std::string& level)
 {
-    auto        scene = std::make_unique<stump::Scene>(engine);
-    const auto& level_holder = scene->add_game_object();
+    auto scene = std::make_unique<stump::Scene>(engine);
 
-    std::ifstream  f("data/level1.json");
-    nlohmann::json level_json = nlohmann::json::parse(f);
+    // Parse file
+    std::ifstream  file(level);
+    nlohmann::json level_json = nlohmann::json::parse(file);
 
-    std::vector<int> grid_array = level_json["grid"].get<std::vector<int>>();
-
+    // Collision setup
     auto& game_things = scene->add_game_object();
     auto& collider_holder = game_things.add_component<CollisionHolder>();
 
+    // Grid setup
     stump::GameObject& gird = scene->add_game_object();
     auto&              dirt = gird.add_component<DirtGrid>(engine.get_renderer());
-    gird.get_transform().set_parent(level_holder.get_transform());
 
     auto& game_data_tracker = game_things.add_component<GameDataTracker>(dirt);
 
+    // Generate grid from level
+    std::vector<int> grid_array = level_json["grid"].get<std::vector<int>>();
     for (int i = 0; i < grid_array.size(); ++i)
     {
         if (!grid_array[i])
@@ -68,26 +70,56 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
             dirt.clear_wall_between({ x, y }, { x, y - 1 });
     }
 
-    stump::GameObject& digger = scene->add_game_object();
-    digger.add_component<stump::Texture2DSpriteSheet>("data/SpritesPlayers.png").set_sprite_size({ 16, 16 }).set_size_multiplier(3);
-    auto& grid_transform = digger.add_component<GridTransform>(glm::ivec2{ level_json["PlayerSpawnLocation1"]["x"].get<int>(), level_json["PlayerSpawnLocation1"]["y"].get<int>() });
-    digger.add_component<Digger>();
-    digger.add_component<DirtEraser>(dirt);
-    digger.add_component<ColliderGrid>(grid_transform, collider_holder, 0);
-    digger.get_transform().set_parent(level_holder.get_transform());
+    // Spawn players
 
-    game_data_tracker.add_player(grid_transform);
+    int spawn_count = 1;
+    if (mode == GameModes::coop || mode == GameModes::versus)
+        spawn_count = 2;
 
-    stump::GameObject& nobbin = scene->add_game_object();
-    auto&              sprite_sheet = nobbin.add_component<stump::Texture2DSpriteSheet>("data/SpritesEnemies.png").set_sprite_size({ 16, 15 }).set_size_multiplier(3);
-    auto&              transform = nobbin.add_component<GridTransform>(glm::ivec2{ level_json["EnemySpawnLocation"]["x"].get<int>(), level_json["EnemySpawnLocation"]["y"].get<int>() });
-    auto&              nobbin_comp = nobbin.add_component<Nobbin>(transform, dirt, sprite_sheet);
-    nobbin.add_component<DirtEraser>(dirt);
-    nobbin.add_component<ColliderGrid>(transform, collider_holder, 1);
-    nobbin.add_component<NobbinAI>(nobbin_comp, game_data_tracker);
-    nobbin.get_transform()
-        .set_parent(level_holder.get_transform());
+    for (int i = 0; i < spawn_count; ++i)
+    {
+        stump::GameObject& digger = scene->add_game_object();
+        digger.add_component<stump::Texture2DSpriteSheet>("data/SpritesPlayers.png").set_sprite_size({ 16, 16 }).set_size_multiplier(3);
 
+        std::string spawn_string = i == 0 ? "PlayerSpawnLocation1" : "PlayerSpawnLocation2";
+        auto&       grid_transform = digger.add_component<GridTransform>(glm::ivec2{ level_json[spawn_string]["x"].get<int>(), level_json[spawn_string]["y"].get<int>() });
+
+        UseInput input{ UseInput::keyboard_and_gamepad };
+        if (mode == GameModes::coop || mode == GameModes::versus)
+        {
+            if (stump::InputManager::instance().get_gamepads().size() >= 2)
+            {
+                if (i == 0)
+                    input = UseInput::gamepad1;
+                else
+                    input = UseInput::gamepad2;
+            }
+            else
+            {
+                if (i == 0)
+                    input = UseInput::keyboard;
+                else
+                    input = UseInput::gamepad1;
+            }
+        }
+
+        digger.add_component<Digger>(input, i != 0);
+        digger.add_component<DirtEraser>(dirt);
+        digger.add_component<ColliderGrid>(grid_transform, collider_holder, 0);
+
+        game_data_tracker.add_player(grid_transform);
+    }
+
+    auto& spawner_gm = scene->add_game_object();
+    spawner_gm.add_component<NobbinSpawner>(*scene.get(),
+                                            dirt,
+                                            collider_holder,
+                                            game_data_tracker,
+                                            glm::ivec2{ level_json["EnemySpawnLocation"]["x"].get<int>(), level_json["EnemySpawnLocation"]["y"].get<int>() },
+                                            mode,
+                                            UseInput::keyboard_and_gamepad);
+
+    // Spawn gold bags
     for (auto gold_location : level_json["GoldBags"])
     {
         int x = gold_location["x"].get<int>();
@@ -101,6 +133,7 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine)
         gold_bag_gm.add_component<GoldBag>(bag_transform, dirt, texture, collider);
     }
 
+    // Spawn gems
     for (auto gems : level_json["Gems"])
     {
         int x = gems["x"].get<int>();
