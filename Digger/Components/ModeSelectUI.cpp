@@ -64,5 +64,10 @@ void ModeSelectUi::pressed(const glm::vec2 direction)
 }
 void ModeSelectUi::start_game()
 {
+    if (stump::InputManager::instance().get_gamepads().empty())
+    {
+        if (m_selected_game_mode != GameModes::singleplayer)
+            return;
+    }
     m_engine->set_active_scene(Scenes::level_scene(*m_engine, m_selected_game_mode, "data/level1.json"));
 }
