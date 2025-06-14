@@ -4,15 +4,19 @@
 
 #include <StumpEngine.h>
 #include <queue>
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include <random>
 
 GameDataTracker::GameDataTracker(stump::GameObject& attached, DirtGrid& grid)
     : Component{ attached }
     , m_grid{ &grid }
 {
 }
-void GameDataTracker::player_dead() const
+void GameDataTracker::player_dead()
 {
     // this is doo doo
+    write_to_json();
     get_game_object().get_engine().set_active_scene(Scenes::ui_scene(get_game_object().get_engine()));
 }
 void GameDataTracker::update()
@@ -81,4 +85,27 @@ void GameDataTracker::update_flow_field()
         }
         m_flow_field[location.x + location.y * GridSettings::grid_tile_count.x].direction = best_dir;
     }
+}
+
+void GameDataTracker::write_to_json()
+{
+    std::ifstream  file("scores.json");
+    nlohmann::json scores_json{};
+    if (file.is_open())
+    {
+        scores_json = nlohmann::json::parse(file);
+    }
+
+    static std::random_device              rd;
+    static std::mt19937                    gen(rd());
+    static std::uniform_int_distribution<> dis(0, 25);
+    std::string                            random_word;
+    for (int i = 0; i < 3; ++i)
+        random_word += static_cast<char>('a' + dis(gen));
+
+    scores_json["scores"][random_word] = m_score;
+
+    std::ofstream output_file("scores.json");
+    output_file << scores_json.dump();
+    output_file.close();
 }

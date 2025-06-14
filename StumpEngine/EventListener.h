@@ -81,7 +81,6 @@ namespace stump
     template<typename... Args>
     void EventListener<Args...>::add_to_event_internal(Event<Args...>* event)
     {
-        // assert(m_event == nullptr && "Please remove event before assigning a new one");
         m_event = event;
     }
 

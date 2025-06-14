@@ -38,16 +38,19 @@ public:
     {
         return m_flow_field;
     }
-    void player_dead() const;
+    void player_dead();
 
     void update() override;
     void update_flow_field();
+
+    void write_to_json();
 
 private:
     FlowField                   m_flow_field{};
     std::vector<GridTransform*> m_players;
     DirtGrid*                   m_grid;
 
-    bool                                m_hack{};
     std::vector<stump::EventListener<>> m_death_event;
+
+    int m_score{};
 };
