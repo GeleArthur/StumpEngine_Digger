@@ -23,7 +23,7 @@ endif()
 file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "*.cpp" "*.h")
 
 add_executable(${PROJECT_NAME} ${TARGET_PARAM} ${source_files})
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PUBLIC StumpEngine)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

@@ -1,7 +1,6 @@
 #include "StumpEngine.h"
 #include <chrono>
 #include <exception>
-#include <print>
 
 #include <implot.h>
 #include <thread>

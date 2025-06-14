@@ -130,7 +130,7 @@ if(WIN32) # subcheck support
     set(sdl3_mixer_SOURCE_DIR "${CMAKE_SOURCE_DIR}/ThirdParty/SDL3_mixer-3.0.0-windows-VC-x64")
     add_library(SDL3_mixer::SDL3_mixer SHARED IMPORTED)
     set_target_properties(SDL3_mixer::SDL3_mixer PROPERTIES
-            IMPORTED_LOCATION "${sdl3_mixer_SOURCE_DIR}/bin/SDL3_mixer.dll"
+            IMPORTED_LOCATION "${sdl3_mixer_SOURCE_DIR}/bin2/SDL3_mixer.dll"
             IMPORTED_IMPLIB "${sdl3_mixer_SOURCE_DIR}/lib/SDL3_mixer.lib"
             INTERFACE_INCLUDE_DIRECTORIES ${sdl3_mixer_SOURCE_DIR}/include
     )
