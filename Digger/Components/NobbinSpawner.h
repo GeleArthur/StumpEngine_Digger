@@ -2,7 +2,7 @@
 #include "CollisionHolder.h"
 #include "DirtGrid.h"
 #include "GameDataTracker.h"
-#include "../GameModes.h"
+#include "../Scene/GameModes.h"
 
 #include <EngineTime.h>
 #include <vec2.hpp>

@@ -1,7 +1,7 @@
 ﻿#include "ModeSelectUI.h"
 
 #include "GridTransform.h"
-#include "../Scenes.h"
+#include "../Scene/Scenes.h"
 
 #include <GameObject.h>
 #include <Scene.h>

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Components/ModeSelectUI.h"
+#include "../Components/ModeSelectUI.h"
 
 #include <Scene.h>
 #include <memory>

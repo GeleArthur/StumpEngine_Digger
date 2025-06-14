@@ -1,5 +1,24 @@
 # Stump engine SDL3
 
+
+This is a game made for programming 4 to show game programming patterns.
+
+### patterns used
+
+- Game Loop
+- Update Method
+- Command
+- Observer/Event
+- Components
+- State
+- Singleton
+- Dirty Flag
+- Service Locator
+
+Some specifics about your engine and the design choices you made
+A link to the source control depot you used for your project
+
+
 This is a game engine made for programming 4.
 Lots of game programming patterns.
 Using beautiful c++

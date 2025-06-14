@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../GameModes.h"
+#include "../Scene/GameModes.h"
 
 #include <StumpEngine.h>
 #include <vector>

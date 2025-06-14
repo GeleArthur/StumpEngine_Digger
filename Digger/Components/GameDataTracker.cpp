@@ -1,6 +1,6 @@
 ﻿#include "GameDataTracker.h"
 
-#include "../Scenes.h"
+#include "../Scene/Scenes.h"
 
 #include <StumpEngine.h>
 #include <queue>

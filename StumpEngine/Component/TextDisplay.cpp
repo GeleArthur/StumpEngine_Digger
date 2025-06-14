@@ -1,7 +1,7 @@
 #include "TextDisplay.h"
 
-#include "../GameObject.h"
-#include "../StumpEngine.h"
+#include "GameObject.h"
+#include "StumpEngine.h"
 #include "Transform.h"
 
 #include <ResourceManager.h>

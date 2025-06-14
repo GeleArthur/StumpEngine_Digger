@@ -1,6 +1,6 @@
-﻿#include "Scenes.h"
-#include "Components/HighScoreDisplay.h"
-#include "Components/ModeSelectUI.h"
+﻿#include "HighScoreDisplay.h"
+#include "ModeSelectUI.h"
+#include "Scenes.h"
 
 #include <Scene.h>
 #include <Component/TextDisplay.h>

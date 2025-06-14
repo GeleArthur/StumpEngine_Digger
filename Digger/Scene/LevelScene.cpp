@@ -1,18 +1,18 @@
 ﻿#include "Scenes.h"
 
-#include "Components/ColliderGrid.h"
+#include "ColliderGrid.h"
 
 #include <memory>
 
-#include "Components/CollisionHolder.h"
-#include "Components/DirtEraser.h"
-#include "Components/DirtGrid.h"
-#include "Components/Gem.h"
-#include "Components/GridTransform.h"
-#include "Components/NobbinSpawner.h"
-#include "Components/GoldBag/GoldBag.h"
-#include "Components/Nobbin/Nobbin.h"
-#include "Components/Nobbin/NobbinAI.h"
+#include "CollisionHolder.h"
+#include "DirtEraser.h"
+#include "DirtGrid.h"
+#include "Gem.h"
+#include "GridTransform.h"
+#include "NobbinSpawner.h"
+#include "GoldBag/GoldBag.h"
+#include "Nobbin/Nobbin.h"
+#include "Nobbin/NobbinAI.h"
 
 #include <GameObject.h>
 #include <StumpEngine.h>

@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "ColliderGrid.h"
-#include "../GameModes.h"
+#include "../Scene/GameModes.h"
 
 #include <EventListener.h>
 #include <Component/Component.h>

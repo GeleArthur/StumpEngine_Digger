@@ -13,7 +13,7 @@
 #include <SoundSystem/SoundSystemLogger.h>
 #include <SoundSystem/SoundSystemSDL3_Mixer.h>
 
-#include "Scenes.h"
+#include "Scene/Scenes.h"
 #include <nlohmann/json.hpp>
 
 #if defined(WIN32)
@@ -43,10 +43,8 @@ void AllocateConsole()
 static void init_game(stump::StumpEngine& engine)
 {
     engine.set_window_size(900, 600);
-    stump::SoundSystemLocator::register_sound_system(std::make_unique<stump::SoundSystemLogger>(std::make_unique<stump::SoundSystemSDL3_Mixer>()));
+    stump::SoundSystemLocator::register_sound_system(std::make_unique<stump::SoundSystemSDL3_Mixer>());
 
-    // engine.set_active_scene(Scenes::level_scene(engine));
-    // engine.set_active_scene(Scenes::level_scene(engine));
     engine.set_active_scene(Scenes::ui_scene(engine));
 }
 
