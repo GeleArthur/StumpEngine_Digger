@@ -17,12 +17,12 @@ std::unique_ptr<stump::Scene> Scenes::ui_scene(stump::StumpEngine& engine)
 {
     auto scene = std::make_unique<stump::Scene>(engine);
 
+    stump::GameObject& background = scene->add_game_object();
+    background.add_component<stump::Texture2D>("data/uibackground.png");
+
     quick_text(*scene.get(), { 550, 200 }, "One Player", { 204, 116, 0 });
     quick_text(*scene.get(), { 550, 300 }, "Co-op mode", { 204, 116, 0 });
     quick_text(*scene.get(), { 550, 400 }, "Versus mode", { 204, 116, 0 });
-
-    stump::GameObject& background = scene->add_game_object();
-    background.add_component<stump::Texture2D>("data/uibackground.png");
 
     quick_text(*scene.get(), { 100, 100 }, "High Score", { 204, 116, 0 });
 

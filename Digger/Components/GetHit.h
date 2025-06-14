@@ -15,13 +15,15 @@ class GetHit final : public stump::Component
 public:
     explicit GetHit(stump::GameObject& attached, ColliderGrid& collider, Team team);
 
-    void collided(uint64_t, glm::ivec2);
-    
+    void die();
+
+    stump::Event<>& get_death_event()
+    {
+        return m_death;
+    }
+
 private:
     Team           m_team;
     ColliderGrid*  m_collider;
     stump::Event<> m_death;
-    stump::Event<> m_death_animation;
-
-    stump::EventListener<uint64_t, glm::ivec2> m_collided;
 };

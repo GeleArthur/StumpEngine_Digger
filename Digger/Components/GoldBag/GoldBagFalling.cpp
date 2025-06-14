@@ -3,10 +3,13 @@
 #include "GoldBag.h"
 #include "GoldBagCollectable.h"
 #include "GoldBagIdle.h"
+#include "../ColliderGrid.h"
 #include "../DirtGrid.h"
+#include "../GetHit.h"
 #include "../GridTransform.h"
 
 #include <EngineTime.h>
+#include <GameObject.h>
 #include <Component/Texture2DSpriteSheet.h>
 
 std::unique_ptr<IGoldBagState> GoldBagFalling::update(GoldBag& gold_bag)
@@ -53,4 +56,6 @@ std::unique_ptr<IGoldBagState> GoldBagFalling::update(GoldBag& gold_bag)
 }
 void GoldBagFalling::collided(ColliderGrid& tag, glm::ivec2 direction)
 {
+    if (GetHit* thing = tag.get_game_object().get_component<GetHit>())
+        thing->die();
 }

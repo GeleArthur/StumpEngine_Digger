@@ -8,9 +8,9 @@
 #include "Components/DirtEraser.h"
 #include "Components/DirtGrid.h"
 #include "Components/Gem.h"
-#include "Components/GoldBag/GoldBag.h"
 #include "Components/GridTransform.h"
 #include "Components/NobbinSpawner.h"
+#include "Components/GoldBag/GoldBag.h"
 #include "Components/Nobbin/Nobbin.h"
 #include "Components/Nobbin/NobbinAI.h"
 
@@ -105,7 +105,8 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine, Ga
 
         digger.add_component<Digger>(input, i != 0);
         digger.add_component<DirtEraser>(dirt);
-        digger.add_component<ColliderGrid>(grid_transform, collider_holder, 0);
+        auto& collider = digger.add_component<ColliderGrid>(grid_transform, collider_holder, 0);
+        digger.add_component<GetHit>(collider, Team::digger);
 
         game_data_tracker.add_player(grid_transform);
     }

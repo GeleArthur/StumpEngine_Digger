@@ -1,4 +1,6 @@
 ﻿#include "Digger.h"
+
+#include "GetHit.h"
 #include "GridTransform.h"
 #include <GameObject.h>
 #include <imgui.h>

@@ -62,9 +62,14 @@ namespace stump
     template<typename... Args>
     EventListener<Args...>::EventListener(EventListener&& other) noexcept
         : m_function{ std::move(other.m_function) }
+        , m_event{ other.m_event }
     {
-        other.m_event->add_listener(this);
-        other.m_event->remove_listener(&other);
+        if (m_event != nullptr)
+        {
+            m_event->add_listener(this);
+            other.m_event->remove_listener(&other);
+        }
+        other.m_event = nullptr;
     }
 
     template<typename... Args>
@@ -76,7 +81,7 @@ namespace stump
     template<typename... Args>
     void EventListener<Args...>::add_to_event_internal(Event<Args...>* event)
     {
-        assert(m_event == nullptr && "Please remove event before assigning a new one");
+        // assert(m_event == nullptr && "Please remove event before assigning a new one");
         m_event = event;
     }
 

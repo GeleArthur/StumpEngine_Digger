@@ -3,10 +3,12 @@
 #include "INobbinState.h"
 
 #include <EngineTime.h>
+#include <GameObject.h>
 #include <Component/Component.h>
 #include <Input/InputManager.h>
 #include <memory>
 
+class ColliderGrid;
 namespace stump
 {
     class Texture2DSpriteSheet;
@@ -20,6 +22,8 @@ public:
     explicit Nobbin(stump::GameObject& attached, GridTransform& grid_transform, DirtGrid& dirt_grid, stump::Texture2DSpriteSheet& sprite_sheet);
     ~Nobbin() override;
     void update() override;
+
+    void collided(ColliderGrid&, glm::ivec2);
 
     [[nodiscard]] stump::InputBindingVector& get_movement()
     {
@@ -46,6 +50,11 @@ public:
         return *m_state.get();
     }
 
+    void die()
+    {
+        get_game_object().mark_for_deletion();
+    }
+
 private:
     stump::InputBindingVector    m_movement;
     stump::InputBindingButton    m_transform;
@@ -54,6 +63,9 @@ private:
     glm::vec2                    m_last_move_direction{};
     DirtGrid*                    m_dirt_grid;
     stump::Texture2DSpriteSheet* m_sprite_sheet;
+    stump::EventListener<>       m_die_event;
+    ColliderGrid*                m_collider;
 
-    std::unique_ptr<INobbinState> m_state;
+    stump::EventListener<ColliderGrid&, glm::ivec2> m_collided;
+    std::unique_ptr<INobbinState>                   m_state;
 };

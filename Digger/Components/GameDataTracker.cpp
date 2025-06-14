@@ -1,10 +1,19 @@
 ﻿#include "GameDataTracker.h"
+
+#include "../Scenes.h"
+
+#include <StumpEngine.h>
 #include <queue>
 
 GameDataTracker::GameDataTracker(stump::GameObject& attached, DirtGrid& grid)
     : Component{ attached }
     , m_grid{ &grid }
 {
+}
+void GameDataTracker::player_dead() const
+{
+    // this is doo doo
+    get_game_object().get_engine().set_active_scene(Scenes::ui_scene(get_game_object().get_engine()));
 }
 void GameDataTracker::update()
 {

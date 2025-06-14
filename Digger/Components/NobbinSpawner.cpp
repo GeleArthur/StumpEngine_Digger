@@ -38,9 +38,10 @@ void NobbinSpawner::update()
         stump::GameObject& nobbin = m_scene->add_game_object();
         auto&              sprite_sheet = nobbin.add_component<stump::Texture2DSpriteSheet>("data/SpritesEnemies.png").set_sprite_size({ 16, 15 }).set_size_multiplier(3);
         auto&              transform = nobbin.add_component<GridTransform>(m_spawn_location);
-        auto&              nobbin_comp = nobbin.add_component<Nobbin>(transform, *m_dirt, sprite_sheet);
+        auto&              collider = nobbin.add_component<ColliderGrid>(transform, *m_collision, 1);
+        nobbin.add_component<GetHit>(collider, Team::nobbin);
+        auto& nobbin_comp = nobbin.add_component<Nobbin>(transform, *m_dirt, sprite_sheet);
         nobbin.add_component<DirtEraser>(*m_dirt);
-        nobbin.add_component<ColliderGrid>(transform, *m_collision, 1);
 
         if (m_mode == GameModes::versus && m_controlling_player == nullptr)
         {

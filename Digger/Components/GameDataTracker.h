@@ -1,9 +1,11 @@
 ﻿#pragma once
 #include "DirtGrid.h"
+#include "GetHit.h"
 #include "GridTransform.h"
 
 #include <Event.h>
 #include <EventListener.h>
+#include <GameObject.h>
 #include <vector>
 #include <Component/Component.h>
 
@@ -21,6 +23,9 @@ public:
     void add_player(GridTransform& digger)
     {
         m_players.push_back(&digger);
+
+        m_death_event.push_back(stump::EventListener<>{ [this]() { player_dead(); } });
+        digger.get_game_object().get_component<GetHit>()->get_death_event().add_listener(&m_death_event[m_death_event.size() - 1]);
     }
     void remove_player(const GridTransform& digger)
     {
@@ -33,6 +38,7 @@ public:
     {
         return m_flow_field;
     }
+    void player_dead() const;
 
     void update() override;
     void update_flow_field();
@@ -41,4 +47,7 @@ private:
     FlowField                   m_flow_field{};
     std::vector<GridTransform*> m_players;
     DirtGrid*                   m_grid;
+
+    bool                                m_hack{};
+    std::vector<stump::EventListener<>> m_death_event;
 };
