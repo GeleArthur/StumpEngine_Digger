@@ -144,7 +144,7 @@ std::unique_ptr<stump::Scene> Scenes::level_scene(stump::StumpEngine& engine, Ga
         gem.add_component<stump::Texture2DSpriteSheet>("data/SpritesItems.png").set_sprite_size({ 16, 16 }).set_sprite_index({ 0, 2 }).set_size_multiplier(3);
         auto& gem_transform = gem.add_component<GridTransform>(glm::ivec2{ x, y });
         auto& collider = gem.add_component<ColliderGrid>(gem_transform, collider_holder, 3);
-        gem.add_component<Gem>(collider);
+        gem.add_component<Gem>(collider, game_data_tracker);
     }
 
     return std::move(scene);

@@ -19,6 +19,10 @@ void GameDataTracker::player_dead()
     write_to_json();
     get_game_object().get_engine().set_active_scene(Scenes::ui_scene(get_game_object().get_engine()));
 }
+void GameDataTracker::score_added(int amount)
+{
+    m_score += amount;
+}
 void GameDataTracker::update()
 {
     update_flow_field();
